@@ -9,13 +9,29 @@
       POST /tourplace/src/user.php
       #只有管理员和用户在注册帐号时可以进行本操作
       to: {
-        Type: (0|1) #增加方式， 0-用户注册 1-管理员添加
-        data: {
+        Type: (0|1) #增加方式， 0-普通用户注册  1-景区官方注册
+        Data: {
           User_name: #用户昵称,
           Usee_Password: #用户密码,
           User_Intro: #用户简介，若未空，则为空字符串,
           User_Type: #用户类型，　0-普通用户　1-景区官方,
         }
+      }
+      Data <{
+        {
+          User_name: #用户昵称,
+          Usee_Password: #用户密码,
+          User_Intro: #用户简介，若未空，则为空字符串,
+          User_Type: 0#用户类型，　0-普通用户,
+        }#Type为0时，普通用户注册
+        {
+          User_name: #用户昵称,
+          Usee_Password: #用户密码,
+          User_Intro: #用户简介，若未空，则为空字符串,
+          User_Type: 1#用户类型，　1-景区官方,
+          Sight: #景区名称
+          Liscen: #景区注册码
+        }#Type为1时，景区官方注册
       }
       return:{
         Type: (0|1) #返回状态, 0-成功　1-失败

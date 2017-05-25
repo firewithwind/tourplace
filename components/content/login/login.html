@@ -19,6 +19,16 @@
     .body{
       text-align: center;
     }
+    .bu{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      opacity: .5;
+      background-color: #000000;
+      top: 0px;
+      left: 0px;
+    }
     .header{
       width: 1080px;
       margin: 30px auto 0;
@@ -78,6 +88,9 @@
       margin-top: 10px;
       position: relative;
       padding-left: 10px;
+      font-size: 15px;
+      font-family: "微软雅黑";
+      color: rgb(135, 135, 135);
     }
     .login-selection .regin-forget a{
       text-decoration: none;
@@ -130,9 +143,9 @@
     }
     .register{
       width: 400px;
-      height: 600px;
       background-color: #ffffff;
       box-shadow: 0px 0px 5px #000000;
+      border-radius: 5px;
       position: absolute;
       left: 50%;
       top: 50%;
@@ -142,6 +155,7 @@
       font-family: "微软雅黑";
       font-size: 17px;
       color: rgb(135, 135, 135);
+      padding-bottom: 20px;
     }
     .register input{
       width: 85%;
@@ -155,82 +169,217 @@
       font-size: 20px;
       text-align: center;
     }
-    .register .reg-name{
+    .register .reg{
       width: 90%;
-      margin: 0 auto 0;
+      margin: 10px auto 0;
     }
-    #input-name{
+    .register .submit-canel{
+      text-align: center;
+      margin-top: 40px;
     }
+    .register .btn{
+      width: 100px;
+      height: 30px;
+      border: none;
+      outline: none;
+      border-radius: 3px;
+    }
+    .register .btn:active{
+      opacity: .7;
+    }
+    .register .submit{
+      background-color: #fa3140;
+      color: #ffffff;
+    }
+    .regShow-enter-active, .regShow-leave-active{
+      transition: all .3s cubic-bezier(0.3, 0.3, 0.7, 1.5);
+    }
+    .regShow-enter, .regShow-leave-active{
+      transform: scale(0);
+      opacity: 0;
+    }
+
   </style>
 </head>
 <body>
   <div id="login">
-    <div class="header">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-travel-copy"></use>
-      </svg>
-      <a id="logo" href="/tourplace/components/content/index/index.html">Tourplace</a>
+    <div class="wrapper">
+      <div class="bu" v-if="regist"></div>
+      <div class="header">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-travel-copy"></use>
+        </svg>
+        <a id="logo" href="/tourplace/components/content/index/index.html">Tourplace</a>
+      </div>
+      <div class="content">
+        <div class="showImg">
+          <img src="/tourplace/components/img/01.jpg" alt="">
+        </div>
+        <div class="login-selection">
+          <form action="">
+            <div class="baiban"></div>
+            <span class="login-word">帐号登入</span>
+            <div class="form-field">
+              <svg class="icon" aria-hidden="true" style="width: 1em;height: 1em;color: rgb(135, 135, 135)">
+                <use xlink:href="#icon-yonghuming"></use>
+              </svg>
+              <input type="text" placeholder="帐号ID/用户名/邮箱" v-model="oldUser.User_ID">
+            </div>
+            <div class="form-field">
+              <svg class="icon" aria-hidden="true" style="width: 1em;height: 1em;color: rgb(135, 135, 135)">
+                <use xlink:href="#icon-mima"></use>
+              </svg>
+              <input type="password" placeholder="密码" v-model="oldUser.User_Password">
+            </div>
+            <div class="regin-forget">
+              <span @click="regist=true" style="cursor: pointer">注册帐号</span>
+              <a class="pull-right" href="">忘记密码?</a>
+            </div>
+            <div class="remember">
+              <input type="checkbox">
+              <span>记住密码</span>
+            </div>
+            <div class="btn-submit">
+              <button class="submit" @click="login()">
+                登入
+              </button>
+            </div>
+            <div class="errmsg" v-if="err">{{errmsg}}</div>
+          </form>
+        </div>
+      </div>
+      <transition name="regShow">
+        <div class="register" v-if="regist">
+          <div class="reg-header">用户注册</div>
+          <div class="reg reg-name">
+            <label for="input-name">昵称</label>
+            <input type="text" id="input-name" placeholder="输入账号的名称" v-model="newUser.User_name">
+          </div>
+          <div class="reg reg-password">
+            <label for="input-password">密码</label>
+            <input type="password" id="input-password" placeholder="输入密码" v-model="newUser.User_Password">
+          </div>
+          <div class="reg reg-mksure">
+            <label for="input-mksure">确认</label>
+            <input type="password" id="input-mksure" placeholder="确认密码" v-model="mkSure_Password">
+          </div>
+          <div class="reg reg-intro">
+            <label for="input-intro">简介</label>
+            <input type="text" id="input-intro" placeholder="输入简介" v-model="newUser.User_Intro">
+          </div>
+          <div class="reg reg-type" style="text-align:center;margin-top: 20px">
+            <input type="radio" name="input-type" id="user" style="width: 15px;" @click="showSight = false; newUser.User_Type = 0">
+            <label for="user">我是普通用户</label>
+            <input type="radio" name="input-type" id="admin" style="width: 15px;" @click="showSight = true; newUser.User_Type = 1">
+            <label for="admin">我是景区管理员</label>
+          </div>
+          <div class="reg reg-sight" v-if="showSight">
+            <label for="input-sight">景区</label>
+            <input type="text" id="input-sight" placeholder="输入您管理的景区(要求景区官方注册名称)" v-model="sight">
+          </div>
+          <div class="reg reg-liscen" v-if="showSight">
+            <label for="input-liscen">注册码</label>
+            <input type="text" id="input-liscen" placeholder="输入景区注册码" v-model="liscen" style="width: 80%;">
+          </div>
+          <div class="reg submit-canel">
+            <button class="btn submit" @click="registNew()">注册</button>
+            <button class="btn canel" @click="regist=false">取消</button>
+          </div>
+        </div>
+      </transition>
+      <div class="infor">本网站由hitwh学生团队开发，仅供学习参考</div>
     </div>
-    <div class="content">
-      <div class="showImg">
-        <img src="/tourplace/components/img/01.jpg" alt="">
-      </div>
-      <div class="login-selection">
-        <form action="">
-          <div class="baiban"></div>
-          <span class="login-word">帐号登入</span>
-          <div class="form-field">
-            <svg class="icon" aria-hidden="true" style="width: 1em;height: 1em;color: rgb(135, 135, 135)">
-              <use xlink:href="#icon-yonghuming"></use>
-            </svg>
-            <input type="text" placeholder="帐号/用户名/邮箱">
-          </div>
-          <div class="form-field">
-            <svg class="icon" aria-hidden="true" style="width: 1em;height: 1em;color: rgb(135, 135, 135)">
-              <use xlink:href="#icon-mima"></use>
-            </svg>
-            <input type="password" placeholder="密码">
-          </div>
-          <div class="regin-forget">
-            <a href="">注册帐号</a>
-            <a class="pull-right" href="">忘记密码?</a>
-          </div>
-          <div class="remember">
-            <input type="checkbox">
-            <span>记住密码</span>
-          </div>
-          <div class="btn-submit">
-            <button class="submit">
-              登入
-            </button>
-          </div>
-          <div class="errmsg" v-if="err">{{errmsg}}</div>
-        </form>
-      </div>
-    </div>
-    <div class="register" v-if="regist">
-      <div class="reg-header">用户注册</div>
-      <div class="reg-name">
-        <label for="input-name">昵称</label>
-        <input type="text" id="input-name" placeholder="输入账号的名称">
-      </div>
-      <div class="reg-name">
-        <label for="input-name">昵称</label>
-        <input type="text" id="input-name" placeholder="输入账号的名称">
-      </div>
-    </div>
-    <div class="infor">本网站由hitwh学生团队开发，仅供学习参考</div>
   </div>
 
   <script src="http://at.alicdn.com/t/font_a2bx3q43qkr442t9.js"></script>
   <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
+  <script src="/tourplace/components/node_modules/axios/dist/axios.js"></script>
   <script>
     new Vue({
       el: '#login',
       data: {
         err: false,
         errmsg: "",
-        regist: true
+        regist: false,
+        showSight: false,
+        oldUser: {
+          User_ID: '',
+          User_Password: '',
+        },
+        newUser: {
+          User_name: '',
+          User_Password: '',
+          User_Intro: '',
+          User_Type: 0
+        },
+        mkSure_Password: '',
+        sight: '',
+        liscen: ''
+      },
+      methods: {
+        registNew: function(){
+          var self = this
+          if(self.newUser.User_Password === self.mkSure_Password){
+            if(self.newUser.User_Type === 0){
+              axios({
+                method: 'POST',
+                url: '/tourplace/src/user.php',
+                data: self.newUser
+              })
+              .then(function(response){
+                if(response.Type === 0){
+                  self.regist = false
+                  alert("注册成功，你的ID是："+response.Result.User_ID)
+                }else if(response.Type === 1){
+                  alert(response.Result.Errmsg)
+                }else{
+                  alert("发生了未知的错误")
+                }
+              })
+            }else if(self.newUser.User_Type === 1){
+              axios({
+                method: 'POST',
+                url: '/tourplace/src/user.php',
+                data: {
+                  User_name: self.newUser.User_name,
+                  User_Password: self.newUser.User_Password,
+                  User_Intro: self.newUser.User_Intro,
+                  User_Type: 1,
+                  Sight: self.sight,
+                  Liscen: self.liscen
+                }
+              })
+              .then(function(){
+                if(response.Type === 0){
+                  self.regist = false
+                  alert("注册成功，你的ID是："+response.Result.User_ID)
+                }else if(response.Type === 1){
+                  alert(response.Result.Errmsg)
+                }else{
+                  alert("发生了未知的错误")
+                }
+              })
+            }
+          }else{
+            alert("两次输入的密码不一致")
+          }
+        },
+        login: function(){
+          axios({
+            method: 'POST',
+            url: '/tourplace/src/login.php',
+            data: oldUser
+          })
+          .then(function(response){
+            if(response.Type === 0){
+              window.location = "/tourplace/components/content/index/index.html"
+            }else if(response.Type === 1){
+              alert(response.Result.Errmsg)
+            }else{
+              alert("发生了未知的错误")
+            }
+          })
+        }
       }
     })
   </script>

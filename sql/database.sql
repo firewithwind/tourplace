@@ -168,3 +168,10 @@ CREATE TABLE `user-ticket` (
 -- ----------------------------
 -- Records of user-ticket
 -- ----------------------------
+TE CASCADE,
+  CONSTRAINT `UserTicket_User_ID` FOREIGN KEY (`UserTicket_User_ID`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user-ticket
+-- ----------------------------
