@@ -293,7 +293,7 @@
 
   <script src="http://at.alicdn.com/t/font_a2bx3q43qkr442t9.js"></script>
   <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
-  <script src="/tourplace/components/node_modules/axios/dist/axios.js"></script>
+  <script src="/tourplace/components/node_modules/jquery/dist/jquery.js"></script>
   <script>
     new Vue({
       el: '#login',
@@ -321,12 +321,17 @@
           var self = this
           if(self.newUser.User_Password === self.mkSure_Password){
             if(self.newUser.User_Type === 0){
-              axios({
-                method: 'POST',
+              $.ajax({
+                type: 'POST',
                 url: '/tourplace/src/user.php',
-                data: self.newUser
+                dataType: 'form',
+                data: {
+                  Type: 0,
+                  Data: self.newUser
+                }
               })
-              .then(function(response){
+              .done(function(res){
+                var response = res.data
                 if(response.Type === 0){
                   self.regist = false
                   alert("注册成功，你的ID是："+response.Result.User_ID)
@@ -337,19 +342,24 @@
                 }
               })
             }else if(self.newUser.User_Type === 1){
-              axios({
-                method: 'POST',
+              $.ajax({
+                type: 'POST',
                 url: '/tourplace/src/user.php',
+                dataType: 'form',
                 data: {
-                  User_name: self.newUser.User_name,
-                  User_Password: self.newUser.User_Password,
-                  User_Intro: self.newUser.User_Intro,
-                  User_Type: 1,
-                  Sight: self.sight,
-                  Liscen: self.liscen
+                  Type: 1,
+                  Data: {
+                    User_name: self.newUser.User_name,
+                    User_Password: self.newUser.User_Password,
+                    User_Intro: self.newUser.User_Intro,
+                    User_Type: 1,
+                    Sight: self.sight,
+                    Liscen: self.liscen
+                  }
                 }
               })
-              .then(function(){
+              .done(function(res){
+                var response = res
                 if(response.Type === 0){
                   self.regist = false
                   alert("注册成功，你的ID是："+response.Result.User_ID)
@@ -365,12 +375,14 @@
           }
         },
         login: function(){
-          axios({
-            method: 'POST',
+          $.ajax({
+            type: 'POST',
             url: '/tourplace/src/login.php',
+            dataType: 'form',
             data: oldUser
           })
-          .then(function(response){
+          .done(function(res){
+            var response = res.data
             if(response.Type === 0){
               window.location = "/tourplace/components/content/index/index.html"
             }else if(response.Type === 1){
