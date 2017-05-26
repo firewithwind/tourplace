@@ -4,6 +4,7 @@
 门票**[增](ticket_add)[删](ticket_delete)[改](ticket_change)[查](ticket_search)**
 
 - <a name="ticket_add">增</a>
+
         POST /tourplace/src/ticket.php
         #只允许景区管理员和网站管理员进行本操作，进行景区的票的管理
         to: {
@@ -27,6 +28,7 @@
           }#Type为1时
         }
 - <a name="ticket_delete">删</a>
+
           DELETE /tourplace/src/ticket.php
           #只允许景区管理员和网站管理员进行本操作，进行景区的票的管理
           to: {
@@ -45,6 +47,7 @@
             }#Type为1时，根据景区和时间删除
           }
 - <a name="ticket_change">查</a>
+
           GET /tourplace/src/ticket.php
           to: {
             Type(int): (0|1)#查询票,

@@ -21,6 +21,7 @@
           }#Type=1, failed
         }
 - <a name="login_out">登出</a>
+
         DELETE /tourplace/src/login.php
         to: {
           Type(int): (0|1) 0-用户登出  1-管理员强制退出
