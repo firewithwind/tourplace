@@ -282,7 +282,7 @@
             <input type="text" id="input-liscen" placeholder="输入景区注册码" v-model="liscen" style="width: 80%;">
           </div>
           <div class="reg submit-canel">
-            <button class="btn submit" @click="registNew()">注册</button>
+            <button class="btn submit" @click="registNew">注册</button>
             <button class="btn canel" @click="regist=false">取消</button>
           </div>
         </div>
@@ -324,14 +324,13 @@
               $.ajax({
                 type: 'POST',
                 url: '/tourplace/src/user.php',
-                dataType: 'form',
                 data: {
                   Type: 0,
                   Data: self.newUser
                 }
               })
               .done(function(res){
-                var response = res.data
+                var response = JSON.parse(res)
                 if(response.Type === 0){
                   self.regist = false
                   alert("注册成功，你的ID是："+response.Result.User_ID)
@@ -341,11 +340,13 @@
                   alert("发生了未知的错误")
                 }
               })
+              .fail(function(err){
+                console.log(err)
+              })
             }else if(self.newUser.User_Type === 1){
               $.ajax({
                 type: 'POST',
                 url: '/tourplace/src/user.php',
-                dataType: 'form',
                 data: {
                   Type: 1,
                   Data: {
@@ -359,7 +360,7 @@
                 }
               })
               .done(function(res){
-                var response = res
+                var response = JSON.parse(res)
                 if(response.Type === 0){
                   self.regist = false
                   alert("注册成功，你的ID是："+response.Result.User_ID)
@@ -368,6 +369,9 @@
                 }else{
                   alert("发生了未知的错误")
                 }
+              })
+              .fali(function(){
+                alert("出错啦")
               })
             }
           }else{
@@ -378,11 +382,10 @@
           $.ajax({
             type: 'POST',
             url: '/tourplace/src/login.php',
-            dataType: 'form',
             data: oldUser
           })
           .done(function(res){
-            var response = res.data
+            var response = JSON.parse(res)
             if(response.Type === 0){
               window.location = "/tourplace/components/content/index/index.html"
             }else if(response.Type === 1){
@@ -390,6 +393,9 @@
             }else{
               alert("发生了未知的错误")
             }
+          })
+          .fail(function(){
+            alert("出错啦")
           })
         }
       }

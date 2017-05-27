@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-26 23:48:17
+Date: 2017-05-26 20:23:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,15 +37,37 @@ DROP TABLE IF EXISTS `city`;
 CREATE TABLE `city` (
   `City_ID` char(8) NOT NULL COMMENT '城市编号',
   `City_Name` varchar(20) NOT NULL COMMENT '城市名称',
-  `Province_ID` char(8) NOT NULL COMMENT '城市所属省份',
+  `Province_Name` varchar(20) NOT NULL COMMENT '城市所属省份',
   PRIMARY KEY (`City_ID`),
   KEY `City_Name` (`City_Name`),
-  KEY `Province_ID` (`Province_ID`) USING BTREE,
-  CONSTRAINT `Province_ID` FOREIGN KEY (`Province_ID`) REFERENCES `province` (`Province_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `Province_Name` (`Province_Name`) USING BTREE,
+  CONSTRAINT `Province_Name` FOREIGN KEY (`Province_Name`) REFERENCES `province` (`Province_Name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of city
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `oorder`
+-- ----------------------------
+DROP TABLE IF EXISTS `oorder`;
+CREATE TABLE `oorder` (
+  `Order_ID` char(8) NOT NULL COMMENT '订单编号',
+  `User_ID1` char(8) NOT NULL COMMENT '卖方用户ID',
+  `User_ID2` char(8) NOT NULL COMMENT '买方用户ID',
+  `Order_Time` int(8) NOT NULL COMMENT '订单生成时间',
+  `Order_Count` smallint(6) NOT NULL COMMENT '订单交易的门票数量',
+  `Order_State` char(2) NOT NULL DEFAULT '1' COMMENT '订单状态（1未审核 2审核通过 3待收货 4已完成）',
+  PRIMARY KEY (`Order_ID`),
+  KEY `User_ID1` (`User_ID1`) USING BTREE,
+  KEY `User_ID2` (`User_ID2`) USING BTREE,
+  CONSTRAINT `oorder_ibfk_1` FOREIGN KEY (`User_ID1`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `oorder_ibfk_2` FOREIGN KEY (`User_ID2`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+-- Records of oorder
 -- ----------------------------
 
 -- ----------------------------
@@ -62,8 +84,8 @@ CREATE TABLE `order` (
   PRIMARY KEY (`Order_ID`),
   KEY `User_ID1` (`User_ID1`) USING BTREE,
   KEY `User_ID2` (`User_ID2`) USING BTREE,
-  CONSTRAINT `User_ID1` FOREIGN KEY (`User_ID1`) REFERENCES `user` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `User_ID2` FOREIGN KEY (`User_ID2`) REFERENCES `user` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `User_ID1` FOREIGN KEY (`User_ID1`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `User_ID2` FOREIGN KEY (`User_ID2`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -94,17 +116,17 @@ CREATE TABLE `scenic` (
   `Scenic_Picture` varchar(100) NOT NULL COMMENT '景点照片（存储路径）',
   `Scenic_Name` varchar(50) NOT NULL COMMENT '景点名称',
   `Scenic_Intro` varchar(2000) NOT NULL COMMENT '景点简介',
-  `Province_ID1` varchar(20) NOT NULL COMMENT '景点所属省份名称',
-  `City_ID` varchar(20) NOT NULL COMMENT '景点所属城市名称',
+  `Province_Name1` varchar(20) NOT NULL COMMENT '景点所属省份名称',
+  `City_Name` varchar(20) NOT NULL COMMENT '景点所属城市名称',
   `Scenic_Adress` varchar(200) NOT NULL COMMENT '景点地点',
   `Scenic_Phone` varchar(20) NOT NULL COMMENT '景点联系方式',
   `Scenic_Level` varchar(5) NOT NULL COMMENT '景点星级（A~AAAAA）',
   `Scenic_License` char(8) NOT NULL COMMENT '景区许可证（官方用户注册时填写）',
   PRIMARY KEY (`Scenic_ID`),
-  KEY `City_ID` (`City_ID`) USING BTREE,
-  KEY `Province_ID1` (`Province_ID1`) USING BTREE,
-  CONSTRAINT `City_ID` FOREIGN KEY (`City_ID`) REFERENCES `city` (`City_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `Province_ID1` FOREIGN KEY (`Province_ID1`) REFERENCES `province` (`Province_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+  KEY `City_Name` (`City_Name`) USING BTREE,
+  KEY `Province_Name1` (`Province_Name1`) USING BTREE,
+  CONSTRAINT `City_Name` FOREIGN KEY (`City_Name`) REFERENCES `city` (`City_Name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Province_Name1` FOREIGN KEY (`Province_Name1`) REFERENCES `province` (`Province_Name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -122,7 +144,7 @@ CREATE TABLE `ticket` (
   `Ticket_Time` int(8) NOT NULL COMMENT '门票可用日期',
   PRIMARY KEY (`Ticket_ID`),
   KEY `Scenic_ID` (`Scenic_ID`) USING BTREE,
-  CONSTRAINT `Scenic_ID` FOREIGN KEY (`Scenic_ID`) REFERENCES `scenic` (`Scenic_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `Scenic_ID` FOREIGN KEY (`Scenic_ID`) REFERENCES `scenic` (`Scenic_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -148,7 +170,7 @@ CREATE TABLE `user` (
   `User_Type` varchar(4) NOT NULL COMMENT '用户类型（普通/官方）',
   PRIMARY KEY (`User_ID`),
   KEY `Scenic_ID1` (`Scenic_ID1`) USING BTREE,
-  CONSTRAINT `Scenic_ID1` FOREIGN KEY (`Scenic_ID1`) REFERENCES `scenic` (`Scenic_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `Scenic_ID1` FOREIGN KEY (`Scenic_ID1`) REFERENCES `scenic` (`Scenic_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -162,15 +184,13 @@ DROP TABLE IF EXISTS `user-ticket`;
 CREATE TABLE `user-ticket` (
   `User_ID` char(8) NOT NULL COMMENT '持票用户ID',
   `UserTicket_Price` int(6) NOT NULL COMMENT '门票定价（普通用户定价不统一，由用户自己定价；官方用户定价必须固定）',
-  `UserTicket_Count1` smallint(6) NOT NULL COMMENT '用户仓库门票数量（官方用户所有门票都要上架）',
-  `UserTicket_Count2` smallint(6) NOT NULL COMMENT '用户正在挂售门票数量',
-  `UserTicket_Count3` smallint(6) NOT NULL COMMENT '用户过期门票数量',
+  `UserTicket_Count` smallint(6) NOT NULL COMMENT '门票数量',
   `Ticket_ID` char(8) NOT NULL COMMENT '门票ID',
   PRIMARY KEY (`User_ID`,`Ticket_ID`),
   KEY `Ticket_ID` (`Ticket_ID`) USING BTREE,
   KEY `User_ID` (`User_ID`),
-  CONSTRAINT `Ticket_ID` FOREIGN KEY (`Ticket_ID`) REFERENCES `ticket` (`Ticket_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `User_ID` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `Ticket_ID` FOREIGN KEY (`Ticket_ID`) REFERENCES `ticket` (`Ticket_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `User_ID` FOREIGN KEY (`User_ID`) REFERENCES `user` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

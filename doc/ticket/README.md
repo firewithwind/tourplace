@@ -6,12 +6,11 @@
 - <a name="ticket_add">增</a>
 
         POST /tourplace/src/ticket.php
-        #只允许景区管理员和网站管理员进行本操作，进行景区的票的管理
+        #只允许景区管理员进行本操作，进行景区的票的管理
         to: {
           Type: (0|1)#增加方式，
           Data: {
-            Ticket_ID(string): #票ID，
-            Ticket_Scenic_ID(string): #对应景区，
+            Scenic_ID(string): #对应景区，
             Ticket_Time(string 时间戳): #时间
           }
         }
@@ -42,7 +41,7 @@
               Ticket_ID(string): #票ID
             }#Type为0时,根据ID删除，
             {
-              Ticket_Scenic_ID(string): #景区ID
+              Scenic_ID(string): #景区ID
               Ticket_Time(string 时间戳): #票时间，若为空，则删除全部时间段
             }#Type为1时，根据景区和时间删除
           }
@@ -51,18 +50,20 @@
           GET /tourplace/src/ticket.php
           to: {
             Type(int): (0|1)#查询票,
-            Keys(string): "Ticket_ID+Ticket_Scenic_ID+Ticket_Time+Scenic_Name+Ticket_Img",#查询关键字，需要返回的信息，若为空则返回这些字段
+            Keys(string): "Ticket_ID+Scenic_ID+Ticket_Time+Scenic_Name+Ticket_Picture",#查询关键字，需要返回的信息，若为空则返回这些字段，
+            Page: 1 #页码
+            PageSize: 10 #页面数据条数
             Search(object): {
               Ticket_ID(string): #门票ID
             }#辅助查找的信息
           }
           Keys(string) <{
             "Ticket_ID",
-            "Ticket_Scenic_ID",
+            "Scenic_ID",
             "Ticket_Time",
-            "Ticket_Img",
+            "Ticket_Picture",
             "Scenic_Name",
-            "UserTicket_User_ID",
+            "User_ID",
             "User_Name"
           }*    #若为空则返回全部
           Search <{
@@ -70,7 +71,7 @@
               Ticket_ID: #门票ID 若为空则返回全部门票信息
             }#Type为0时，根据门票ID查找，
             {
-              Ticket_Scenic_ID(string): #景区ID
+              Scenic_ID(string): #景区ID
               Ticket_Time(string): #时间 若为空则查找全部时间段
             }#Type为1时，根据景区ID和时间查找，
             {
@@ -79,7 +80,8 @@
             }#Type为2时，根据景区名称和时间查找
           }
           return： {
-            Type(int): (0|1) 0-成功 1-失败,
+            Type(int): (0|1) #0-成功 1-失败,
+            Num(int): #查询到的信息数量
             Result(array): [
               {}
             ]
@@ -88,13 +90,13 @@
             [
               {
                 Ticket_ID: #门票id,
-                Ticket_Scenic_ID: #景区id ,
+                Scenic_ID: #景区id ,
                 Ticket_Time: #有效时间,
                 ...
               },
               {
                 Ticket_ID: #门票id,
-                Ticket_Scenic_ID: #景区id ,
+                Scenic_ID: #景区id ,
                 Ticket_Time: #有效时间,
                 ...
               }

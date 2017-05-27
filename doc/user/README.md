@@ -28,8 +28,8 @@
           Usee_Password: #用户密码,
           User_Intro: #用户简介，若未空，则为空字符串,
           User_Type: 1#用户类型，　1-景区官方,
-          Sight: #景区名称
-          Liscen: #景区注册码
+          Scenic_Name: #景区名称
+          Scenic_License: #景区注册码
         }#Type为1时，景区官方注册
       }
       return:{
@@ -106,7 +106,9 @@
       GET /tourplace/src/user.php
       to: {
         Type(int): (0|1)#查找方式，具体开发决定
-        Key(string): "User_ID+User_Name+..." #需要获取信息的关键字
+        Key(string): "User_ID+User_Name+..." #需要获取信息的关键字，
+        Page(int): #页码
+        PageSize(int): #每页信息数  
         Search(object): {
           User_ID: "id1"
         }
@@ -116,7 +118,7 @@
           User_ID: "id" #搜索用户的ID 若为空，则表示用户本身
         }#Type为0时，表示根据ID搜索
         {
-          User_Truename: "name" #搜索用户name  不允许为空
+          User_Name: "name" #搜索用户name  不允许为空
         }#Type为1时，表示根据昵称搜索
         {
           User_IDCard: "idcard" #根据用户IDCard搜索 不允许为空
@@ -139,7 +141,8 @@
         User_Type: #用户类型
       }
       return: {
-        Type(int): (0|1) 0-成功 1-失败
+        Type(int): (0|1) # 0-成功 1-失败
+        Num(int): #返回的信息数量
         Result(array): [
           {
             User_ID: 0#用户ID
