@@ -47,61 +47,65 @@
           }
 - <a name="ticket_change">查</a>
 
-          GET /tourplace/src/ticket.php
-          to: {
-            Type(int): (0|1)#查询票,
-            Keys(string): "Ticket_ID+Scenic_ID+Ticket_Time+Scenic_Name+Ticket_Picture",#查询关键字，需要返回的信息，若为空则返回这些字段，
-            Page: 1 #页码
-            PageSize: 10 #页面数据条数
-            Search(object): {
-              Ticket_ID(string): #门票ID
-            }#辅助查找的信息
-          }
-          Keys(string) <{
-            "Ticket_ID",
-            "Scenic_ID",
-            "Ticket_Time",
-            "Ticket_Picture",
-            "Scenic_Name",
-            "User_ID",
-            "User_Name"
-          }*    #若为空则返回全部
-          Search <{
+        GET /tourplace/src/ticket.php
+        to: {
+          Type(int): (0|1)#查询票,
+          Keys(string):"Ticket_ID+Scenic_ID+Ticket_Time+Scenic_Name+Ticket_Picture",#查询关键字，需要返回的信息，若为空则返回这些字段，
+          Page: 1 #页码
+          PageSize: 10 #页面数据条数
+          Search(object): {
+            Ticket_ID(string): #门票ID
+          }#辅助查找的信息
+        }
+        Keys(string) <{
+          "Ticket_ID",
+          "Scenic_ID",
+          "Ticket_Time",
+          "Ticket_Picture",
+          "Scenic_Name",
+          "User_ID",
+          "User_Name"
+        }*    #若为空则返回全部
+        Search <{
+          {
+            Ticket_ID: #门票ID 若为空则返回全部门票信息
+          }#Type为0时，根据门票ID查找，
+          {
+            Scenic_ID(string): #景区ID
+            Ticket_Time(string): #时间 若为空则查找全部时间段
+          }#Type为1时，根据景区ID和时间查找，
+          {
+            Ticket_Name(string): #景区名称
+            Ticket_Time(string): #时间 若为空 则查找全部时间段
+          }#Type为2时，根据景区名称和时间查找
+          {
+            Province_ID(string): #省ID 若为空 则查找全部
+            City_ID(string): #城市ID 若为空 则查找该省全部
+          }#Type为3时，根据地区查找
+        }
+        return： {
+          Type(int): (0|1) #0-成功 1-失败,
+          Num(int): #查询到的信息数量
+          Result(array): [
+            {}
+          ]
+        }
+        Result <{
+          [
             {
-              Ticket_ID: #门票ID 若为空则返回全部门票信息
-            }#Type为0时，根据门票ID查找，
+              Ticket_ID: #门票id,
+              Scenic_ID: #景区id ,
+              Ticket_Time: #有效时间,
+              ...
+            },
             {
-              Scenic_ID(string): #景区ID
-              Ticket_Time(string): #时间 若为空则查找全部时间段
-            }#Type为1时，根据景区ID和时间查找，
-            {
-              Ticket_Name(string): #景区名称
-              Ticket_Time(string): #时间 若为空 则查找全部时间段
-            }#Type为2时，根据景区名称和时间查找
-          }
-          return： {
-            Type(int): (0|1) #0-成功 1-失败,
-            Num(int): #查询到的信息数量
-            Result(array): [
-              {}
-            ]
-          }
-          Result <{
-            [
-              {
-                Ticket_ID: #门票id,
-                Scenic_ID: #景区id ,
-                Ticket_Time: #有效时间,
-                ...
-              },
-              {
-                Ticket_ID: #门票id,
-                Scenic_ID: #景区id ,
-                Ticket_Time: #有效时间,
-                ...
-              }
-            ]#Type为0时,查询成功，返回信息,
-            {
-              Errmsg: #错误信息
-            }#Type为1时,查询失败，返回错误信息
-          }
+              Ticket_ID: #门票id,
+              Scenic_ID: #景区id ,
+              Ticket_Time: #有效时间,
+              ...
+            }
+          ]#Type为0时,查询成功，返回信息,
+          {
+            Errmsg: #错误信息
+          }#Type为1时,查询失败，返回错误信息
+        }

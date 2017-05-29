@@ -108,12 +108,12 @@
       color: rgb(135, 135, 135);
       margin-top: 10px;
     }
-    .btn-submit{
+    .d-login{
       width: 100%;
       margin-top: 30px;
       text-align: center;
     }
-    .btn-submit .submit{
+    .d-login .tologin{
       width: 200px;
       height: 35px;
       border-radius: 5px;
@@ -233,14 +233,14 @@
             </div>
             <div class="regin-forget">
               <span @click="regist=true" style="cursor: pointer">注册帐号</span>
-              <a class="pull-right" href="">忘记密码?</a>
+              <a class="pull-right">忘记密码?</a>
             </div>
             <div class="remember">
               <input type="checkbox">
               <span>记住密码</span>
             </div>
-            <div class="btn-submit">
-              <button class="submit" @click="login()">
+            <div class="d-login">
+              <button class="tologin" type="button" @click="login()">
                 登入
               </button>
             </div>
@@ -379,15 +379,16 @@
           }
         },
         login: function(){
+          var self = this
           $.ajax({
             type: 'POST',
             url: '/tourplace/src/login.php',
-            data: oldUser
+            data: self.oldUser
           })
           .done(function(res){
             var response = JSON.parse(res)
             if(response.Type === 0){
-              window.location = "/tourplace/components/content/index/index.html"
+              window.open = "/tourplace/components/content/index/index.html"
             }else if(response.Type === 1){
               alert(response.Result.Errmsg)
             }else{

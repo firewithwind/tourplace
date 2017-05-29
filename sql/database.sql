@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-26 23:48:17
+Date: 2017-05-27 20:32:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -118,7 +118,7 @@ DROP TABLE IF EXISTS `ticket`;
 CREATE TABLE `ticket` (
   `Ticket_ID` char(8) NOT NULL COMMENT '门票ID',
   `Scenic_ID` char(8) NOT NULL COMMENT '门票所属景点ID',
-  `Tkcket_Picture` varchar(100) NOT NULL COMMENT '门票图片（存储路径）',
+  `Ticket_Picture` varchar(100) NOT NULL COMMENT '门票图片（存储路径）',
   `Ticket_Time` int(8) NOT NULL COMMENT '门票可用日期',
   PRIMARY KEY (`Ticket_ID`),
   KEY `Scenic_ID` (`Scenic_ID`) USING BTREE,
@@ -146,6 +146,7 @@ CREATE TABLE `user` (
   `User_Level` int(3) NOT NULL DEFAULT '50' COMMENT '用户信用等级(0~20可疑，20~40次级，40~60普通，60~80良好，80~100优秀)',
   `Scenic_ID1` char(8) DEFAULT NULL COMMENT '官方用户所管理景区ID（普通用户为空）',
   `User_Type` varchar(4) NOT NULL COMMENT '用户类型（普通/官方）',
+  `User_Picture` varchar(100) NOT NULL COMMENT '用户头像图片',
   PRIMARY KEY (`User_ID`),
   KEY `Scenic_ID1` (`Scenic_ID1`) USING BTREE,
   CONSTRAINT `Scenic_ID1` FOREIGN KEY (`Scenic_ID1`) REFERENCES `scenic` (`Scenic_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -162,11 +163,10 @@ DROP TABLE IF EXISTS `user-ticket`;
 CREATE TABLE `user-ticket` (
   `User_ID` char(8) NOT NULL COMMENT '持票用户ID',
   `UserTicket_Price` int(6) NOT NULL COMMENT '门票定价（普通用户定价不统一，由用户自己定价；官方用户定价必须固定）',
-  `UserTicket_Count1` smallint(6) NOT NULL COMMENT '用户仓库门票数量（官方用户所有门票都要上架）',
-  `UserTicket_Count2` smallint(6) NOT NULL COMMENT '用户正在挂售门票数量',
-  `UserTicket_Count3` smallint(6) NOT NULL COMMENT '用户过期门票数量',
+  `UserTicket_Count` smallint(6) NOT NULL COMMENT '用户仓库门票数量（官方用户所有门票都要上架）',
   `Ticket_ID` char(8) NOT NULL COMMENT '门票ID',
-  PRIMARY KEY (`User_ID`,`Ticket_ID`),
+  `UserTicket_Type` int(1) NOT NULL COMMENT '门票状态（0在仓库 1出售中 3已过期）',
+  PRIMARY KEY (`User_ID`,`Ticket_ID`,`UserTicket_Type`),
   KEY `Ticket_ID` (`Ticket_ID`) USING BTREE,
   KEY `User_ID` (`User_ID`),
   CONSTRAINT `Ticket_ID` FOREIGN KEY (`Ticket_ID`) REFERENCES `ticket` (`Ticket_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
