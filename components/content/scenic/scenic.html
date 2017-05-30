@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tourplace</title>
+  <style>
+    .icon {
+       width: 3em; height: 3em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
+  </style>
+  <link rel="stylesheet" href="/tourplace/components/content/scenic/css/scenic.css">
+</head>
+<body>
+  <div id="container">
+    <!-- 顶部导航栏 -->
+    <div class="header">
+      <div class="navbar">
+        <!-- logo展示 -->
+        <div class="logo nav">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-travel-copy"></use>
+          </svg>
+          <a href="/tourplace/components/content/index/index.html">Tourplace</a>
+        </div>
+        <!-- 定位选择 -->
+        <div class="place nav" @click="placeSelect=!placeSelect" >
+          <svg class="icon" aria-hidden="true" style="width: 1.5em; height: 1.5em">
+            <use xlink:href="#icon-location"></use>
+          </svg>
+          <span>{{location}}</span>
+          <div class="place-select slide-down" v-if="placeSelect">
+            <div class="province" v-for="place in places">
+              <div class="provinceName"　@click="location=place.provinceName">{{place.provinceName}}</div>
+              <div class="city">
+                <span v-for="city in place.citys" @click="location=city.cityName">{{city.cityName}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 主要导航 -->
+        <div class="index-nav nav">
+          <a href="/tourplace/components/content/index/index.html?nowPage=1">首页</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=2">景区</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=3">榜单</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=4">热点</a>
+        </div>
+        <!-- 关于我们 -->
+        <div class="about nav">
+          <svg class="icon" aria-hidden="true" style="width: 1.5em; height: 1.5em">
+            <use xlink:href="#icon-guanyuwomen"></use>
+          </svg>
+          关于我们
+        </div>
+        <!-- 搜索 -->
+        <div class="search nav">
+          <input type="text" placeholder="输入景区/用户/门票">
+            <svg class="icon search-icon" aria-hidden="true">
+              <use xlink:href="#icon-sou"></use>
+            </svg>
+        </div>
+        <!-- 用户 -->
+        <div class="user nav">
+          <img class="avator" src="/tourplace/img/user/00.jpg" alt="">
+          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</a>
+        </div>
+      </div>
+    </div>
+    <!-- 页面主体 -->
+    <div class="content">
+      <!-- 顶部展示框 -->
+      <div class="banner">
+        <div class="wrapper">
+          <div class="scenic-pic">
+            <div class="avator-shadow">
+              <img src="" alt="" class="avator">
+            </div>
+          </div>
+          <div class="scenic-info">
+            <div class="scenic-brief-container">
+              <h1 class="name">{{ScenicName}}</h1>
+              <div class="englishName" style="font-size: 19px;">{{ScenicEnglishName}}</div>
+              <ul>
+                <li class="grade cllipsis">{{grade}}级景区</li>
+                <li class="place cllipsis">
+                  <svg class="icon" aria-hidden="true" style="width: 1.1em;height: 1.1em;">
+                    <use xlink:href="#icon-location"></use>
+                  </svg>
+                  {{place}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 主体部分 -->
+      <div class="mainbody">
+        <div class="mainbody-container">
+          <div class="maincontent">
+            <!-- 景区介绍 -->
+            <div class="scenic-intro scenic-content">
+              <h3>景区介绍</h3>
+              <p>{{intro}}</p>
+            </div>
+            <!-- 景区展示 -->
+            <div class="pictures scenic-content">
+              <h3>景区展示</h3>
+              <div class="picture-container">
+                <div class="picture">
+                  <img src="/tourplace/img/user/00.jpg" alt="">
+                  <img src="/tourplace/img/user/00.jpg" alt="">
+                  <img src="/tourplace/img/user/00.jpg" alt="">
+                  <img src="/tourplace/img/user/00.jpg" alt="">
+                  <img src="/tourplace/img/user/00.jpg" alt="">
+                </div>
+              </div>
+            </div>
+            <!-- 门票出售 -->
+            <div class="scenic-ticket scenic-content">
+              <h3>门票出售</h3>
+              <div class="ticket-container">
+                <div class="ticket-content" v-for="ticket in tickets">
+                  <img src="" alt="" style="width: 300px;height: 100px;">
+                  <div class="ticket-saler">
+                    <img :src="ticket.salerImg" alt="" @mouseover="ticket.salerShow = 1" @mouseout="ticket.salerShow = 0">
+                    <div class="saler-info" v-if="ticket.salerShow == 1">
+                      售票人：{{ticket.salerName}}({{ticket.salerPhone}})
+                    </div>
+                  </div>
+                  <div class="ticket-info">
+                    <span class="ticket-time">{{ticket.time}}</span>
+                    <span class="ticket-price">￥{{ticket.price}}元</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 侧边栏 -->
+        <div class="aside">
+          <div class="aside-content">
+            <!-- 相关资讯 -->
+            <div class="about-news">
+              <h3>相关资讯</h3>
+              <div class="news-content">
+                <ul>
+                  <li>相关资讯１</li>
+                  <li>相关资讯２</li>
+                  <li>相关资讯３</li>
+                  <li>相关资讯４</li>
+                  <li>相关资讯５</li>
+                  <li>相关资讯６</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 页脚 -->
+    <div class="footer">
+
+    </div>
+  </div>
+  <script src="http://at.alicdn.com/t/font_rwavjqfqgs0pb9.js"></script>
+  <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
+  <script src="/tourplace/components/content/scenic/js/scenic.js"></script>
+</body>
+</html>

@@ -2,6 +2,11 @@
   margin: 0px;
   padding: 0px;
 }
+.block{
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+}
 .pull-right{
   float: right
 }
@@ -390,6 +395,85 @@
   background-color: #fa3164;
   color: #ffffff;
 }
+.movie-scenic .panel .panel-header{
+  color: rgb(255, 207, 37);
+}
+.movie-scenic .panel .panel-content .buyTicket{
+  color: rgb(255, 207, 37);
+}
+.movie-scenic .panel .panel-content .buyTicket:hover{
+  background-color: rgb(255, 207, 37);
+  color: #ffffff;
+}
+/*景区页面*/
+.Scenic-index{
+  width: 100%;
+  text-align: center;
+}
+.Scenic-index .scenic-channel{
+  width: 1120px;
+  margin: auto;
+  overflow: hidden;
+}
+.Scenic-index .scenic-channel .tags-panel{
+  border: 1px solid #e5e5e5;
+  padding: 0 20px;
+  margin-top: 40px;
+}
+.Scenic-index .scenic-channel .tags-panel ul li.tags-line{
+  list-style-type: none;
+  padding: 10px;
+}
+.Scenic-index .scenic-channel .tags-panel li .tag-title{
+  height: 24px;
+  line-height: 24px;
+  float: left;
+  color: #999;
+  font-size: 14px;
+}
+.tags-panel .tags-line ul li{
+  border-radius: 14px;
+  padding: 3px 9px;
+  display: inline-block;
+  margin-left: 12px;
+  cursor: pointer;
+  color: #333;
+}
+.tags-panel .tags-line ul li:hover{
+  background-color: #fa3140;
+  color: #ffffff;
+}
+.tags-panel .tags-line span{
+  font-size: 14px;
+}
+.Scenic-index .scenic-content{
+  width: 1120px;
+  margin: 20px auto;
+  text-align: left;
+}
+.Scenic-index .scenic-content dd{
+  width: 160px;
+  margin: 50px 0 0 50px;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+.scenic-ranking{
+  width: 100%;
+  height: 800px;
+  text-align: center;
+}
+.hot-news{
+  width: 100%;
+  height: 800px;
+  text-align: center;
+}
+
+
+
+
+
+
 
 .footer{
   width: 100%;
@@ -409,10 +493,4 @@
 }
 .footer .emailLink{
   padding-top: 10px;
-}
-.Scenic-index{
-  width: 1200px;
-  margin: 0 auto;
-  height: 1400px;
-  text-align: center;
 }

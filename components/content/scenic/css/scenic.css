@@ -1,0 +1,304 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+.header{
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  min-width: 1200px;
+  background-color: #fff;
+  border-bottom: 1px solid #d8d8d8;
+}
+.navbar{
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  line-height: 80px;
+}
+.navbar .nav{
+  height: 100%;
+  line-height: 95px;
+  float: left;
+}
+.navbar .logo{
+  padding:0 5px;
+}
+.navbar .logo a{
+  text-decoration: none;
+  font-size: 25px;
+  color: #fa3140;
+  font-weight: bold;
+}
+.navbar .place{
+  padding-left: 5px;
+  padding-right: 10px;
+  margin-left: 15px;
+  color: rgba(77, 77, 77, 0.99);
+  cursor: pointer;
+  position: relative;
+}
+.navbar .place:hover{
+  box-shadow: 0px 0px 4px #d8d8d8;
+}
+.navbar .place .place-select{
+  width: 380px;
+  position: absolute;
+  z-index: 999;
+  box-shadow: 0px 0px 4px #d8d8d8;
+  top: 80px;
+  left: 0px;
+  background-color: #ffffff;
+}
+.place .place-select .province{
+  line-height: 27px;
+  padding: 10px;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+.place-select .city span{
+  display: inline-block;
+  color: rgb(194, 194, 194);
+  padding: 2px;
+}
+.navbar .index-nav{
+  margin-left: 40px;
+}
+.navbar .index-nav a{
+  text-decoration: none;
+  color: rgba(77, 77, 77, 0.99);
+  display: inline-block;
+  height: 100%;
+  padding: 0 15px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.navbar .index-nav .active{
+  background-color: #fa3140;
+  color: #ffffff
+}
+.navbar .index-nav .unactive{
+  color: rgba(77, 77, 77, 0.99);
+}
+.navbar .about{
+  margin-left: 70px;
+  color: rgba(77, 77, 77, 0.99);
+  cursor: pointer;
+}
+.navbar .search{
+  margin-left: 10px;
+  width: 300px;
+  position: relative;
+}
+.navbar .search input{
+  display: inline-block;
+  height: 35px;
+  line-height: 1.2;
+  width: 200px;
+  padding: 0 40px 0 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 30px;
+  background-color: #faf8fa;
+  overflow: hidden;
+  color: #333;
+  outline: none;
+}
+.navbar .search .search-icon{
+  width: 37px;
+  height: 37px;
+  color: #ffffff;
+  background-color: #fa3140;
+  border-radius: 35px;
+  position: absolute;
+  left: 228px;
+  top: 30px;
+  cursor: pointer;
+}
+.navbar .user{
+  margin-left: 5px;
+  position:relative;
+}
+.navbar .user .avator{
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  position: absolute;
+  top: 27px;
+}
+
+
+/*主体部分*/
+.content .banner{
+  margin-top: 80px;
+  width: 100%;
+  min-width: 1200px;
+  background: linear-gradient(to right,rgb(62, 28, 77),rgb(164, 89, 180) 20%,rgb(102, 41, 115) 40%, rgb(54, 28, 60))
+}
+.content .banner .wrapper{
+  width: 1200px;
+  margin: 0 auto;
+  height: 376px;
+  position: relative;
+}
+.content .banner .wrapper .scenic-pic{
+  width: 300px;
+  position: relative;
+  top: 70px;
+  overflow: hidden;
+  z-index: 9;
+}
+.content .banner .wrapper .scenic-pic .avator-shadow{
+  position: relative;
+  margin: 0 30px;
+  width: 240px;
+  height: 330px;
+  background-color: #ffffff;
+  box-shadow: 0 0 2px #000000;
+}
+.avator-shadow .avator{
+  border: 4px solid #fff;
+  height: 322px;
+  width: 232px;
+}
+.content .banner .wrapper .scenic-info{
+  position: relative;
+  margin-right: 30px;
+  margin-left: 300px;
+  top: -250px;
+  height: 100px;
+}
+.content .banner .wrapper .scenic-info .scenic-brief-container{
+  position: absolute;
+  color: #fff;
+  font-size: 14px;
+  z-index: 1;
+}
+.cllipsis{
+  font-size: 17px;
+  margin-top: 15px;
+  list-style-type: none;
+  display: block;
+}
+.grade{
+  margin-top: 50px;
+}
+.mainbody{
+  width: 1200px;
+  margin: 0 auto;
+}
+.mainbody .mainbody-container{
+  margin-top: 80px;
+}
+.mainbody .mainbody-container .maincontent{
+  width: 730px;
+  float: left;
+  margin-bottom: 50px;
+}
+.mainbody-container .maincontent .scenic-content{
+  padding: 5px;
+  color: rgb(85, 85, 85);
+  line-height: 20px;
+  margin-top: 50px;
+}
+.mainbody-container .maincontent h3::before{
+  float: left;
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  margin-right: 6px;
+  background-color: #ef4238;
+}
+.mainbody-container .maincontent p{
+  text-indent: 17px;
+  font-size: 17px;
+  margin-top: 20px;
+}
+.mainbody-container .pictures .picture-container{
+  width: 100%;
+  height: 190px;
+  margin-top: 20px;
+  border: 1px solid rgb(129, 129, 129);
+  box-shadow: 0 0 5px rgb(0, 0, 0) inset;
+  text-align: center;
+  padding: 2px;
+}
+.picture-container .picture{
+  width: 99%;
+  height: 97%;
+  margin: 2px;
+  border: 1px solid rgb(129, 129, 129);
+  text-align: left;
+  overflow-y: hidden;
+}
+.picture-container .picture img{
+  height: 100%;
+}
+.scenic-ticket .ticket-container{
+  margin-top: 20px;
+}
+.scenic-ticket .ticket-container .ticket-content{
+  position: relative;
+  width: 300px;
+  float: left;
+}
+.ticket-content .ticket-saler{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  vertical-align: center;
+}
+.ticket-saler img{
+  float: left;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+.ticket-saler .saler-info{
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  display: inline-block;
+  box-shadow: 0 0 2px rgb(181, 181, 181);
+  padding: 0 5px;
+  border-radius: 0 40px 40px 0
+}
+.ticket-content .ticket-info{
+  width: 100%;
+  background-color: rgba(0, 0, 0, .2);
+  color: #ffffff;
+  margin-top: -5px;
+}
+.content .aside{
+  float: right;
+  margin-top: 80px;
+  width: 400px;
+  border: .5px solid rgb(172, 172, 172);
+}
+.content .aside .about-news{
+  position: relative;
+}
+.content .aside h3{
+  color: #fa3140;
+}
+.content .aside .news-content{
+  margin-top: 20px;
+}
+.content .aside ul li{
+  width: 100%;
+  height: 18px;
+  display: block;
+  list-style-type: none;
+  line-height: 18px;
+  font-size: 17px;
+  text-indent: 5px;
+  color: rgb(113, 113, 113);
+  font-family: "微软雅黑";
+  padding: 5px;
+}
+/*.footer{
+  width: 100%;
+  height: 200px;
+  background-color: rgb(51, 51, 51);
+}*/

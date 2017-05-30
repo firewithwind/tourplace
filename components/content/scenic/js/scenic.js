@@ -33,33 +33,21 @@ new Vue({
         ]
       }
     ],
-    nowPage: 1,
-    active: 'active',
-    unactive: '',
-    showPic: 0,
     user: '请登入',
-    scenicNum: 70
-  },
-  methods: {
-    gotolast: function(){
-      if(this.showPic === 0){
-        this.showPic = 4
-      }else{
-        this.showPic -= 1
+    ScenicName: '泰山风景名胜区',
+    ScenicEnglishName: 'Mount tai scenic spot',
+    grade: '5A',
+    place: '山东省泰安市',
+    intro: '泰山风景名胜区（Mount tai scenic spot）：世界自然与文化遗产，世界地质公园，国家AAAAA级旅游景区，国家级风景名胜区，全国重点文物保护单位，中华国山，中国非物质文化遗产，全国文明风景旅游区，中国书法第一山。',
+    tickets: [
+      {
+        salerImg: '/tourplace/img/user/00.jpg',
+        salerName: '小小濠',
+        salerPhone: '17862702878',
+        salerShow: 0,
+        time: '2017-05-30',
+        price: 40
       }
-    },
-    gotonext: function(){
-      if(this.showPic === 4){
-        this.showPic = 0
-      }else{
-        this.showPic += 1
-      }
-    }
-  },
-  mounted: function(){
-    var self = this
-    setInterval(function(){
-      self.gotonext()
-    },6000)
+    ]
   }
 })
