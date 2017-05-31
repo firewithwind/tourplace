@@ -2,7 +2,7 @@
 	include("conn.php");
 	include("request.php");
 	session_start();
-	
+
 	switch ($request_method) {
 		case 'POST':
 			IFPOST($request_data);
@@ -13,13 +13,13 @@
 		default:
 			break;
 	}
-	
-/*µÇÈë*/
+
+/*ï¿½ï¿½ï¿½ï¿½*/
 function IFPOST($request_data){
 	if(empty($request_data['User_ID'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.Î´ÊäÈëÕËºÅ£¡")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The ID is empty!")));
 	}else if(empty($request_data['User_Password'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.Î´ÊäÈëÃÜÂë£¡")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The password is empty!")));
 	}else{
 		$ID=$request_data['User_ID'];
 		$PW=$request_data['User_Password'];
@@ -27,7 +27,7 @@ function IFPOST($request_data){
 		$rs=mysql_fetch_array(mysql_query($sql));
 		$count=count($rs);
 		if($count==0){
-			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.ID²»´æÔÚ£¡")));
+			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.Can not find the ID!")));
 		}else{
 			if($rs['User_Password']==$PW){
 				echo json_encode(array('Type'=>0,'Result'=>""));
@@ -44,13 +44,13 @@ function IFPOST($request_data){
 				$_SESSION['Scenic_ID1']=$rs['Scenic_ID1'];
 				$_SESSION['User_Type']=$rs['User_Type'];
 			}else{
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.ÃÜÂë´íÎó£¡")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.The password is error!")));
 			}
 		}
 	}
 }
 
-/*µÇ³ö*/
+/*ï¿½Ç³ï¿½*/
 function IFDELETE($request_data){
 	$type=$request_data['Type'];
 	if($type==0){
@@ -61,7 +61,7 @@ function IFDELETE($request_data){
 		$_SESSION=NULL;
 		echo json_encode(array('Type'=>0,'Result'=>""));
 	}else{
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.ÍË³öÀàÐÍ´íÎó£¡")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}
 }
 ?>

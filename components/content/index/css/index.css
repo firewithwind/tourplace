@@ -227,7 +227,7 @@
 .todayMax .firsTen li i{
   margin-right: 8px;
 }
-.todayMax .firsTen li j{
+.todayMax .firsTen li .j{
   float: right;
   color: #fa3140;
   font-size: 15px;

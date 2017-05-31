@@ -38,7 +38,8 @@ new Vue({
     unactive: '',
     showPic: 0,
     user: '请登入',
-    scenicNum: 70
+    scenicNum: 70,
+    userID: ''
   },
   methods: {
     gotolast: function(){
@@ -54,6 +55,12 @@ new Vue({
       }else{
         this.showPic += 1
       }
+    },
+    getQueryString(name){
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2])
+      return ''
     }
   },
   mounted: function(){
@@ -61,5 +68,6 @@ new Vue({
     setInterval(function(){
       self.gotonext()
     },6000)
+    self.userId = self.getQueryString("id");
   }
 })

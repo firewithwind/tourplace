@@ -23,9 +23,9 @@
 /*注册*/
 function IFPOST($request_data){
 	if(empty($request_data['Data']['User_name'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.未输入用户昵称！")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The name is empty!")));
 	}else if(empty($request_data['Data']['User_Password'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.未输入用户密码！")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The password is empty!")));
 	}else{
 		if($request_data['Type']==0){/*普通用户*/
 			$name=$request_data['Data']['User_name'];
@@ -34,20 +34,20 @@ function IFPOST($request_data){
 			$type=$request_data['Data']['User_Type'];
 			$ID=getID($type);
 			if($ID=='99999999'){/*失败*/
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"6.ID已满，生成出错！")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"6.The ID is fulled!")));
 			}else{/*成功*/
 				$sql="INSERT INTO `tourplace`.`user`(`User_ID`,`User_Name`,`User_Password`,
 				`User_Truename`,`User_Intro`,`User_Sex`,`User_Phone`,`User_Birthday`,`User_IDcard`,
-				`User_Level`,`Scenic_ID1`,`User_Type`)
-				VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type')";
+				`User_Level`,`Scenic_ID1`,`User_Type`,`User_Picture`)
+				VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','ID_Record/start.jpg')";
 				mysql_query($sql);
 				echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$ID)));
 			}
 		}else if($request_data['Type']==1){/*官方用户*/
 			if(empty($request_data['Data']['Sight'])){
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.未填写注册景区！")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.The scenic is empty!")));
 			}else if(empty($request_data['Data']['Liscen'])){
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"5.未填写注册码！")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"5.The license is empty!")));
 			}else{
 				$name=$request_data['Data']['User_name'];
 				$password=$request_data['Data']['User_Password'];
@@ -61,16 +61,16 @@ function IFPOST($request_data){
 				$count=count($rs);
 				
 				if($count==0){
-					echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"7.景区管理号注册信息错误！")));
+					echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"7.The scenic data is error!")));
 				}else{
 					$ID=getID($type);
 					if($ID=='99999999'){/*失败*/
-						echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"6.ID已满，生成出错！")));
+						echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"6.The ID is fulled!")));
 					}else{/*成功*/
 						$sql="INSERT INTO `tourplace`.`user`(`User_ID`,`User_Name`,`User_Password`,
 						`User_Truename`,`User_Intro`,`User_Sex`,`User_Phone`,`User_Birthday`,`User_IDcard`,
-						`User_Level`,`Scenic_ID1`,`User_Type`)
-						VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type')";
+						`User_Level`,`Scenic_ID1`,`User_Type`,`User_Picture`)
+						VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','ID_Record/start.jpg')";
 						mysql_query($sql);
 						echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$ID)));
 					}
@@ -83,14 +83,14 @@ function IFPOST($request_data){
 /*删除*/
 function IFDELETE($request_data){
 	if(empty($request_data['User_ID'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.未输入删除的ID！")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The ID is empty!")));
 	}else{
 		$dID=$request_data['User_ID'];
 		$sql="SELECT * FROM `tourplace`.`user` WHERE `User_ID`='$dID'";
 		$rs=mysql_fetch_array(mysql_query($sql));
 		$count=count($rs);
 		if($count==0){
-			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.删除的ID不存在！")));
+			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.Can not find the ID!")));
 		}else{
 			$sql="DELETE FROM `tourplace`.`user` WHERE `user`.`User_ID`='$dID'";
 			mysql_query($sql);
@@ -102,7 +102,7 @@ function IFDELETE($request_data){
 /*修改*/
 function IFPUT($request_data){
 	if($request_data['Type']==1 && empty($request_data['User_ID'])){
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.未找到ID！")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.Can not find the ID!")));
 	}else{
 		if(empty($request_data['Update']['User_Name'])||
 			 empty($request_data['Update']['User_Password'])||
@@ -113,20 +113,20 @@ function IFPUT($request_data){
 			 empty($request_data['Update']['User_Birthday'])||
 			 empty($request_data['Update']['User_IDcard'])||
 			 empty($request_data['Update']['User_Level'])){
-			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.信息不完整！")));
+			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The data is not complete!")));
 		}else{
 			if($request_data['Type']==0){
 				$gID=$_SESSION['User_ID'];
 			}else if($request_data['Type']==1){
 				$gID=$request_data['User_ID'];
 			}else{
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.操作类型错误！")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.The operation number is error!")));
 			}
 			$sql="SELECT * FROM `tourplace`.`user` WHERE `User_ID`='$gID'";
 			$rs=mysql_fetch_array(mysql_query($sql));
 			$count=count($rs);
 			if($count==0){
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.修改的ID不存在！")));
+				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.Can not find the ID!")));
 			}else{
 				$aa1=$request_data['Update']['User_Name'];
 				$aa2=$request_data['Update']['User_Password'];
@@ -137,7 +137,8 @@ function IFPUT($request_data){
 				$aa7=$request_data['Update']['User_Birthday'];
 				$aa8=$request_data['Update']['User_IDcard'];
 				$aa9=$request_data['Update']['User_Level'];
-				$sql="UPDATE `user` SET 
+				$aa10=$request_data['Update']['User_Picture'];
+				$sql="UPDATE `tourplace`.`user` SET 
 					`User_Name`='$aa1',
 					`User_Password`='$aa2',
 					`User_Truename`='$aa3',
@@ -147,6 +148,7 @@ function IFPUT($request_data){
 					`User_Birthday`='$aa7',
 					`User_IDcard`='$aa8',
 					`User_Level`='$aa9' 
+					`User_Picture`='$aa10' 
 					WHERE `User_ID`='$gID'";
 				mysql_query($sql);
 				echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$gID)));
@@ -157,43 +159,60 @@ function IFPUT($request_data){
 
 /*查询*/
 function IFGET($request_data){
-	$page=$request_data['Page'];
-	$pagesize=$request_data['PageSize'];
-	$searchtype=$request_data['Type'];
-	$Key=explode('+',$request_data['Key']);
-	$arrcount=count($Key);
-	$i=0;
-	$sql="SELECT ";
-	while($i<$arrcount){
-		$sql.="`".$Key[$i]."`";
-		if($i!=$arrcount-1) $sql.=",";
-			$i++;
-	}
-	$result=array();
-	if($searchtype==0){
-		$id=$request_data['Search'];
-		$sql.=" FROM `tourplace`.`user` WHERE `User_ID`='$id'";
-	}else if($searchtype==1){
-		$name=$request_data['Search'];
-		$sql.=" FROM `tourplace`.`user` WHERE `User_Name`='$name'";
-	}else if($searchtype==2){
-		$card=$request_data['Search'];
-		$sql.=" FROM `tourplace`.`user` WHERE `User_IDcard`='$card'";
-	}else if($searchtype==3){
-		$type=$request_data['Search'];
-		if($type==0){
-			$sql.=" FROM `tourplace`.`user` WHERE `User_Type`='0'";
-		}else if($type==1){
-			$sql.=" FROM `tourplace`.`user` WHERE `User_Type`='1'";
+	if(empty($request_data['Type'])){
+		echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The request is error!")));
+	}else{
+		$page=$request_data['Page'];
+		$pagesize=$request_data['PageSize'];
+		$searchtype=$request_data['Type'];
+		$Key=explode('+',$request_data['Key']);
+		$arrcount=count($Key);
+		$i=0;
+		if($arrcount==0) $sql="SELECT *";
+		else $sql="SELECT ";
+		while($i<$arrcount){
+			$sql.="`".$Key[$i]."`";
+			if($i!=$arrcount-1) $sql.=",";
+				$i++;
+		}
+		$result=array();
+		if($searchtype==0){
+			$id=$request_data['Search']['User_ID'];
+			$sql.=" FROM `tourplace`.`user` WHERE `User_ID`='$id'";
+		}else if($searchtype==1){
+			$name=$request_data['Search']['User_Name'];
+			$sql.=" FROM `tourplace`.`user` WHERE `User_Name`='$name'";
+		}else if($searchtype==2){
+			$card=$request_data['Search']['User_IDcard'];
+			$sql.=" FROM `tourplace`.`user` WHERE `User_IDcard`='$card'";
+		}else if($searchtype==3){
+			$type=$request_data['Search']['Type'];
+			if($type==0){
+				$sql.=" FROM `tourplace`.`user` WHERE `User_Type`='0'";
+			}else if($type==1){
+				$sql.=" FROM `tourplace`.`user` WHERE `User_Type`='1'";
+			}else{
+				$sql.=" FROM `tourplace`.`user`";
+			}
+		}
+		$query=mysql_query($sql);
+		while($row=mysql_fetch_assoc($query))
+			$result[]=$row;
+		$resultcount=count($result);
+		$pre=$pagesize*($page-1);
+		if($pre<=$resultcount){
+			echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
 		}else{
-			$sql.=" FROM `tourplace`.`user`";
+			$finalresult=array();
+			$finalcount=0;
+			while($finalcount<=$pagesize && $pre+$finalcount<=$resultcount){
+				$finalresult[$finalcount]=$result[$pre+$finalcount];
+				$finalcount++;
+			}
+			$finalcount--;
+			echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 		}
 	}
-	$query=mysql_query($sql);
-	while($row=mysql_fetch_assoc($query))
-		$result[]=$row;
-	/*echo json_encode(array('Type'=>0,'Result'=>$result));*/
-	
 }
 	
 function getID($usertype){

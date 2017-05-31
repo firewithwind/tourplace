@@ -387,8 +387,9 @@
           })
           .done(function(res){
             var response = JSON.parse(res)
+            console.log(response)
             if(response.Type === 0){
-              window.open = "/tourplace/components/content/index/index.html"
+              window.location = "/tourplace/components/content/index/index.html?id=" + self.oldUser.User_ID
             }else if(response.Type === 1){
               alert(response.Result.Errmsg)
             }else{
