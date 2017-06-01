@@ -43,7 +43,6 @@ function IFPOST($request_data){
 				$_SESSION['User_Level']=$rs['User_Level'];
 				$_SESSION['Scenic_ID1']=$rs['Scenic_ID1'];
 				$_SESSION['User_Type']=$rs['User_Type'];
-				$_SESSION['User_Picture']=$rs['User_Picture'];
 			}else{
 				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.The password is error!")));
 			}

@@ -19,7 +19,7 @@
 	
 /*Ôö*/
 function IFPOST($request_data){
-	if(empty($request_data['Type'])){
+	if(!isset($request_data['Type'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}else{
 		if($request_data['Type']==0){
@@ -131,51 +131,54 @@ function IFPUT($request_data){
 /*²é*/
 function IFGET($request_data){
 	$userid=$_SESSION['User_ID'];
-	$page=$request_data['Page'];
-	$pagesize=$request_data['PageSize'];
-	$sql="SELECT `tourplace`.`ticket`.`Ticket_ID`,
-		`tourplace`.`ticket`.`Ticket_Picture`,
-		`tourplace`.`user-ticket`.`UserTicket_Type`,
-		`tourplace`.`user-ticket`.`UserTicket_Price`,
-		`tourplace`.`user-ticket`.`UserTicket_Count`,
-		`tourplace`.`user`.`User_ID`,
-		`tourplace`.`user`.`User_Name`,
-		`tourplace`.`scenic`.`Scenic_ID`,
-		`tourplace`.`scenic`.`Scenic_Name` 
-		FROM `tourplace`.`user`,`tourplace`.`ticket`,`tourplace`.`user-ticket`,`tourplace`.`scenic` 
-		WHERE `tourplace`.`user`.`User_ID`=`tourplace`.`user-ticket`.`User_ID` AND 
-		`tourplace`.`ticket`.`Ticket_ID`=`tourplace`.`user-ticket`.`Ticket_ID` AND 
-		`tourplace`.`scenic`.`Scenic_ID`=`tourplace`.`ticket`.`Scenic_ID`";
+	$Key=explode('+',$request_data['Keys']);
+	$sql="";
+	if(empty($request_data['Keys'])){
+		$sql="SELECT *";
+	}else{
+		$sql="SELECT ";
+		$Key=explode('+',$request_data['Keys']);
+		$arrcount=count($Key);
+		$i=0;
+		while($i<$arrcount){
+			$sql.="`".$Key[$i]."`";
+			if($i!=$arrcount-1) $sql.=",";
+				$i++;
+		}
+	}
+	$sql.=" FROM `tourplace`.`user` join `tourplace`.`user-ticket` ON `user`.`User_ID`=`user-ticket`.`User_ID`,
+		`tourplace`.`ticket` join `tourplace`.`user-ticket` ON `ticket`.`Ticket_ID`=`user-ticket`.`Ticket_ID`,
+		`tourplace`.`scenic` join `tourplace`.`ticket` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID`";
 	if($request_data['Type']==0){
 		if(empty($request_data['Search']['Ticket_ID'])){
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$userid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$userid'";
 		}else if(empty($request_data['Search']['Ticket_Type'])){
 			$ticketid=$request_data['Search']['Ticket_ID'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$userid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$userid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 		}else{
 			$ticketid=$request_data['Search']['Ticket_ID'];
 			$tickettype=$request_data['Search']['Ticket_Type'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$userid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$userid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 			$sql.=" AND `tourplace`.`user-ticket`.`Ticket_Type`='$tickettype'";
 		}
-		$rs=mysql_fetch_array(mysql_query($sql));
+		nextstep($request_data,$sql);
 	}else if($request_data['Type']==1){
 		if(empty($request_data['Search']['User_ID'])){
 		}else if(empty($request_data['Search']['Ticket_ID'])){
 			$Suserid=$request_data['Search']['User_ID'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$Suserid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 		}else if(empty($request_data['Search']['Scenic_ID'])){
 			$ticketid=$request_data['Search']['Ticket_ID'];
 			$Suserid=$request_data['Search']['User_ID'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$Suserid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 		}else if(empty($request_data['Search']['Ticket_Type']){
 			$ticketid=$request_data['Search']['Ticket_ID'];
 			$Suserid=$request_data['Search']['User_ID'];
 			$scenicid=$request_data['Search']['Scenic_ID'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$Suserid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 			$sql.=" AND `tourplace`.`ticket`.`Scenic_ID`='$scenicid'";
 		}else{
@@ -183,15 +186,37 @@ function IFGET($request_data){
 			$Suserid=$request_data['Search']['User_ID'];
 			$scenicid=$request_data['Search']['Scenic_ID'];
 			$tickettype=$request_data['Search']['Ticket_Type'];
-			$sql.=" AND `tourplace`.`user`.`User_ID`='$Suserid'";
+			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 			$sql.=" AND `tourplace`.`ticket`.`Scenic_ID`='$scenicid'";
 			$sql.=" AND `tourplace`.`user-ticket`.`Ticket_Type`='$tickettype'";
 		}
-		$rs=mysql_fetch_array(mysql_query($sql));
+		nextstep($request_data,$sql);
 	}else{
-		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The request is error!")));
+		echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}
-	
+}
+
+function nextstep($request_data,$sql){
+	$result=array();
+	$page=$request_data['Page'];
+	$pagesize=$request_data['PageSize'];
+	$query=mysql_query($sql);
+	while($row=mysql_fetch_assoc($query))
+		$result[]=$row;
+	$resultcount=count($result);
+	$pre=$pagesize*($page-1);
+	if($pre>$resultcount){
+		echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
+	}else{
+		$finalresult=array();
+		$finalcount=0;
+		while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
+			$finalresult[]=$result[$pre+$finalcount];
+			$finalcount++;
+		}
+		$finalcount--;
+		echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
+	}
 }
 ?>

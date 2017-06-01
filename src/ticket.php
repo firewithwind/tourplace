@@ -19,7 +19,7 @@
 	
 /*Ôö*/
 function IFPOST($request_data){
-	if(empty($request_data['Type'])){
+	if(!isset($request_data['Type'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}else if($request_data['Type']==1){
 		$ScenicID=$request_data['Data']['Scenic_ID'];
@@ -172,13 +172,13 @@ function IFGET($request_data){
 			$result[]=$row;
 		$resultcount=count($result);
 		$pre=$pagesize*($page-1);
-		if($pre<=$resultcount){
+		if($pre>$resultcount){
 			echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
 		}else{
 			$finalresult=array();
 			$finalcount=0;
-			while($finalcount<=$pagesize && $pre+$finalcount<=$resultcount){
-				$finalresult[$finalcount]=$result[$pre+$finalcount];
+			while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
+				$finalresult[]=$result[$pre+$finalcount];
 				$finalcount++;
 			}
 			$finalcount--;
