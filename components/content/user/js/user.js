@@ -47,7 +47,7 @@ new Vue({
     },
     editUser: function(){
       var user = this.user
-      $.agax({
+      $.ajax({
         url: '/tourplace/src/user.php',
         type: 'PUT',
         data: {

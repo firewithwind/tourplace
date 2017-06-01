@@ -36,9 +36,9 @@
           <span>{{location}}</span>
           <div class="place-select slide-down" v-if="placeSelect">
             <div class="province" v-for="place in places">
-              <div class="provinceName"　@click="changeProvince(place.provinceID,place.provinceName)">{{place.provinceName}}</div>
+              <div class="provinceName"　@click="changeProvince(place.Province_ID,place.Province_Name)">{{place.Province_Name}}</div>
               <div class="city">
-                <span v-for="city in place.citys" @click="changeCity(city.cityID,city.cityName,place.provinceID)">{{city.cityName}}</span>
+                <span v-for="city in place.Citys" @click="changeCity(city.City_ID,city.City_Name,place.Province_ID)">{{city.cityName}}</span>
               </div>
             </div>
           </div>

@@ -6,36 +6,7 @@ new Vue({
     locatCitID: '',
     placeSelect: false,
     searchInfor: '',
-    places: [
-      {
-        provinceID: 1,
-        provinceName: '山东',
-        citys: [
-          {
-            cityID: 1,
-            cityName: '济南'
-          },
-          {
-            cityID: 2,
-            cityName: '青岛'
-          },
-          {
-            cityID: 3,
-            cityName: '威海'
-          }
-        ]
-      },
-      {
-        provinceID: 2,
-        provinceName: '北京',
-        citys: [
-          {
-            cityID: 1,
-            cityName: '北京'
-          }
-        ]
-      }
-    ],
+    places: [],
     nowPage: 1,
     active: 'active',
     unactive: '',
@@ -234,6 +205,29 @@ new Vue({
           }
         }else{
           alert("出错了"+res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("发生了未知的错误")
+      })
+    },
+    getPlace: function(){
+      var self = this
+      $.get('/tourplace/src/place.php',{
+        Type: 0,
+        Keys: 'Province_ID+Province_Name+Citys',
+        Page: 1,
+        PageSize: 0,
+        Search: {
+          Province_ID: ''
+        }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          self.places = res.Result
+        }else{
+          alert("出错了+ " + res.Result.Errmsg)
         }
       })
       .fail(function(){

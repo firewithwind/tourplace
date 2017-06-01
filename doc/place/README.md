@@ -1,7 +1,7 @@
 1. <a name='province'></a> **省份[增](#province_add)、[删](#province_delete)、[改](#province_change)、[查](#province_search)**
 	- <a name="province_add">增</a>
 
-			POST /yora/src/v1/place/province.php
+			POST /tourplace/src/province.php
 			#只有管理员有权限操作
 			to:{
 				Province_Name:#省份名称
@@ -21,10 +21,10 @@
 
 	- <a name="province_search">查</a>  
 
-			GET /yora/src/v1/place/province.php
+			GET /tourplace/src/province.php
 			to:{
 				Type：（0|1|）#筛选方式（具体有多少情况根据开发增加）
-				Keys:'Id+Name+Citys...',#需要获取的属性名，每个属性之间用'+'隔开
+				Keys:'Province_ID+Province_Name+Citys...',#需要获取的属性名，每个属性之间用'+'隔开
 				Page:1,#当前页数，（可选，Page和PageSize必须同时存在）
 				PageSize：10，#每页数据条数（可选，Page和PageSize必须同时存在）
 				Search:{
@@ -54,23 +54,22 @@
 						City_Name(string)：城市名称
 					}，
 					...
-				],
-				CitysId(arr,int)：[id1,id2,id3,...],该省城市id
+				]
 			}
 
 			#正确返回时状态码为200
 			return{
-				Total：10,#未分页时搜索到总数据条数，当Page和PageSize不存在时就是ResultList的长度
-				ResultList[
+				Size：10,#未分页时搜索到总数据条数，当Page和PageSize不存在时就是ResultList的长度
+				Result[
 					{
-						Id:,
-						Name:,
+						Province_ID:,
+						Province_Name:,
 						Citys:,
 						...
 					},
 					{
-						Id:,
-						Name:,
+						Province_ID:,
+						Province_Name:,
 						Citys:,
 						...
 					},
@@ -94,7 +93,7 @@
 1. <a name='city'></a> **城市[增](#city_add)、[删](#city_delete)、[改](#city_change)、[查](#city_search)**
 	- <a name="city_add">增</a>
 
-			POST /yora/src/v1/place/city.php
+			POST /tourplace/src/city.php
 			#只有管理员有权限操作
 			to:{
 				Province_ID：#所属省份Id
@@ -117,10 +116,10 @@
 
 	- <a name="city_search">查</a>  
 
-			GET /yora/src/v1/place/city.php
+			GET /tourplace/src/city.php
 			to:{
 				Type：（0|1|）#筛选方式（具体有多少情况根据开发增加）
-				Keys:'Id+SchoolsId+ProvinceId...',#需要获取的属性名，每个属性之间用'+'隔开
+				Keys:'City_ID++ProvinceId...',#需要获取的属性名，每个属性之间用'+'隔开
 				Page:1,#当前页数，（可选，Page和PageSize必须同时存在）
 				PageSize：10，#每页数据条数（可选，Page和PageSize必须同时存在）
 				Search:{
@@ -146,16 +145,16 @@
 
 			#正确返回时状态码为200
 			return{
-				Total：10,#未分页时搜索到总数据条数，当Page和PageSize不存在时就是ResultList的长度
-				ResultList[
+				Size：10,#未分页时搜索到总数据条数，当Page和PageSize不存在时就是ResultList的长度
+				Result[
 					{
-						Id:,
-						ProvinceId:,
+						City_ID:,
+						Province_ID:,
 						...
 					},
 					{
-						Id:,
-						ProvinceId:,
+						City_ID:,
+						Province_ID:,
 						...
 					},
 					...
