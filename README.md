@@ -7,3 +7,6 @@
 - [LOGIN](https://github.com/firewithwind/tourplace/tree/master/doc/login)
 - [SALETICKET](https://github.com/firewithwind/tourplace/tree/master/doc/saleTicket)
 - [ORDER](https://github.com/firewithwind/tourplace/tree/master/doc/order)
+- [SCENIC](https://github.com/firewithwind/tourplace/tree/master/doc/scenic)
+- [PROVINCE](https://github.com/firewithwind/tourplace/tree/master/doc/province)
+- [CITY](https://github.com/firewithwind/tourplace/tree/master/doc/city)
