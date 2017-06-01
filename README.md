@@ -8,3 +8,4 @@
 - [SALETICKET](https://github.com/firewithwind/tourplace/tree/master/doc/saleTicket)
 - [ORDER](https://github.com/firewithwind/tourplace/tree/master/doc/order)
 - [SCENIC](https://github.com/firewithwind/tourplace/tree/master/doc/scenic)
+- [PLACE](https://github.com/firewithwind/tourplace/tree/master/doc/place#province_delete)
