@@ -215,7 +215,6 @@ function nextstep($request_data,$sql){
 			$finalresult[]=$result[$pre+$finalcount];
 			$finalcount++;
 		}
-		$finalcount--;
 		echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 	}
 }

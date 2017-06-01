@@ -25,7 +25,7 @@ function IFPOST($request_data){
 		$PW=$request_data['User_Password'];
 		$sql="SELECT * FROM `tourplace`.`user` WHERE `User_ID`='$ID'";
 		$rs=mysql_fetch_array(mysql_query($sql));
-		$count=count($rs);
+		$count=count($rs['User_ID']);
 		if($count==0){
 			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.Can not find the ID!")));
 		}else{

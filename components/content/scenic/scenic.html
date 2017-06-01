@@ -77,7 +77,7 @@
         <div class="wrapper">
           <div class="scenic-pic">
             <div class="avator-shadow">
-              <img src="Scenic.Scenic_Picture" alt="" class="avator">
+              <img :src="Scenic.Scenic_Picture" alt="" class="avator">
             </div>
           </div>
           <div class="scenic-info">
@@ -107,7 +107,7 @@
               <p>{{Scenic.Scenic_Intro}}</p>
             </div>
             <!-- 景区展示 -->
-            <!-- <div class="pictures scenic-content">
+            <div class="pictures scenic-content">
               <h3>景区展示</h3>
               <div class="picture-container">
                 <div class="picture">
@@ -118,7 +118,7 @@
                   <img src="/tourplace/img/user/00.jpg" alt="">
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- 门票出售 -->
             <div class="scenic-ticket scenic-content">
               <h3>门票出售</h3>
@@ -143,9 +143,8 @@
         </div>
         <!-- 侧边栏 -->
         <!-- <div class="aside">
-          <div class="aside-content"> -->
-            <!-- 相关资讯 -->
-            <!-- <div class="about-news">
+          <div class="aside-content">
+            <div class="about-news">
               <h3>相关资讯</h3>
               <div class="news-content">
                 <ul>
@@ -157,18 +156,17 @@
                   <li>相关资讯６</li>
                 </ul>
               </div>
-            </div> -->
-          <!-- </div>
+            </div>
+          </div>
         </div> -->
-      <!-- </div> -->
+      </div>
     </div>
     <!-- 页脚 -->
-    <div class="footer">
-
-    </div>
+    <div class="footer"></div>
   </div>
   <script src="http://at.alicdn.com/t/font_rwavjqfqgs0pb9.js"></script>
   <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
+  <script src="/tourplace/components/node_modules/jquery/dist/jquery.js"></script>
   <script src="/tourplace/components/content/scenic/js/scenic.js"></script>
 </body>
 </html>

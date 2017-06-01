@@ -44,91 +44,9 @@ new Vue({
     scenicNum: 0,
     userID: '',
     scenicLevel: '',
-    locationScenics: [
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      },
-      {
-        Scenic_Name: '泰山旅游景区',
-        Scenic_Picture: ''
-      }
-    ],
+    locationScenics: [],
     locationScenicUrls:[],
-    ScenicVedios: [
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      },
-      {
-        Scenic_ID: '',
-        Scenic_Name: '天上人间',
-        Scenic_Picture: '',
-        Scenic_Vedio: 'http://www.iqiyi.com/w_19rra6aup9.html'
-      }
-    ],
+    ScenicVedios: [],
     todayScenics: [
       {
         Scenic_Name: '泰山实干当',
@@ -171,12 +89,7 @@ new Vue({
         Scenic_ID: ''
       }
     ],
-    ScenicList: [
-      {
-        Scenic_ID: '',
-        Scenic_Name: '泰山风景区'
-      }
-    ],
+    ScenicList: [],
     scenicType: 0,
     ScenicListUrls: []
   },
@@ -229,7 +142,7 @@ new Vue({
       self.locationScenicUrls = []
       $.get('/tourplace/src/scenic.php',{
         Type: 3,
-        Keys: "Scenic_ID+Scenic_Name+ScenicPicture",
+        Keys: "Scenic_ID+Scenic_Name+Scenic_Picture",
         Page: 1,
         PageSize: 8,
         Search: {
@@ -242,8 +155,8 @@ new Vue({
         var res = JSON.parse(response)
         if(res.Type == 0){
           self.locationScenics = res.Result
-          for(var i in Result){
-            self.locationScenicUrls.push('/tourplace/components/content/scenic/scenic.html?id=' + i.Scenic_ID)
+          for(var key in self.locationScenics){
+            self.locationScenicUrls.push('/tourplace/components/content/scenic/scenic.html?id=' + self.locationScenics[key].Scenic_ID)
           }
         }else{
           alert("出错了"+res.Result.Errmsg)

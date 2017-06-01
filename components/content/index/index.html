@@ -247,7 +247,7 @@
                 <!-- 主体 -->
                 <div class="panel-content">
                   <dl class="scenic-list">
-                    <dd v-for="i,locationScenic in locationScenics">
+                    <dd v-for="locationScenic,i in locationScenics">
                       <div class="scenic-item">
                         <a :href="locationScenicUrls[i]" style="text-decoration: none">
                           <div class="scenic-poster">
@@ -371,7 +371,7 @@
         <!-- 景区图片 -->
         <div class="scenic-content">
           <dl class="scenic-list">
-            <dd v-for="i,scenic in ScenicList">
+            <dd v-for="scenic,i in ScenicList">
               <div class="scenic-item" value="scenic.Scenic_ID">
                 <a :href="ScenicListUrls[i]">
                   <div class="scenic-poster">

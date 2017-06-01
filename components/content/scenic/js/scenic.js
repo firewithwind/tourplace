@@ -6,14 +6,7 @@ new Vue({
     places: [
     ],
     user: '请登入',
-    Scenic: {
-      Scenic_Name: '泰山风景名胜区',
-      Scenic_Phone: '11111111',
-      Scenic_Level: '5A',
-      Scenic_Adress: '山东省泰安市',
-      Scenic_Intro: '泰山风景名胜区（Mount tai scenic spot）：世界自然与文化遗产，世界地质公园，国家AAAAA级旅游景区，国家级风景名胜区，全国重点文物保护单位，中华国山，中国非物质文化遗产，全国文明风景旅游区，中国书法第一山。',
-      Scenic_Picture: ''
-    },
+    Scenic: {},
     ScenicID: '',
     ScenicEnglishName: 'Mount tai scenic spot',
     tickets: []
@@ -21,6 +14,7 @@ new Vue({
   methods: {
     init: function(){
       var self = this
+      self.getUser()
       self.ScenicID = self.getQueryString("id")
       if(self.ScenicID == ''){
         alert("没有該景区")
@@ -31,7 +25,7 @@ new Vue({
           Page: 1,
           PageSize: 1,
           Search:{
-            Scenic_ID: ScenicID
+            Scenic_ID: self.ScenicID
           }
         })
         .done(function(response){
@@ -78,6 +72,28 @@ new Vue({
       var r = window.location.search.substr(1).match(reg);
       if (r != null) return unescape(r[2])
       return ''
+    },
+    getUser: function(){
+      $.get('/tourplace/src/user.php',{
+        Type: 0,
+        Key: 'User_Name',
+        Page: 1,
+        PageSize: 1,
+        Search: {
+          User_ID: ''
+        }
+      })
+      .done(function(response){
+        res = JSON.parse(response)
+        if(res.Type == 0){
+          self.user = res.Result[0].User_Name
+        }else{
+          alert("出错了" + res.Result.Errmsg)
+        }
+      })
+      .fail(function(response){
+        alert("发生了未知的错误")
+      })
     }
   },
   mounted: function(){

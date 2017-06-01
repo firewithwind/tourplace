@@ -235,6 +235,15 @@
   margin: 10px auto 0;
   color: #fa3140
 }
+.cont .ticket-select button{
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  color: rgb(149, 149, 149);
+  outline: none;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
 .content .information .infor .cont .tickets{
   width: 100%;
   margin-top: 10px;
@@ -248,6 +257,28 @@
   margin-bottom: 20px;
   margin-left: 30px;
   position: relative;
+}
+.content .information .infor .cont .ticket-body .changeDiolag{
+  width: 300px;
+  height: 200px;
+  border-radius: 20px;
+  border: 2px solid rgba(0, 0, 0, .5);
+  background-color: #ffffff;
+  margin-left: 50%;
+  margin-top: 20px;
+  text-align: center;
+}
+.content .information .infor .cont .ticket-body .changeDiolag button{
+  width: 50px;
+  height: 30px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  color: rgb(78, 78, 78);
+  cursor: pointer;
+}
+.content .information .infor .cont .ticket-body .changeDiolag button:active{
+  opacity: .5
 }
 .content .information .infor .cont .ticket-body img{
   width: 100%;
@@ -288,4 +319,48 @@
 }
 .right-content .scenic-information .scenic-title .title-body div{
   margin-top: 10px;
+}
+.scenic-title .title-body .add{
+  width: 80px;
+  height: 30px;
+  margin-top: 10px;
+  outline: none;
+  border-radius: 8px;
+  border: none;
+  padding: 5px;
+  color: #ffffff;
+  background-color: #fa3140;
+  cursor: pointer;
+}
+.scenic-title .title-body .add:active{
+  opacity: .5;
+}
+.right-content .scenic-information .scenic-title .addDialog{
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 0 5px rgb(65, 10, 83);
+  margin-left: 50%;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  font-size: 15px;
+  padding: 10px;
+}
+.scenic-title .addDialog div{
+  margin-top: 20px;
+}
+.scenic-title .addDialog .addin{
+  width: 60%;
+  margin-left: 5px;
+}
+.scenic-title .addDialog button{
+  width: 80px;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+  margin-left: 10px;
+  outline: none;
+  color: rgb(105, 105, 105)
+}
+.scenic-title .addDialog button:active{
+  opacity: .5
 }

@@ -39,7 +39,7 @@ function IFPOST($request_data){
 				$sql="INSERT INTO `tourplace`.`user`(`User_ID`,`User_Name`,`User_Password`,
 				`User_Truename`,`User_Intro`,`User_Sex`,`User_Phone`,`User_Birthday`,`User_IDcard`,
 				`User_Level`,`Scenic_ID1`,`User_Type`,`User_Picture`)
-				VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','ID_Record/start.jpg')";
+				VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','tourplace/src/ID_Record/start.jpg')";
 				mysql_query($sql);
 				echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$ID)));
 			}
@@ -55,11 +55,10 @@ function IFPOST($request_data){
 				$type=$request_data['Data']['User_Type'];
 				$Sname=$request_data['Data']['Sight'];
 				$Slicense=$request_data['Data']['Liscen'];
-				
-				$sql="SELECT * FROM `tourplace`.`scenic` WHERE `Scenic_Name`='$Sname' AND `Scenic_License`='$Slicense'";
-				$rs=mysql_fetch_array(mysql_query($sql));
-				$count=count($rs);
-				
+				$sql="select * from scenic where `Scenic_Name`='$Sname' and `Scenic_License`='$Slicense'";
+				$query=mysql_query($sql);
+				$rs=mysql_fetch_array($query);
+				$count=count($rs['Scenic_ID']);
 				if($count==0){
 					echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"7.The scenic data is error!")));
 				}else{
@@ -70,7 +69,7 @@ function IFPOST($request_data){
 						$sql="INSERT INTO `tourplace`.`user`(`User_ID`,`User_Name`,`User_Password`,
 						`User_Truename`,`User_Intro`,`User_Sex`,`User_Phone`,`User_Birthday`,`User_IDcard`,
 						`User_Level`,`Scenic_ID1`,`User_Type`,`User_Picture`)
-						VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','ID_Record/start.jpg')";
+						VALUES('$ID','$name','$password',NULL,'$intro',NULL,NULL,NULL,NULL,'50',NULL,'$type','tourplace/src/ID_Record/start.jpg')";
 						mysql_query($sql);
 						echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$ID)));
 					}
@@ -209,7 +208,6 @@ function IFGET($request_data){
 				$finalresult[]=$result[$pre+$finalcount];
 				$finalcount++;
 			}
-			$finalcount--;
 			echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 		}
 	}
@@ -235,6 +233,41 @@ function getID($usertype){
 		else{
 			$num=7-strlen($ID_0);
 			while($num>0){
+				$ID_0='0'.$ID_0;
+				$num--;
+			}
+			$ID_0='0'.$ID_0;
+			return $ID_0;
+		}
+	}else{
+		if(!@$f=fopen("ID_Record\User_ID_1.txt","r")){
+			$ID_1=1;
+			$ff=fopen("ID_Record\User_ID_1.txt","w");
+			fwrite($ff,$ID_1);
+			fclose($ff);
+		}else{
+			$ID_1=fgets($f,10);
+			fclose($f);
+			$ID_1++;
+			$ff=fopen("ID_Record\User_ID_1.txt","w");
+			fwrite($ff,$ID_1);
+			fclose($ff);
+		}
+		if(strlen($ID_1)>7)/*id已满*/
+			return '99999999';
+		else{
+			$num=7-strlen($ID_1);
+			while($num>0){
+				$ID_1='0'.$ID_1;
+				$num--;
+			}
+			$ID_1='1'.$ID_1;
+			return $ID_1;
+		}
+	}
+}
+
+?>um>0){
 				$ID_0='0'.$ID_0;
 				$num--;
 			}

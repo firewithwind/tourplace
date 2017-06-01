@@ -104,42 +104,18 @@
             <div class="cont">
               <div class="order-select">
                 <ul>
-                  <li :class="orderType==1?'active':''" @click="orderType=1">待付款订单</li>
-                  <li :class="orderType==2?'active':''" @click="orderType=2">已完成订单</li>
+                  <li :class="orderType==1?'active':''" @click="orderType=1;getOrder(0)">待付款订单</li>
+                  <li :class="orderType==2?'active':''" @click="orderType=2;getOrder(1)">已完成订单</li>
                 </ul>
               </div>
               <div class="orders">
-                <div class="order-body">
-                  <div class="orderID">订单号：<span>0001</span></div>
-                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
-                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
+                <div class="order-body" v-for="order in orders">
+                  <div class="orderID">订单号：<span>{{order.Order_ID}}</span></div>
+                  <div class="ScenicName">景区：<span>{{order.Scenic_Name}}</span></div>
+                  <div class="TicketTime">门票时间：<span>{{order.Ticket_Time}}</span></div>
                   <div class="TicketTime">交易时间：</div>
-                  <div>2017/05/31 23：20：15</div>
-                  <button class="pay" v-if="orderType==1">付款</button>
-                </div>
-                <div class="order-body">
-                  <div class="orderID">订单号：<span>0001</span></div>
-                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
-                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
-                  <div class="TicketTime">交易时间：</div>
-                  <div>2017/05/31 23：20：15</div>
-                  <button class="pay" v-if="orderType==1">付款</button>
-                </div>
-                <div class="order-body">
-                  <div class="orderID">订单号：<span>0001</span></div>
-                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
-                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
-                  <div class="TicketTime">交易时间：</div>
-                  <div>2017/05/31 23：20：15</div>
-                  <button class="pay" v-if="orderType==1">付款</button>
-                </div>
-                <div class="order-body">
-                  <div class="orderID">订单号：<span>0001</span></div>
-                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
-                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
-                  <div class="TicketTime">交易时间：</div>
-                  <div>2017/05/31 23：20：15</div>
-                  <button class="pay" v-if="orderType==1">付款</button>
+                  <div>{{order.Order_Time}}</div>
+                  <button class="pay" v-if="order.Order_State==1" @click="payOrder(order.Order_ID)">付款</button>
                 </div>
               </div>
             </div>
@@ -147,19 +123,40 @@
           <div class="ticket-information infor" v-if="nowCard == 3">
             <div class="cont">
               <div class="ticket-select">
-
+                <button @click="ticketType=0;getTicket(0)">出售中</button>
+                <button @click="ticketType=1;getTicket(1)">未出售</button>
+                <button @click="ticketType=2;getTicket(2)">已过期</button>
               </div>
               <div class="tickets">
-                <div class="ticket-body">
-                  <img src="" alt="">
+                <div class="ticket-body" v-for="ticket in tickets">
+                  <img :src="ticket.Ticket_Picture" alt="">
                   <div class="ticket-info">
-                    <span class="scenic">泰山风景区</span>
-                    <span class="time">2017/6/1</span>
-                    <span class="number"><span>50</span>张</span>
-                    <span>出售中</span>
+                    <span class="scenic">{{ticket.Scenic_Name}}</span>
+                    <span class="time">{{ticket.Ticket_Time}}</span>
+                    <span class="number"><span>{{ticket.UserTicket_Count}}</span>张</span>
+                    <span v-if="ticketType == 0">出售中</span>
+                    <span v-if="ticketType == 1">可使用</span>
+                    <span v-if="ticketType == 2">已过期</span>
                   </div>
-                  <div class="sale">
+                  <div class="sale" v-if="ticketType == 1" @click="ticket.change = 1">
                     上架
+                  </div>
+                  <div class="sale"  v-if="ticketType == 0" @click="ticket.change = 1">
+                    下架
+                  </div>
+                  <div class="sale" v-if="ticketType == 2" @click="deleteTicket(ticket.Ticket_ID)">
+                    删除
+                  </div>
+                  <div class="changeDiolag" v-if="ticket.change == 1">
+                    <div style="color: rgb(92, 92, 92);margin-top: 10px">修改数量</div>
+                    <input type="text" placeholder="输入数量">
+                    <div style="color: rgb(92, 92, 92);margin-top: 10px;">修改价格</div>
+                    <input type="text" placeholder="输入价格">
+                    <div style="margin-top: 20px;">
+                      <button v-if="ticketType == 1" style="background-color: #fa3140;color: #ffffff" @click="chageTicket(0,ticket.Ticket_ID,ticket.Ticket_Price);ticket.change=0">确定</button>
+                      <button v-if="ticketType == 0" style="background-color: #fa3140;color: #ffffff" @click="chageTicket(1,ticket.Ticket_ID,ticket.Ticket_Price);ticket.change=1">确定</button>
+                      <button @click="ticket.change=0">取消</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -170,12 +167,26 @@
               <div class="scenic-title">
                 <img src="" alt="" style="width: 232px;height: 322px;float: left">
                 <div class="title-body">
-                  <h2>泰山旅游风景区</h2>
-                  <div>景区ID: <span>00000001</span></div>
-                  <div>景区水平: <span>5A</span>级</div>
-                  <div>景区许可证: <input type="text" value="00000000000"></div>
-                  <div>景区详细地址: <input type="text" value="山东省泰安市xx街道"></div>
-                  <div>景区介绍: <span>阿三大赛大赛</span></div>
+                  <h2>{{Scenic.Scenic_Name}}</h2>
+                  <div>景区ID: <span>{{Scenic.Scenic_ID}}</span></div>
+                  <div>景区水平: <span>{{Scenic.Scenic_Level}}</span>级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;景区类型：<span>{{Scenic.Scenic_Type}}</span></div>
+                  <div>景区许可证: <input type="text" :value="Scenic.Scenic_License"></div>
+                  <div>景区详细地址: <input type="text" :value="Scenic.Scenic_Adress"></div>
+                  <div>景区联系方式: <input type="text" :value="Scenic.Scenic_Phone"></div>
+                  <div>景区视频链接: <input type="text" :value="Scenic.Scenic_Vedio"></div>
+                  <div>景区介绍: <span>{{Scenic.Scenic_Intro}}</span></div>
+                  <button @click="addTicket = 1" class="add">添加门票</button>
+                </div>
+                <div class="addDialog" v-if="addTicket == 1">
+                  <div>景区名称<span style="margin-left: 5px;">{{Scenic.Scenic_Name}}</span></div>
+                  <div>门票时间<input style="font-size: 15px;
+                  background-color: #ffffff;" class="addin" type="text" :value="newTicketTime" placeholder="输入门票有效时间"></div>
+                  <div>门票图片<input style="font-size: 10px;
+                  background-color: #ffffff;" class="addin" type="file"></div>
+                  <div>
+                    <button style="background-color:#fa3140;color: #ffffff" @click="addNewTicket();addTicket=0">添加</button>
+                    <button @click="addTicket = 0">取消</button>
+                  </div>
                 </div>
               </div>
             </div>

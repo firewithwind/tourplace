@@ -3,4 +3,5 @@
 	@mysql_select_db("tourplace") or die("dbÁ¬½ÓÊ§°Ü£¡");
 	//mysql_set_charset("gbk");
 	mysql_query("set names 'gbk'");
+	mysql_query("set character set 'utf8'");
 ?>

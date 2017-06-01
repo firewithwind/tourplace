@@ -127,7 +127,7 @@ function IFPUT($request_data){
 			$aa1=$request_data['Update']['Scenic_Name'];
 			$aa2=$request_data['Update']['Scenic_Intro'];
 			$aa3=$request_data['Update']['Province_ID'];
-			$aa4=$request_data['Update']['City_ID']);
+			$aa4=$request_data['Update']['City_ID'];
 			$aa5=$request_data['Update']['Scenic_Adress'];
 			$aa6=$request_data['Update']['Scenic_Phone'];
 			$aa7=$request_data['Update']['Scenic_Level'];
@@ -240,7 +240,6 @@ function nextstep($request_data,$sql){
 			$finalresult[]=$result[$pre+$finalcount];
 			$finalcount++;
 		}
-		$finalcount--;
 		echo json_encode(array('Type'=>0,'Size'=>$finalcount,'sumSize'=>$resultcount,'Result'=>$finalresult));
 	}
 }
@@ -248,6 +247,30 @@ function nextstep($request_data,$sql){
 function getID(){
 	if(!@$f=fopen("ID_Record\Scenic_ID.txt","r")){
 		$ID_0=1;
+		$ff=fopen("ID_Record\Scenic_ID.txt","w");
+		fwrite($ff,$ID_0);
+		fclose($ff);
+	}else{
+		$ID_0=fgets($f,10);
+		fclose($f);
+		$ID_0++;
+		$ff=fopen("ID_Record\Scenic_ID.txt","w");
+		fwrite($ff,$ID_0);
+		fclose($ff);
+	}
+	if(strlen($ID_0)>8)/*idÒÑÂú*/
+		return '99999999';
+	else{
+		$num=8-strlen($ID_0);
+		while($num>0){
+			$ID_0='0'.$ID_0;
+			$num--;
+		}
+		return $ID_0;
+	}
+}
+
+?>
 		$ff=fopen("ID_Record\Scenic_ID.txt","w");
 		fwrite($ff,$ID_0);
 		fclose($ff);
