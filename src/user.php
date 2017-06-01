@@ -161,29 +161,42 @@ function IFGET($request_data){
 	if(!isset($request_data['Type'])){
 		echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}else{
-		$page=$request_data['Page'];
-		$pagesize=$request_data['PageSize'];
 		$searchtype=$request_data['Type'];
-		$Key=explode('+',$request_data['Key']);
-		$arrcount=count($Key);
-		$i=0;
-		if($arrcount==0) $sql="SELECT *";
-		else $sql="SELECT ";
-		while($i<$arrcount){
-			$sql.="`".$Key[$i]."`";
-			if($i!=$arrcount-1) $sql.=",";
-				$i++;
+		if(empty($request_data['Keys'])){
+			$sql="SELECT *";
+		}else{
+			$sql="SELECT ";
+			$Key=explode('+',$request_data['Keys']);
+			$arrcount=count($Key);
+			$i=0;
+			while($i<$arrcount){
+				$sql.="`".$Key[$i]."`";
+				if($i!=$arrcount-1) $sql.=",";
+					$i++;
+			}
 		}
-		$result=array();
 		if($searchtype==0){
-			$id=$request_data['Search']['User_ID'];
+			$id="";
+			if(empty($request_data['Search']['User_ID'])) $id=$_SESSION['User_ID'];
+			else $id=$request_data['Search']['User_ID'];
 			$sql.=" FROM `tourplace`.`user` WHERE `User_ID`='$id'";
+			nextstep($request_data,$sql);
 		}else if($searchtype==1){
-			$name=$request_data['Search']['User_Name'];
-			$sql.=" FROM `tourplace`.`user` WHERE `User_Name`='$name'";
+			if(empty($request_data['Search']['User_Name'])){
+				echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"2.The user name is empty!")));
+			}else{
+				$name=$request_data['Search']['User_Name'];
+				$sql.=" FROM `tourplace`.`user` WHERE `User_Name`='$name'";
+			}
+			nextstep($request_data,$sql);
 		}else if($searchtype==2){
-			$card=$request_data['Search']['User_IDcard'];
-			$sql.=" FROM `tourplace`.`user` WHERE `User_IDcard`='$card'";
+			if(empty($request_data['Search']['User_IDcard'])){
+				echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"3.The user card is empty!")));
+			}else{
+				$card=$request_data['Search']['User_IDcard'];
+				$sql.=" FROM `tourplace`.`user` WHERE `User_IDcard`='$card'";
+			}
+			nextstep($request_data,$sql);
 		}else if($searchtype==3){
 			$type=$request_data['Search']['Type'];
 			if($type==0){
@@ -193,23 +206,30 @@ function IFGET($request_data){
 			}else{
 				$sql.=" FROM `tourplace`.`user`";
 			}
+			nextstep($request_data,$sql);
 		}
-		$query=mysql_query($sql);
-		while($row=mysql_fetch_assoc($query))
-			$result[]=$row;
-		$resultcount=count($result);
-		$pre=$pagesize*($page-1);
-		if($pre>$resultcount){
-			echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
-		}else{
-			$finalresult=array();
-			$finalcount=0;
-			while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
-				$finalresult[]=$result[$pre+$finalcount];
-				$finalcount++;
-			}
-			echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
+	}
+}
+
+function nextstep($request_data,$sql){
+	$result=array();
+	$page=$request_data['Page'];
+	$pagesize=$request_data['PageSize'];
+	$query=mysql_query($sql);
+	while($row=mysql_fetch_assoc($query))
+		$result[]=$row;
+	$resultcount=count($result);
+	$pre=$pagesize*($page-1);
+	if($pre>$resultcount){
+		echo json_encode(array('Type'=>1,'Num'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
+	}else{
+		$finalresult=array();
+		$finalcount=0;
+		while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
+			$finalresult[]=$result[$pre+$finalcount];
+			$finalcount++;
 		}
+		echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 	}
 }
 	
@@ -233,41 +253,6 @@ function getID($usertype){
 		else{
 			$num=7-strlen($ID_0);
 			while($num>0){
-				$ID_0='0'.$ID_0;
-				$num--;
-			}
-			$ID_0='0'.$ID_0;
-			return $ID_0;
-		}
-	}else{
-		if(!@$f=fopen("ID_Record\User_ID_1.txt","r")){
-			$ID_1=1;
-			$ff=fopen("ID_Record\User_ID_1.txt","w");
-			fwrite($ff,$ID_1);
-			fclose($ff);
-		}else{
-			$ID_1=fgets($f,10);
-			fclose($f);
-			$ID_1++;
-			$ff=fopen("ID_Record\User_ID_1.txt","w");
-			fwrite($ff,$ID_1);
-			fclose($ff);
-		}
-		if(strlen($ID_1)>7)/*id已满*/
-			return '99999999';
-		else{
-			$num=7-strlen($ID_1);
-			while($num>0){
-				$ID_1='0'.$ID_1;
-				$num--;
-			}
-			$ID_1='1'.$ID_1;
-			return $ID_1;
-		}
-	}
-}
-
-?>um>0){
 				$ID_0='0'.$ID_0;
 				$num--;
 			}
