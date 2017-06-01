@@ -1,0 +1,288 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.header{
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  min-width: 1200px;
+  background-color: #fff;
+  border-bottom: 1px solid #d8d8d8;
+}
+.navbar{
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  line-height: 80px;
+}
+.navbar .nav{
+  height: 100%;
+  line-height: 95px;
+  float: left;
+}
+.navbar .logo{
+  padding:0 5px;
+}
+.navbar .logo a{
+  text-decoration: none;
+  font-size: 25px;
+  color: #fa3140;
+  font-weight: bold;
+}
+.navbar .place{
+  padding-left: 5px;
+  padding-right: 10px;
+  margin-left: 15px;
+  color: rgba(77, 77, 77, 0.99);
+  cursor: pointer;
+  position: relative;
+}
+.navbar .place:hover{
+  box-shadow: 0px 0px 4px #d8d8d8;
+}
+.navbar .place .place-select{
+  width: 380px;
+  position: absolute;
+  z-index: 999;
+  box-shadow: 0px 0px 4px #d8d8d8;
+  top: 80px;
+  left: 0px;
+  background-color: #ffffff;
+}
+.place .place-select .province{
+  line-height: 27px;
+  padding: 10px;
+  border-bottom: 1px solid rgb(222, 222, 222);
+}
+.place-select .city span{
+  display: inline-block;
+  color: rgb(194, 194, 194);
+  padding: 2px;
+}
+.navbar .index-nav{
+  margin-left: 40px;
+}
+.navbar .index-nav a{
+  text-decoration: none;
+  color: rgba(77, 77, 77, 0.99);
+  display: inline-block;
+  height: 100%;
+  padding: 0 15px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.navbar .index-nav .active{
+  background-color: #fa3140;
+  color: #ffffff
+}
+.navbar .index-nav .unactive{
+  color: rgba(77, 77, 77, 0.99);
+}
+.navbar .about{
+  margin-left: 70px;
+  color: rgba(77, 77, 77, 0.99);
+  cursor: pointer;
+}
+.navbar .search{
+  margin-left: 10px;
+  width: 300px;
+  position: relative;
+}
+.navbar .search input{
+  display: inline-block;
+  height: 35px;
+  line-height: 1.2;
+  width: 200px;
+  padding: 0 40px 0 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 30px;
+  background-color: #faf8fa;
+  overflow: hidden;
+  color: #333;
+  outline: none;
+}
+.navbar .search .search-icon{
+  width: 37px;
+  height: 37px;
+  color: #ffffff;
+  background-color: #fa3140;
+  border-radius: 35px;
+  position: absolute;
+  left: 228px;
+  top: 30px;
+  cursor: pointer;
+}
+.navbar .user{
+  margin-left: 5px;
+  position:relative;
+}
+.navbar .user .avator{
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  position: absolute;
+  top: 27px;
+}
+.content{
+  width: 100%;
+  margin-top: 180px;
+}
+.content .information{
+  width: 1200px;
+  margin: 0 auto;
+}
+.content .information .left-nav{
+  width: 260px;
+  text-indent: 5px;
+  border-radius: 10px 0 0 10px;
+  float: left;
+}
+.content .information .left-nav li{
+  list-style-type: none;
+  display: block;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: rgba(77, 77, 77, 0.99);
+  font-size: 18px;
+  border-radius: 10px 0 0 10px;
+  padding: 5px;
+  border-bottom: 2px solid rgb(214, 214, 214);
+}
+.content .information .left-nav li:hover{
+  background-color: #fa3140;
+  color: #ffffff;
+}
+.content .information .right-content{
+  width: 930px;
+  float: right;
+  box-shadow: 0 0 5px rgb(98, 98, 98);
+  margin-top: 3px;
+}
+.content .information .infor{
+  margin-top: 20px;
+}
+.content .information .infor .cont{
+  width: 80%;
+  margin: 0 auto;
+  color: rgba(77, 77, 77, 0.99);
+}
+.content .information .infor .cont .title{
+  width: 100%;
+  height: 80px;
+}
+.content .information .infor .cont input{
+  color: rgba(77, 77, 77, 0.99);
+  border: none;
+  font-size: 17px;
+  outline: none;
+}
+.content .information .infor .cont .cont-body{
+  width: 100%;
+  margin-top: 20px;
+}
+.content .information .infor .cont .cont-body div{
+  margin-top: 10px;
+}
+.content .information .infor .cont .order-body{
+  width: 180px;
+  height: 220px;
+  box-shadow: 0 0 5px rgb(182, 182, 182);
+  padding: 0 10px;
+  color: #ffffff;
+  background-color: #fa3140;
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 30px;
+}
+.content .information .infor .cont .order-select{
+  width: 100%;
+  float: left;
+  margin-bottom: 20px;
+}
+.content .information .infor .cont .order-select ul li{
+  float: left;
+  list-style-type: none;
+  display: block;
+  padding: 10px;
+  border: 2px solid rgb(149, 149, 149);
+  border-radius: 20px;
+  margin-left: 30px;
+}
+.content .information .infor .cont .order-select ul li.active{
+  background-color: rgb(251, 68, 35);
+  color: #ffffff;
+}
+.content .information .infor .orders{
+  width: 100%;
+}
+.content .information .infor .cont .order-body div{
+  margin-top: 10px;
+}
+.content .information .infor .cont .order-body .pay{
+  width: 50px;
+  height: 30px;
+  line-height: 27px;
+  text-align: center;
+  border-radius: 10px;
+  outline: none;
+  margin: 10px auto 0;
+  color: #fa3140
+}
+.content .information .infor .cont .tickets{
+  width: 100%;
+  margin-top: 10px;
+}
+.content .information .infor .cont .ticket-body{
+  width: 250px;
+  height: 100px;
+  box-shadow: 0 0 5px rgb(182, 182, 182);
+  color: #ffffff;
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 30px;
+  position: relative;
+}
+.content .information .infor .cont .ticket-body img{
+  width: 100%;
+  height: 100%;
+}
+.content .information .infor .cont .ticket-body .ticket-info{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  line-height: 20px;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 3px;
+}
+.infor .cont .ticket-body .ticket-info span{
+  margin-left: 5px;
+  font-size: 15px;
+}
+.infor .cont .ticket-body .sale{
+  width: 20px;
+  height: 98%;
+  border: 1px solid rgb(171, 171, 171);
+  color: #fa3140;
+  position: absolute;
+  line-height: 50px;
+  text-align: center;
+  top: 0;
+  right: -22px;
+}
+.infor .cont .ticket-body .sale:hover{
+  background: #fa3140;
+  color: #ffffff;
+}
+.right-content .scenic-information .scenic-title{
+  width: 100%;
+}
+.right-content .scenic-information .scenic-title .title-body{
+  margin-left: 250px;
+}
+.right-content .scenic-information .scenic-title .title-body div{
+  margin-top: 10px;
+}

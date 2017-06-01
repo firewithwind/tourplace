@@ -2,7 +2,7 @@
 	include("conn.php");
 	include("request.php");
 	session_start();
-
+	
 	switch ($request_method) {
 		case 'POST':
 			IFPOST($request_data);
@@ -13,8 +13,8 @@
 		default:
 			break;
 	}
-
-/*ï¿½ï¿½ï¿½ï¿½*/
+	
+/*µÇÈë*/
 function IFPOST($request_data){
 	if(empty($request_data['User_ID'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The ID is empty!")));
@@ -43,6 +43,7 @@ function IFPOST($request_data){
 				$_SESSION['User_Level']=$rs['User_Level'];
 				$_SESSION['Scenic_ID1']=$rs['Scenic_ID1'];
 				$_SESSION['User_Type']=$rs['User_Type'];
+				$_SESSION['User_Picture']=$rs['User_Picture'];
 			}else{
 				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.The password is error!")));
 			}
@@ -50,7 +51,7 @@ function IFPOST($request_data){
 	}
 }
 
-/*ï¿½Ç³ï¿½*/
+/*µÇ³ö*/
 function IFDELETE($request_data){
 	$type=$request_data['Type'];
 	if($type==0){

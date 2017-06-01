@@ -36,9 +36,9 @@
           <span>{{location}}</span>
           <div class="place-select slide-down" v-if="placeSelect">
             <div class="province" v-for="place in places">
-              <div class="provinceName"　@click="location=place.provinceName">{{place.provinceName}}</div>
+              <div class="provinceName"　@click="changeProvince(place.provinceID,place.provinceName)">{{place.provinceName}}</div>
               <div class="city">
-                <span v-for="city in place.citys" @click="location=city.cityName">{{city.cityName}}</span>
+                <span v-for="city in place.citys" @click="changeCity(city.cityID,city.cityName,place.provinceID)">{{city.cityName}}</span>
               </div>
             </div>
           </div>
@@ -55,17 +55,17 @@
           <svg class="icon" aria-hidden="true" style="width: 1.5em; height: 1.5em">
             <use xlink:href="#icon-guanyuwomen"></use>
           </svg>
-          关于我们
+          <a href="/tourplace/components/content/aboutours/aboutours.html" style="text-decoration: none;color: rgba(77, 77, 77, 1)">关于我们</a>
         </div>
         <!-- 搜索 -->
         <div class="search nav">
-          <input type="text" placeholder="输入景区/用户/门票">
-            <svg class="icon search-icon" aria-hidden="true">
-              <use xlink:href="#icon-sou"></use>
-            </svg>
+          <input type="text" placeholder="输入景区/用户ID" :value="searchInfor">
+          <svg class="icon search-icon" aria-hidden="true" @click="find()">
+            <use xlink:href="#icon-sou"></use>
+          </svg>
         </div>
         <!-- 用户 -->
-        <div class="user nav">
+        <div class="user nav" :value="userID" @click="loginORuser()">
           <img class="avator" src="/tourplace/img/user/00.jpg" alt="">
           <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
         </div>
@@ -115,53 +115,53 @@
                     <i>1</i>
                     <img src="" alt="" style="width: 128px; height: 80px;">
                     <div class="pull-right" style="width: 232px;text-indent: 15px;">
-                      <span>泰山旅游景区</span>
+                      <span>{{todayScenics[0].Scenic_Name}}</span>
                       <span style="color: #fa3140; display: block;margin-top: 20px;">2425454<span>人</span></span>
                     </div>
                   </li>
                   <li class="early">
                     <i>2</i>
-                    <span>九寨沟旅游景区</span>
+                    <span>{{todayScenics[1].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li class="early">
                     <i>3</i>
-                    <span>青岛国际海水浴场</span>
+                    <span>{{todayScenics[2].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>4</i>
-                    <span class="">西藏布达拉宫</span>
+                    <span class="">{{todayScenics[3].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>5</i>
-                    <span class="">海南天涯海角石</span>
+                    <span class="">{{todayScenics[4].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>6</i>
-                    <span>户口瀑布</span>
+                    <span>{{todayScenics[5].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>7</i>
-                    <span>桂州园林</span>
+                    <span>{{todayScenics[6].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>8</i>
-                      <span>asdasd</span>
+                      <span>{{todayScenics[7].Scenic_Name}}</span>
                       <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>9</i>
-                      <span>asdads</span>
+                      <span>{{todayScenics[8].Scenic_Name}}</span>
                       <span class="j">12121<span>人</span></span>
                   </li>
                   <li>
                     <i>10</i>
-                    <span>asdasd</span>
+                    <span>{{todayScenics[9].Scenic_Name}}</span>
                     <span class="j">12121<span>人</span></span>
                   </li>
                 </ul>
@@ -247,132 +247,20 @@
                 <!-- 主体 -->
                 <div class="panel-content">
                   <dl class="scenic-list">
-                    <dd>
+                    <dd v-for="i,locationScenic in locationScenics">
                       <div class="scenic-item">
-                        <a href="">
+                        <a :href="locationScenicUrls[i]" style="text-decoration: none">
                           <div class="scenic-poster">
-                            <img src="" alt="">
+                            <img :src="locationScenic.Scenic_Picture" alt="">
                             <div class="scenic-shadow"></div>
                             <div class="scenic-name">
-                              泰山旅游景区
+                              {{locationScenic.Scenic_Name}}
                             </div>
                           </div>
-                        </a>
                         <div class="buyTicket">
                           购票
                         </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          购票
-                        </div>
+                      </a>
                       </div>
                     </dd>
                   </dl>
@@ -390,132 +278,20 @@
                 <!-- 主体 -->
                 <div class="panel-content">
                   <dl class="scenic-list">
-                    <dd>
+                    <dd v-for="ScenicVedio in ScenicVedios">
                       <div class="scenic-item">
-                        <a href="">
+                        <a :href="ScenicVedio.Scenic_Vedio" style="text-decoration: none">
                           <div class="scenic-poster">
-                            <img src="" alt="">
+                            <img :src="ScenicVedio.Scenic_Picture" alt="">
                             <div class="scenic-shadow"></div>
                             <div class="scenic-name">
-                              泰山旅游景区
+                              {{ScenicVedio.Scenic_Name}}
                             </div>
                           </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
+                          <div class="buyTicket">
+                            观看
                           </div>
                         </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
-                      </div>
-                    </dd>
-                    <dd>
-                      <div class="scenic-item">
-                        <a href="">
-                          <div class="scenic-poster">
-                            <img src="" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              泰山旅游景区
-                            </div>
-                          </div>
-                        </a>
-                        <div class="buyTicket">
-                          观看
-                        </div>
                       </div>
                     </dd>
                   </dl>
@@ -540,19 +316,19 @@
                     <li>
                       <span>全部</span>
                     </li>
-                    <li>
+                    <li @click="scenicLevel = '5A';getScenicList()">
                       <span>５A</span>
                     </li>
-                    <li>
+                    <li @click="scenicLevel = '4A';getScenicList()">
                       <span>４A</span>
                     </li>
-                    <li>
+                    <li @click="scenicLevel = '3A';getScenicList()">
                       <span>３A</span>
                     </li>
-                    <li>
+                    <li @click="scenicLevel = '2A';getScenicList()">
                       <span>２A</span>
                     </li>
-                    <li>
+                    <li @click="scenicLevel = '';getScenicList()">
                       <span>其他</span>
                     </li>
                   </ul>
@@ -562,28 +338,28 @@
                     类型：
                   </div>
                   <ul>
-                    <li>
+                    <li @click="scenicType = 0;getScenicList();">
                       <span>全部</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 1;getScenicList();">
                       <span>登山</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 2;getScenicList();">
                       <span>观海</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 3;getScenicList();">
                       <span>游乐园</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 4;getScenicList();">
                       <span>名胜古迹</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 5;getScenicList();">
                       <span>秀丽风景</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 6;getScenicList();">
                       <span>异族风情</span>
                     </li>
-                    <li>
+                    <li @click="scenicType = 7;getScenicList();">
                       <span>其他</span>
                     </li>
                   </ul>
@@ -595,126 +371,14 @@
         <!-- 景区图片 -->
         <div class="scenic-content">
           <dl class="scenic-list">
-            <dd>
-              <div class="scenic-item">
-                <a href="">
+            <dd v-for="i,scenic in ScenicList">
+              <div class="scenic-item" value="scenic.Scenic_ID">
+                <a :href="ScenicListUrls[i]">
                   <div class="scenic-poster">
                     <img src="" alt="">
                     <div class="scenic-shadow"></div>
                     <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
-                    </div>
-                  </div>
-                </a>
-                <div class="buyTicket">
-                  购票
-                </div>
-              </div>
-            </dd>
-            <dd>
-              <div class="scenic-item">
-                <a href="">
-                  <div class="scenic-poster">
-                    <img src="" alt="">
-                    <div class="scenic-shadow"></div>
-                    <div class="scenic-name">
-                      泰山旅游景区
+                      {{scenic.Scenic_Name}}
                     </div>
                   </div>
                 </a>

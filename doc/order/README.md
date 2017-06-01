@@ -46,11 +46,23 @@ order**[增](order_add)[删](order_delete)[改](order_change)[查](order_search)
       }
 - <a name="order_change">改</a>
 
-      订单一旦生成，无法进行修改
+      PUT /tourplace/src/order.php
+      #订单状态变更
+      to: {
+	    Order_ID #订单ID，不能为空
+        Order_State: #订单状态，不能为空
+      }
+      return: {
+        {
+        }#Type=0,成功
+        {
+          Errmsg: #错误信息
+        }#Type=1,失败时，返回失败信息
+      }
 
 - <a name="order_search">查</a>
 
-      PUT /tourplace/src/order.php
+      GET /tourplace/src/order.php
       to: {
         Type: (0|)#查询方式
         Keys: "Uer_ID1+User_ID2+Order_ID+..." #查询的信息
@@ -78,6 +90,9 @@ order**[增](order_add)[删](order_delete)[改](order_change)[查](order_search)
         {
           User_ID: #买家ID 若未空，返回用户本身订单
         }#Type = 1
+		{
+          Order_State: #订单状态 若未空，返回当前用户所有状态订单
+        }#Type = 2
       }
       return: {
         Type： （0|1）#0-成功 1-失败

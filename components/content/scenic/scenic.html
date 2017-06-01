@@ -77,20 +77,21 @@
         <div class="wrapper">
           <div class="scenic-pic">
             <div class="avator-shadow">
-              <img src="" alt="" class="avator">
+              <img src="Scenic.Scenic_Picture" alt="" class="avator">
             </div>
           </div>
           <div class="scenic-info">
             <div class="scenic-brief-container">
-              <h1 class="name">{{ScenicName}}</h1>
+              <h1 class="name">{{Scenic.Scenic_Name}}</h1>
               <div class="englishName" style="font-size: 19px;">{{ScenicEnglishName}}</div>
               <ul>
-                <li class="grade cllipsis">{{grade}}级景区</li>
+                <li class="grade cllipsis">{{Scenic.Scenic_Level}}级景区</li>
+                <li class="phone cllipsis">联系电话：{{Scenic.Scenic_Phone}}</li>
                 <li class="place cllipsis">
                   <svg class="icon" aria-hidden="true" style="width: 1.1em;height: 1.1em;">
                     <use xlink:href="#icon-location"></use>
                   </svg>
-                  {{place}}</li>
+                  {{Scenic.Scenic_Adress}}</li>
               </ul>
             </div>
           </div>
@@ -103,10 +104,10 @@
             <!-- 景区介绍 -->
             <div class="scenic-intro scenic-content">
               <h3>景区介绍</h3>
-              <p>{{intro}}</p>
+              <p>{{Scenic.Scenic_Intro}}</p>
             </div>
             <!-- 景区展示 -->
-            <div class="pictures scenic-content">
+            <!-- <div class="pictures scenic-content">
               <h3>景区展示</h3>
               <div class="picture-container">
                 <div class="picture">
@@ -117,22 +118,23 @@
                   <img src="/tourplace/img/user/00.jpg" alt="">
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- 门票出售 -->
             <div class="scenic-ticket scenic-content">
               <h3>门票出售</h3>
               <div class="ticket-container">
                 <div class="ticket-content" v-for="ticket in tickets">
-                  <img src="" alt="" style="width: 300px;height: 100px;">
+                  <img :src="ticket.Ticket_Picture" alt="" style="width: 300px;height: 100px;">
                   <div class="ticket-saler">
-                    <img :src="ticket.salerImg" alt="" @mouseover="ticket.salerShow = 1" @mouseout="ticket.salerShow = 0">
+                    <img :src="ticket.User_Picture" alt="" @mouseover="ticket.saler_Show = 1" @mouseout="ticket.saler_Show = 0">
                     <div class="saler-info" v-if="ticket.salerShow == 1">
-                      售票人：{{ticket.salerName}}({{ticket.salerPhone}})
+                      售票人：{{ticket.User_Name}}({{ticket.User_Phone}})
                     </div>
                   </div>
                   <div class="ticket-info">
-                    <span class="ticket-time">{{ticket.time}}</span>
-                    <span class="ticket-price">￥{{ticket.price}}元</span>
+                    <span class="ticket-time">{{ticket.Ticket_Time}}</span>
+                    <span class="ticket-price">￥{{ticket.UserTicket_Price}}元</span>
+                    <span calss="ticket-number">剩{{ticket.UserTicket_Count}}张</span>
                   </div>
                 </div>
               </div>
@@ -140,10 +142,10 @@
           </div>
         </div>
         <!-- 侧边栏 -->
-        <div class="aside">
-          <div class="aside-content">
+        <!-- <div class="aside">
+          <div class="aside-content"> -->
             <!-- 相关资讯 -->
-            <div class="about-news">
+            <!-- <div class="about-news">
               <h3>相关资讯</h3>
               <div class="news-content">
                 <ul>
@@ -155,10 +157,10 @@
                   <li>相关资讯６</li>
                 </ul>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </div> -->
+          <!-- </div>
+        </div> -->
+      <!-- </div> -->
     </div>
     <!-- 页脚 -->
     <div class="footer">

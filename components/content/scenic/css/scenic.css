@@ -241,6 +241,7 @@
 .scenic-ticket .ticket-container .ticket-content{
   position: relative;
   width: 300px;
+  margin-left: 20px;
   float: left;
 }
 .ticket-content .ticket-saler{

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>tourplace-user</title>
+  <style>
+  .icon {
+     width: 3em; height: 3em;
+     vertical-align: -0.15em;
+     fill: currentColor;
+     overflow: hidden;
+  }
+  </style>
+  <link rel="stylesheet" href="/tourplace/components/content/user/css/user.css">
+</head>
+<body>
+  <div id="container">
+    <!-- 顶部导航栏 -->
+    <div class="header">
+      <div class="navbar">
+        <!-- logo展示 -->
+        <div class="logo nav">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-travel-copy"></use>
+          </svg>
+          <a href="/tourplace/components/content/index/index.html">Tourplace</a>
+        </div>
+        <!-- 定位选择 -->
+        <div class="place nav" @click="placeSelect=!placeSelect" >
+          <svg class="icon" aria-hidden="true" style="width: 1.5em; height: 1.5em">
+            <use xlink:href="#icon-location"></use>
+          </svg>
+          <span>定位</span>
+        </div>
+        <!-- 主要导航 -->
+        <div class="index-nav nav">
+          <a href="/tourplace/components/content/index/index.html?nowPage=1">首页</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=2">景区</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=3">榜单</a>
+          <a href="/tourplace/components/content/index/index.html?nowPage=4">热点</a>
+        </div>
+        <!-- 关于我们 -->
+        <div class="about nav">
+          <svg class="icon" aria-hidden="true" style="width: 1.5em; height: 1.5em">
+            <use xlink:href="#icon-guanyuwomen"></use>
+          </svg>
+          关于我们
+        </div>
+        <!-- 搜索 -->
+        <div class="search nav">
+          <input type="text" placeholder="输入景区/用户/门票">
+            <svg class="icon search-icon" aria-hidden="true">
+              <use xlink:href="#icon-sou"></use>
+            </svg>
+        </div>
+        <!-- 用户 -->
+        <div class="user nav">
+          <img class="avator" :src="user.User_Picture" alt="">
+          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user.User_Name}}</a>
+        </div>
+      </div>
+
+    </div>
+    <!-- 内容 -->
+    <div class="content">
+      <div class="information">
+        <div class="left-nav">
+          <ul>
+            <li @click="nowCard = 1">个人信息</li>
+            <li @click="nowCard = 2;getOrder(0)">我的订单</li>
+            <li @click="nowCard = 3">我的仓库</li>
+            <li v-if="user.User_Type == 1" @click="nowCard = 4">我的景区</li>
+          </ul>
+        </div>
+        <div class="right-content">
+          <div class="user-information infor" v-if="nowCard == 1">
+            <div class="cont">
+              <div class="title">
+                <img :src="user.User_Picture" alt="" style="width: 80px;height: 80px;float: left;margin-right: 20px;">
+                <div class="Name">昵称：<input type="text" :value="user.User_Name"></div>
+                <div class="Sex">性别：<input type="radio" name="sex" @click="user.User_Sex=0">男　<input type="radio" name="sex" @click="user.User_Sex=1">女</div>
+                <div class="ID">用户ID: <span>{{user.User_ID}}</span></div>
+              </div>
+              <div class="cont-body">
+                <div class="Password">用户密码：<input type="password" :value="user.User_Password"></div>
+                <div class="Phone">联系方式：<input type="text" :value="user.User_Phone"></div>
+                <div class="TrueName">真实姓名：<input type="text" :value="user.User_Truename"></div>
+                <div class="IDCard">身份证：<input type="text" style="margin-left: 15px;" :value="user.User_IDCard"></div>
+                <div class="Birthday">用户生日：<input type="text" :value="user.User_Birthday"></div>
+                <div class="Type">用户类型：<span>{{user.User_Type==0?"普通用户":"景区管理员"}}</span></div>
+                <div class="Level">用户等级：<span>{{user.User_Level}}</span></div>
+                <div class="Intro">用户介绍：<input type="text" :value="user.User_Intro"></div>
+              </div>
+              <button class="edit-user" style="width: 60px;
+              height: 30px;border-radius: 10px;
+              background-color: rgb(235, 203, 151);
+              margin-top:20px;margin-bottom: 20px;
+              outline: none;color: rgb(71, 71, 71)" @click="editUser()">修改</button>
+            </div>
+          </div>
+          <div class="order-information infor" v-if="nowCard == 2">
+            <div class="cont">
+              <div class="order-select">
+                <ul>
+                  <li :class="orderType==1?'active':''" @click="orderType=1">待付款订单</li>
+                  <li :class="orderType==2?'active':''" @click="orderType=2">已完成订单</li>
+                </ul>
+              </div>
+              <div class="orders">
+                <div class="order-body">
+                  <div class="orderID">订单号：<span>0001</span></div>
+                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
+                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
+                  <div class="TicketTime">交易时间：</div>
+                  <div>2017/05/31 23：20：15</div>
+                  <button class="pay" v-if="orderType==1">付款</button>
+                </div>
+                <div class="order-body">
+                  <div class="orderID">订单号：<span>0001</span></div>
+                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
+                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
+                  <div class="TicketTime">交易时间：</div>
+                  <div>2017/05/31 23：20：15</div>
+                  <button class="pay" v-if="orderType==1">付款</button>
+                </div>
+                <div class="order-body">
+                  <div class="orderID">订单号：<span>0001</span></div>
+                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
+                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
+                  <div class="TicketTime">交易时间：</div>
+                  <div>2017/05/31 23：20：15</div>
+                  <button class="pay" v-if="orderType==1">付款</button>
+                </div>
+                <div class="order-body">
+                  <div class="orderID">订单号：<span>0001</span></div>
+                  <div class="ScenicName">景区：<span>泰山风景旅游区</span></div>
+                  <div class="TicketTime">门票时间：<span>2017/05/31</span></div>
+                  <div class="TicketTime">交易时间：</div>
+                  <div>2017/05/31 23：20：15</div>
+                  <button class="pay" v-if="orderType==1">付款</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ticket-information infor" v-if="nowCard == 3">
+            <div class="cont">
+              <div class="ticket-select">
+
+              </div>
+              <div class="tickets">
+                <div class="ticket-body">
+                  <img src="" alt="">
+                  <div class="ticket-info">
+                    <span class="scenic">泰山风景区</span>
+                    <span class="time">2017/6/1</span>
+                    <span class="number"><span>50</span>张</span>
+                    <span>出售中</span>
+                  </div>
+                  <div class="sale">
+                    上架
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scenic-information infor" v-if="nowCard == 4">
+            <div class="cont">
+              <div class="scenic-title">
+                <img src="" alt="" style="width: 232px;height: 322px;float: left">
+                <div class="title-body">
+                  <h2>泰山旅游风景区</h2>
+                  <div>景区ID: <span>00000001</span></div>
+                  <div>景区水平: <span>5A</span>级</div>
+                  <div>景区许可证: <input type="text" value="00000000000"></div>
+                  <div>景区详细地址: <input type="text" value="山东省泰安市xx街道"></div>
+                  <div>景区介绍: <span>阿三大赛大赛</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="http://at.alicdn.com/t/font_rwavjqfqgs0pb9.js"></script>
+  <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
+  <script src="/tourplace/components/node_modules/jquery/dist/jquery.js"></script>
+  <script src="/tourplace/components/content/user/js/user.js"></script>
+</body>
+</html>

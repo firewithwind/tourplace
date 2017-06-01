@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-27 20:32:20
+Date: 2017-05-31 17:29:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,6 +47,8 @@ CREATE TABLE `city` (
 -- ----------------------------
 -- Records of city
 -- ----------------------------
+INSERT INTO `city` VALUES ('00000000', '泰安市', '00000000');
+INSERT INTO `city` VALUES ('00000001', '黄山市', '00000001');
 
 -- ----------------------------
 -- Table structure for `order`
@@ -54,6 +56,7 @@ CREATE TABLE `city` (
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `Order_ID` char(8) NOT NULL COMMENT '订单编号',
+  `Ticket_ID` char(8) NOT NULL,
   `User_ID1` char(8) NOT NULL COMMENT '卖方用户ID',
   `User_ID2` char(8) NOT NULL COMMENT '买方用户ID',
   `Order_Time` int(8) NOT NULL COMMENT '订单生成时间',
@@ -62,6 +65,8 @@ CREATE TABLE `order` (
   PRIMARY KEY (`Order_ID`),
   KEY `User_ID1` (`User_ID1`) USING BTREE,
   KEY `User_ID2` (`User_ID2`) USING BTREE,
+  KEY `Ticket_ID1` (`Ticket_ID`),
+  CONSTRAINT `Ticket_ID1` FOREIGN KEY (`Ticket_ID`) REFERENCES `ticket` (`Ticket_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `User_ID1` FOREIGN KEY (`User_ID1`) REFERENCES `user` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `User_ID2` FOREIGN KEY (`User_ID2`) REFERENCES `user` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -84,6 +89,8 @@ CREATE TABLE `province` (
 -- ----------------------------
 -- Records of province
 -- ----------------------------
+INSERT INTO `province` VALUES ('00000001', '安徽省');
+INSERT INTO `province` VALUES ('00000000', '山东省');
 
 -- ----------------------------
 -- Table structure for `scenic`
@@ -99,6 +106,7 @@ CREATE TABLE `scenic` (
   `Scenic_Adress` varchar(200) NOT NULL COMMENT '景点地点',
   `Scenic_Phone` varchar(20) NOT NULL COMMENT '景点联系方式',
   `Scenic_Level` varchar(5) NOT NULL COMMENT '景点星级（A~AAAAA）',
+  `Scenic_Vedio` varchar(100) NOT NULL COMMENT '景区宣传视屏链接',
   `Scenic_License` char(8) NOT NULL COMMENT '景区许可证（官方用户注册时填写）',
   PRIMARY KEY (`Scenic_ID`),
   KEY `City_ID` (`City_ID`) USING BTREE,
@@ -110,6 +118,8 @@ CREATE TABLE `scenic` (
 -- ----------------------------
 -- Records of scenic
 -- ----------------------------
+INSERT INTO `scenic` VALUES ('00000000', 'tourplace/img/scenicindex/taishan.jpg', '泰山', '\r\n泰山风景名胜区（Mount tai scenic spot）：世界自然与文化遗产，世界地质公园，国家AAAAA级旅游景区，国家级风景名胜区，全国重点文物保护单位，中华国山，中国非物质文化遗产，全国文明风景旅游区，中国书法第一山。\r\n泰山又名岱山、岱宗、岱岳、东岳、泰岳，位于山东省中部，隶属于泰安市，绵亘于泰安、济南、淄博三市之间，总面积24200公顷。主峰玉皇顶海拔1545米，气势雄伟磅礴，有“五岳之首”、“五岳之长”、“天下第一山”之称。\r\n泰山被古人视为“直通帝座”的天堂，成为百姓崇拜，帝王告祭的神山，有“泰山安，四海皆安”的说法。自秦始皇开始到清代，先后有13代帝王引次亲登泰山封禅或祭祀，另外有24代帝王遣官祭祀72次。\r\n古代文人雅士更对泰山仰慕备至，纷纷前来游历，作诗记文。泰山宏大的山体上留下了20余处古建筑群，2200余处碑碣石刻。道教、佛教视泰山为“仙山佛国”，神化泰山，在泰山建造了大量宫观寺庙。经石峪的《金刚经》石刻，闻名中外。\r\n泰山风景以壮丽著称。重叠的山势，厚重的形体，苍松巨石的烘托，云烟的变化，使它在雄浑中兼有明丽，静穆中透着神奇。自然的泰山，彰显着自然的神奇；文化的泰山，印证着文化的神圣。\r\n泰山是中华民族的象征，是灿烂东方文化的缩影，是“天人合一”思想的寄托之地，是中华民族精神的家园。\r\n泰山风景名胜区（Mount tai scenic spot）：世界自然与文化遗产，世界地质公园，国家AAAAA级旅游景区，国家级风景名胜区，全国重点文物保护单位，中华国山，中国非物质文化遗产，全国文明风景旅游区，中国书法第一山。\r\n泰山又名岱山、岱宗、岱岳、东岳、泰岳，位于山东省中部，隶属于泰安市，绵亘于泰安、济南、淄博三市之间，总面积24200公顷。主峰玉皇顶海拔1545米，气势雄伟磅礴，有“五岳之首”、“五岳之长”、“天下第一山”之称。\r\n泰山被古人视为“直通帝座”的天堂，成为百姓崇拜，帝王告祭的神山，有“泰山安，四海皆安”的说法。自秦始皇开始到清代，先后有13代帝王引次亲登泰山封禅或祭祀，另外有24代帝王遣官祭祀72次。\r\n古代文人雅士更对泰山仰慕备至，纷纷前来游历，作诗记文。泰山宏大的山体上留下了20余处古建筑群，2200余处碑碣石刻。道教、佛教视泰山为“仙山佛国”，神化泰山，在泰山建造了大量宫观寺庙。经石峪的《金刚经》石刻，闻名中外。\r\n泰山风景以壮丽著称。重叠的山势，厚重的形体，苍松巨石的烘托，云烟的变化，使它在雄浑中兼有明丽，静穆中透着神奇。自然的泰山，彰显着自然的神奇；文化的泰山，印证着文化的神圣。\r\n泰山是中华民族的象征，是灿烂东方文化的缩影，是“天人合一”思想的寄托之地，是中华民族精神的家园。\r\n', '00000000', '00000000', '山东省泰安市泰山区红门路', '0538-8066666', 'AAAAA', 'http://www.iqiyi.com/w_19rr0voutd.html', '00000000');
+INSERT INTO `scenic` VALUES ('00000001', 'tourplace/img/scenicindex/taishan.jpg', '黄山', '黄山：世界文化与自然双重遗产，世界地质公园，国家AAAAA级旅游景区，国家级风景名胜区，全国文明风景旅游区示范点，中华十大名山，天下第一奇山。\r\n黄山位于安徽省南部黄山市境内，有72峰，主峰莲花峰海拔1864米，与光明顶、天都峰并称三大黄山主峰，为36大峰之一。黄山是安徽旅游的标志，是中国十大风景名胜唯一的山岳风光。\r\n黄山原名“黟山”，因峰岩青黑，遥望苍黛而名。后因传说轩辕黄帝曾在此炼丹，故改名为“黄山”。黄山代表景观有“四绝三瀑”，四绝：奇松、怪石、云海、温泉；三瀑：人字瀑、百丈泉、九龙瀑。黄山迎客松是安徽人民热情友好的象征，承载着拥抱世界的东方礼仪文化。\r\n明朝旅行家徐霞客登临黄山时赞叹：“薄海内外之名山，无如徽之黄山。登黄山，天下无山，观止矣！”被后人引申为“五岳归来不看山，黄山归来不看岳”。', '00000001', '00000001', '安徽省黄山市黄山区', '0559-2580880', 'AAAAA', 'http://www.iqiyi.com/w_19rr9ynsmh.html', '00000001');
 
 -- ----------------------------
 -- Table structure for `ticket`
