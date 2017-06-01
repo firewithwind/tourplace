@@ -146,9 +146,9 @@ function IFGET($request_data){
 				$i++;
 		}
 	}
-	$sql.=" FROM `tourplace`.`user` join `tourplace`.`user-ticket` ON `user`.`User_ID`=`user-ticket`.`User_ID`,
-		`tourplace`.`ticket` join `tourplace`.`user-ticket` ON `ticket`.`Ticket_ID`=`user-ticket`.`Ticket_ID`,
-		`tourplace`.`scenic` join `tourplace`.`ticket` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID`";
+	$sql.=" FROM `tourplace`.`user` join `tourplace`.`user-ticket` ON `user`.`User_ID`=`user-ticket`.`User_ID` 
+		join `tourplace`.`ticket` ON `ticket`.`Ticket_ID`=`user-ticket`.`Ticket_ID` 
+		join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID`";
 	if($request_data['Type']==0){
 		if(empty($request_data['Search']['Ticket_ID'])){
 			$sql.="WHERE `tourplace`.`user`.`User_ID`='$userid'";
@@ -174,7 +174,7 @@ function IFGET($request_data){
 			$Suserid=$request_data['Search']['User_ID'];
 			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
-		}else if(empty($request_data['Search']['Ticket_Type']){
+		}else if(empty($request_data['Search']['Ticket_Type'])){
 			$ticketid=$request_data['Search']['Ticket_ID'];
 			$Suserid=$request_data['Search']['User_ID'];
 			$scenicid=$request_data['Search']['Scenic_ID'];

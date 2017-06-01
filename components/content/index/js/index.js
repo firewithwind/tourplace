@@ -67,6 +67,7 @@ new Vue({
   methods: {
     init(){
       this.getLocationScenic()
+      this.getScenicVedio()
     },
     gotolast: function(){
       if(this.showPic === 0){
@@ -251,29 +252,27 @@ new Vue({
     setInterval(function(){
       self.gotonext()
     },6000)
-    self.userID = self.getQueryString("id")
-    if(self.userID != ''){
-      $.get('/tourplace/src/user.php',{
-        Type: 0,
-        Key: 'User_Name',
-        Page: 1,
-        PageSize: 1,
-        Search: {
-          User_ID: self.userID
-        }
-      })
-      .done(function(response){
-        res = JSON.parse(response)
-        if(res.Type == 0){
-          self.user = res.Result[0].User_Name
-        }else{
-          alert("出错了" + res.Result.Errmsg)
-        }
-      })
-      .fail(function(response){
-        alert("发生了未知的错误")
-      })
-    }
+    $.get('/tourplace/src/user.php',{
+      Type: 0,
+      Key: 'User_ID+User_Name',
+      Page: 1,
+      PageSize: 1,
+      Search: {
+        User_ID: ''
+      }
+    })
+    .done(function(response){
+      res = JSON.parse(response)
+      if(res.Type == 0){
+        self.userID = res.Result[0].User_ID
+        self.user = res.Result[0].User_Name
+      }else{
+        alert("出错了" + res.Result.Errmsg)
+      }
+    })
+    .fail(function(response){
+      alert("发生了未知的错误")
+    })
     self.init()
   }
 })

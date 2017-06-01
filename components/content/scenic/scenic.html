@@ -13,6 +13,7 @@
        overflow: hidden;
     }
   </style>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
   <link rel="stylesheet" href="/tourplace/components/content/scenic/css/scenic.css">
 </head>
 <body>
@@ -136,6 +137,28 @@
                     <span class="ticket-price">￥{{ticket.UserTicket_Price}}元</span>
                     <span calss="ticket-number">剩{{ticket.UserTicket_Count}}张</span>
                   </div>
+                  <div class="ticket-buy" @click="ticket.buy = 1">
+                    购买
+                  </div>
+                  <div class="buyDialog" v-if="ticket.buy == 1">
+                    <div class="buytitle">确认购买信息</div>
+                    <div class="order">
+                      <div class="buy-info">购买物品: <span>{{Scenic.Scenic_Name}}门票</span></div>
+                      <div class="buy-info">物品ID： <span>{{ticket.Ticket_ID}}</span></div>
+                      <div class="buy-info">售票人： <span>{{ticket.User_Name}}</span></div>
+                      <div class="buy-info">有效期至： <span>{{ticket.Ticket_Time}}</span></div>
+                      <div class="buy-info">单价： <span>{{ticket.UserTicket_Price}}</span></div>
+                      <div style="margin-top:15px;">数量：
+                      <template >
+                        <el-input-number v-model="Order_Count" size="small" :min="1" :max="ticket.UserTicket_Count"></el-input-number>
+                      </template>
+                      </div>
+                      <div class="ensure">
+                        <button style="background-color:#fa3140;color:#ffffff" @click="addOrder(ticket.Ticket_ID,ticket.User_ID);ticket.buy=0">下单</button>
+                        <button style="margin-left: 10px;" @click="ticket.buy=0">取消</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -166,6 +189,7 @@
   </div>
   <script src="http://at.alicdn.com/t/font_rwavjqfqgs0pb9.js"></script>
   <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="/tourplace/components/node_modules/jquery/dist/jquery.js"></script>
   <script src="/tourplace/components/content/scenic/js/scenic.js"></script>
 </body>

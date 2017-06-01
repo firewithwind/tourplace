@@ -214,6 +214,7 @@
   border: 2px solid rgb(149, 149, 149);
   border-radius: 20px;
   margin-left: 30px;
+  cursor: pointer;
 }
 .content .information .infor .cont .order-select ul li.active{
   background-color: rgb(251, 68, 35);

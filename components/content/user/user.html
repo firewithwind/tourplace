@@ -70,8 +70,8 @@
           <ul>
             <li @click="nowCard = 1">个人信息</li>
             <li @click="nowCard = 2;getOrder(0)">我的订单</li>
-            <li @click="nowCard = 3">我的仓库</li>
-            <li v-if="user.User_Type == 1" @click="nowCard = 4">我的景区</li>
+            <li @click="nowCard = 3;getTicket(0)">我的仓库</li>
+            <li v-if="user.User_Type == 1" @click="nowCard=4;getScenic()">我的景区</li>
           </ul>
         </div>
         <div class="right-content">

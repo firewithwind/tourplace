@@ -217,6 +217,16 @@ function IFGET($request_data){
 			$sql.=" AND `Scenic_Type`='$scenictype'";
 		}
 		nextstep($request_data,$sql);
+	}else if($request_data['Type']==4){
+		$id=$request_data['Search']['User_ID'];
+		if(empty($request_data['Search']['User_ID'])){
+			$id=$_SESSION['User_ID'];
+		}else{
+			$id=$request_data['Search']['User_ID'];
+		}
+		$sql1="SELECT `Scenic_ID1` FROM `tourplace`.`user` WHERE `User_ID`='$id'";
+		$sql.=" FROM `tourplace`.`scenic` WHERE `Scenic_ID` IN(".$sql1.")";
+		nextstep($request_data,$sql);
 	}else{
 		echo json_encode(array('Type'=>1,'Size'=>0,'sumSize'=>0,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}
@@ -247,30 +257,6 @@ function nextstep($request_data,$sql){
 function getID(){
 	if(!@$f=fopen("ID_Record\Scenic_ID.txt","r")){
 		$ID_0=1;
-		$ff=fopen("ID_Record\Scenic_ID.txt","w");
-		fwrite($ff,$ID_0);
-		fclose($ff);
-	}else{
-		$ID_0=fgets($f,10);
-		fclose($f);
-		$ID_0++;
-		$ff=fopen("ID_Record\Scenic_ID.txt","w");
-		fwrite($ff,$ID_0);
-		fclose($ff);
-	}
-	if(strlen($ID_0)>8)/*idÒÑÂú*/
-		return '99999999';
-	else{
-		$num=8-strlen($ID_0);
-		while($num>0){
-			$ID_0='0'.$ID_0;
-			$num--;
-		}
-		return $ID_0;
-	}
-}
-
-?>
 		$ff=fopen("ID_Record\Scenic_ID.txt","w");
 		fwrite($ff,$ID_0);
 		fclose($ff);

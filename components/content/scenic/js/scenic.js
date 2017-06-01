@@ -8,8 +8,9 @@ new Vue({
     user: '请登入',
     Scenic: {},
     ScenicID: '',
-    ScenicEnglishName: 'Mount tai scenic spot',
-    tickets: []
+    ScenicEnglishName: '',
+    tickets: [],
+    Order_Count: 1
   },
   methods: {
     init: function(){
@@ -56,7 +57,8 @@ new Vue({
           if(res.Type == 0){
             self.tickets = res.Result
             for(var i in self.tickets){
-              i.salerShow = 0
+              self.tickets[i].salerShow = 0
+              self.tickets[i].buy = 0
             }
           }else{
             alert("出错了:"+res.Result.Errmsg)
@@ -92,6 +94,30 @@ new Vue({
         }
       })
       .fail(function(response){
+        alert("发生了未知的错误")
+      })
+    },
+    addOrder: function(id, UserID){
+      var self = this
+      $.ajax({
+        url: '/tourplace/src/order.php',
+        type: 'POST',
+        data:{
+          User_ID2: UserID,
+          Ticket_ID: id,
+          Order_Time: '',
+          Order_Count: self.Order_Count
+        }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          alert("下单成功，可取我的订单中查看或支付")
+        }else{
+          alert("出错了: " + res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
         alert("发生了未知的错误")
       })
     }

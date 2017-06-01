@@ -61,7 +61,7 @@ function IFDELETE($request_data){
 		$userid1=$_SESSION['User_ID'];
 		$sql="DELETE FROM `tourplace`.`order` WHERE `order`.`User_ID1`='$userid1'";
 		mysql_query($sql);
-		echo json_encode(array('Type'=>0,'Result'=>"")));
+		echo json_encode(array('Type'=>0,'Result'=>""));
 	}else{
 		$orderid=$request_data['Order_ID'];
 		$sql="SELECT * FROM `tourplace`.`order` WHERE `Order_ID`='$orderid'";
@@ -72,7 +72,7 @@ function IFDELETE($request_data){
 		}else{
 			$sql="DELETE FROM `tourplace`.`order` WHERE `order`.`Order_ID`='$orderid'";
 			mysql_query($sql);
-			echo json_encode(array('Type'=>0,'Result'=>"")));
+			echo json_encode(array('Type'=>0,'Result'=>""));
 		}
 	}
 }
@@ -110,33 +110,33 @@ function IFGET($request_data){
 				$i++;
 		}
 	}
-	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1`,
-		`tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID2`,
-		`tourplace`.`order` join `tourplace`.`ticket` ON `order`.`Ticket_ID`=`ticket`.`Ticket_ID`,
-		`tourplace`.`ticket` join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID`";
+	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1` 
+		join `tourplace`.`ticket` ON `order`.`Ticket_ID`=`ticket`.`Ticket_ID` 
+		join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID` 
+		join `tourplace`.`user2` ON `order`.`User_ID2`=`user2`.`User_ID`";
 	if($request_data['Type']==0){
 		if(!empty($request_data['Search']['Order_ID'])){
 			$orderid=$request_data['Search']['Order_ID'];
-			$sql.="WHERE `tourplace`.`order`.`Order_ID`='$orderid'";
+			$sql.=" WHERE `tourplace`.`order`.`Order_ID`='$orderid'";
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==1){
 		if(empty($request_data['Search']['User_ID'])){
 			$userid=$request_data['Search']['User_ID'];
-			$sql.="WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
 		}else{
 			$userid=$_SESSION['User_ID'];
-			$sql.="WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==2){
 		if(empty($request_data['Search']['Order_State'])){
 			$userid=$_SESSION['User_ID'];
-			$sql.="WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
 		}else{
-			$orderstate=$request_data['Search']['Order_State']
-			$sql.="WHERE `tourplace`.`order`.`User_ID1`='$userid'";
-			$sql.=" AND `tourplace`.`order`.`Order_State`=$orderstate'"
+			$orderstate=$request_data['Search']['Order_State'];
+			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" AND `tourplace`.`order`.`Order_State`=$orderstate'";
 		}
 		nextstep($request_data,$sql);
 	}else{
@@ -162,6 +162,7 @@ function nextstep($request_data,$sql){
 			$finalresult[]=$result[$pre+$finalcount];
 			$finalcount++;
 		}
+		echo $sql;
 		echo json_encode(array('Type'=>0,'Size'=>$finalcount,'Result'=>$finalresult));
 	}
 }
