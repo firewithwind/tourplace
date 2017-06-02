@@ -123,23 +123,51 @@ function IFPUT($request_data){
 			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.Do not have enough goods!")));
 		}else{
 			if($rs['UserTicket_Count']==$ticketcount){
-				$sql="UPDATE `tourplace`.`user-ticket` SET 
-					`User_ID`='$userid',
+				$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$targettype'";
+				$rs1=mysql_fetch_array(mysql_query($sql));
+				$count=count($rs1['UserTicket_Count']);
+				if($count==0){
+					$sql="INSERT INTO `tourplace`.`user-ticket`(`User_ID`,`UserTicket_Price`,
+					`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`)
+					VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$targettype')";
+					mysql_query($sql);
+				}else{
+					$he=$rs1['UserTicket_Count']+$ticketcount;
+					$sql="UPDATE `tourplace`.`user-ticket` SET 
 					`UserTicket_Price`='$ticketprice',
-					`UserTicket_Count`='$ticketcount',
-					`Ticket_ID`='$ticketid',
-					`UserTicket_Type`='$targettype'
-				WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$tickettype'";
+					`UserTicket_Count`='$he' 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$targettype'";
+					mysql_query($sql);
+				}
+				$sql="DELETE FROM `tourplace`.`user-ticket` 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$tickettype'";
+				mysql_query($sql);
 			}else{
+				$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$targettype'";
+				$rs1=mysql_fetch_array(mysql_query($sql));
+				$count=count($rs1['UserTicket_Count']);
+				if($count==0){
+					$sql="INSERT INTO `tourplace`.`user-ticket`(`User_ID`,`UserTicket_Price`,
+					`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`)
+					VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$targettype')";
+					mysql_query($sql);
+				}else{
+					$he=$rs1['UserTicket_Count']+$ticketcount;
+					$sql="UPDATE `tourplace`.`user-ticket` SET 
+					`UserTicket_Price`='$ticketprice',
+					`UserTicket_Count`='$he' 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$targettype'";
+					mysql_query($sql);
+				}
 				$cha=$rs['UserTicket_Count']-$ticketcount;
-				$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha' 
+				$sql="UPDATE `tourplace`.`user-ticket` SET 
+				`UserTicket_Price`='$ticketprice',
+				`UserTicket_Count`='$cha' 
 				WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$tickettype'";
 				mysql_query($sql);
-				$sql="INSERT INTO `tourplace`.`user-ticket`
-				(`User_ID`,`UserTicket_Price`,`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`) 
-				VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$targettype')";
 			}
-			mysql_query($sql);
 			echo json_encode(array('Type'=>0,'Result'=>""));
 		}
 	}else{

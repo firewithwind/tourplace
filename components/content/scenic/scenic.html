@@ -68,6 +68,7 @@
         <div class="user nav" :value="userID" @click="loginORuser()">
           <img class="avator" :src="userPicture" alt="">
           <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
+          <span style="color: rgb(193, 193, 193);cursor: pointer" @click="loginOut()">|注销</span>
         </div>
       </div>
     </div>

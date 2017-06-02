@@ -68,6 +68,7 @@
         <div class="user nav" :value="userID" @click="loginORuser()">
           <img class="avator" :src="userPicture" alt="">
           <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
+          <span style="color: rgb(193, 193, 193);cursor: pointer" @click="loginOut()">|注销</span>
         </div>
       </div>
     </div>
@@ -247,22 +248,22 @@
                 <!-- 主体 -->
                 <div class="panel-content">
                   <dl class="scenic-list">
-                    <dd v-for="locationScenic,i in locationScenics">
-                      <div class="scenic-item">
-                        <a :href="locationScenicUrls[i]" style="text-decoration: none">
-                          <div class="scenic-poster">
-                            <img :src="locationScenic.Scenic_Picture" alt="">
-                            <div class="scenic-shadow"></div>
-                            <div class="scenic-name">
-                              {{locationScenic.Scenic_Name}}
+                      <dd v-for="locationScenic,i in locationScenics">
+                        <div class="scenic-item">
+                          <a :href="locationScenicUrls[i]" style="text-decoration: none">
+                            <div class="scenic-poster">
+                              <img :src="locationScenic.Scenic_Picture" alt="">
+                              <div class="scenic-shadow"></div>
+                              <div class="scenic-name">
+                                {{locationScenic.Scenic_Name}}
+                              </div>
                             </div>
+                          <div class="buyTicket">
+                            购票
                           </div>
-                        <div class="buyTicket">
-                          购票
+                        </a>
                         </div>
-                      </a>
-                      </div>
-                    </dd>
+                      </dd>
                   </dl>
                 </div>
               </div>

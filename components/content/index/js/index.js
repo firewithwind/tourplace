@@ -151,12 +151,15 @@ new Vue({
     getInterScenic(){
       var self = this
       $.get('/tourplace/src/scenic.php',{
-        Type: 0,
+        Type: 3,
         Keys: "Scenic_ID+Scenic_Name+Scenic_Picture+Scenic_Intro",
         Page: 1,
         PageSize: 10,
         Search: {
-          Scenic_ID: ''
+          Province_ID: '',
+          City_ID: '',
+          Scenic_Level: '',
+          Scenic_Type: 8
         }
       })
       .done(function(response){
@@ -265,6 +268,27 @@ new Vue({
       }else{
         window.location = '/tourplace/components/content/user/user.html?id='+self.userID+'&card=1'
       }
+    },
+    loginOut: function(){
+      $.ajax({
+          url: '/tourplace/src/login.php',
+          type: 'DELETE',
+          data: {
+            Type: 0,
+            User_ID: ''
+          }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          window.location = '/tourplace/components/content/login/login.html'
+        }else{
+          alert(res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("注销失败 ，请检查网络设置")
+      })
     }
   },
   mounted: function(){

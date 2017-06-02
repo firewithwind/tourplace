@@ -308,6 +308,27 @@ new Vue({
       .fail(function(){
         alert("发生了未知的错误")
       })
+    },
+    loginOut: function(){
+      $.ajax({
+          url: '/tourplace/src/login.php',
+          type: 'DELETE',
+          data: {
+            Type: 0,
+            User_ID: ''
+          }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          window.location = '/tourplace/components/content/login/login.html'
+        }else{
+          alert(res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("注销失败 ，请检查网络设置")
+      })
     }
   },
   mounted: function(){

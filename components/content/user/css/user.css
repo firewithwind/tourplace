@@ -2,6 +2,24 @@
   margin: 0;
   padding: 0;
 }
+.slide-enter-active{
+  transition: all 1s;
+}
+.slide-enter, .slide-leave-active{
+  transform: translateX(50px);
+  opacity: 0;
+}
+.slide-leave-active{
+  transition: all .2s;
+}
+.regShow-enter-active, .regShow-leave-active{
+  transition: all .3s cubic-bezier(0.3, 0.3, 0.7, 1.5);
+}
+.regShow-enter, .regShow-leave-active{
+  transform: scale(0);
+  opacity: 0;
+}
+
 #newTicket{
   display: block;
   width: 200px;
@@ -71,7 +89,7 @@
   padding: 2px;
 }
 .navbar .index-nav{
-  margin-left: 40px;
+  margin-left: 20px;
 }
 .navbar .index-nav a{
   text-decoration: none;
@@ -90,7 +108,7 @@
   color: rgba(77, 77, 77, 0.99);
 }
 .navbar .about{
-  margin-left: 70px;
+  margin-left: 40px;
   color: rgba(77, 77, 77, 0.99);
   cursor: pointer;
 }

@@ -152,9 +152,10 @@ function IFPUT($request_data){
 				`User_Phone`='$aa6',
 				`User_Birthday`='$aa7',
 				`User_IDcard`='$aa8',
-				`User_Level`='$aa9',
-				`User_Picture`='$aa11' 
-				WHERE `User_ID`='$gID'";
+				`User_Level`='$aa9'";
+			if(!empty($request_data['Update']['User_File']))
+				$sql.=",`User_Picture`='$aa11'";
+			$sql.="WHERE `User_ID`='$gID'";
 			mysql_query($sql);
 			$sql="UPDATE `tourplace`.`user2` SET 
 				`User_Name`='$aa1',
@@ -165,9 +166,10 @@ function IFPUT($request_data){
 				`User_Phone`='$aa6',
 				`User_Birthday`='$aa7',
 				`User_IDcard`='$aa8',
-				`User_Level`='$aa9',
-				`User_Picture`='$aa11' 
-				WHERE `User_ID`='$gID'";
+				`User_Level`='$aa9'";
+			if(!empty($request_data['Update']['User_File']))
+				$sql.=",`User_Picture`='$aa11'";
+			$sql.="WHERE `User_ID`='$gID'";
 			mysql_query($sql);
 			echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$gID)));
 		}

@@ -2,6 +2,10 @@
   margin: 0px;
   padding: 0px;
 }
+dd{
+  transition: transform .5s;
+  transform: translateY(30px);
+}
 .block{
   width: 100%;
   text-align: center;
@@ -93,7 +97,7 @@
   color: rgba(77, 77, 77, 0.99);
 }
 .navbar .about{
-  margin-left: 70px;
+  margin-left: 40px;
   color: rgba(77, 77, 77, 0.99);
   cursor: pointer;
 }
