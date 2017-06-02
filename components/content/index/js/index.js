@@ -14,60 +14,24 @@ new Vue({
     user: '请登入',
     scenicNum: 0,
     userID: '',
+    userPicture: '/tourplace/img/user/00.jpg',
     scenicLevel: '',
     locationScenics: [],
     locationScenicUrls:[],
     ScenicVedios: [],
-    todayScenics: [
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      },
-      {
-        Scenic_Name: '泰山实干当',
-        Scenic_ID: ''
-      }
-    ],
+    todayScenics: [],
+    interScenics: [],
     ScenicList: [],
     scenicType: 0,
     ScenicListUrls: []
   },
   methods: {
     init(){
+      this.getPlace()
       this.getLocationScenic()
       this.getScenicVedio()
+      this.getTodayScenic()
+      this.getInterScenic()
     },
     gotolast: function(){
       if(this.showPic === 0){
@@ -162,9 +126,10 @@ new Vue({
       })
     },
     getTodayScenic(){
+      var self = this
       $.get('/tourplace/src/scenic.php',{
         Type: 0,
-        Keys: "Scenic_ID+Scenic_Name",
+        Keys: "Scenic_ID+Scenic_Name+Scenic_Picture",
         Page: 1,
         PageSize: 10,
         Search: {
@@ -175,6 +140,29 @@ new Vue({
         var res = JSON.parse(response)
         if(res.Type == 0){
           self.todayScenics = res.Result
+        }else{
+          alert("出错了"+res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("发生了未知的错误")
+      })
+    },
+    getInterScenic(){
+      var self = this
+      $.get('/tourplace/src/scenic.php',{
+        Type: 0,
+        Keys: "Scenic_ID+Scenic_Name+Scenic_Picture+Scenic_Intro",
+        Page: 1,
+        PageSize: 10,
+        Search: {
+          Scenic_ID: ''
+        }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          self.interScenics = res.Result
         }else{
           alert("出错了"+res.Result.Errmsg)
         }
@@ -216,7 +204,7 @@ new Vue({
     },
     getPlace: function(){
       var self = this
-      $.get('/tourplace/src/place.php',{
+      $.get('/tourplace/src/province.php',{
         Type: 0,
         Keys: 'Province_ID+Province_Name+Citys',
         Page: 1,
@@ -229,6 +217,11 @@ new Vue({
         var res = JSON.parse(response)
         if(res.Type == 0){
           self.places = res.Result
+          self.places.unshift({
+            Province_ID: '',
+            Province_Name: '全国',
+            Citys: []
+          })
         }else{
           alert("出错了+ " + res.Result.Errmsg)
         }
@@ -238,8 +231,9 @@ new Vue({
       })
     },
     find: function(){
-      var reg = new RegExp("/^d{8}$/")
-      if(reg.test(this.searchInfor)){
+      var self = this
+      var reg = new RegExp("[0-9]{8}")
+      if(reg.test(self.searchInfor)){
         window.location = "/tourplace/components/content/userother/userother.html?id="+self.searchInfor+"&card=1"
       }else{
         $.get('/tourplace/src/scenic.php',{
@@ -248,7 +242,7 @@ new Vue({
           Page: 1,
           PageSize: 1,
           Search: {
-            Scenic_Name: this.searchInfor
+            Scenic_Name: self.searchInfor
           }
         })
         .done(function(response){
@@ -260,7 +254,7 @@ new Vue({
           }
         })
         .fail(function(){
-          alert("发生了未知的错误")
+          alert("搜索信息有误")
         })
       }
     },
@@ -278,9 +272,10 @@ new Vue({
     setInterval(function(){
       self.gotonext()
     },6000)
+    self.init()
     $.get('/tourplace/src/user.php',{
       Type: 0,
-      Key: 'User_ID+User_Name',
+      Key: 'User_ID+User_Name+User_Picture',
       Page: 1,
       PageSize: 1,
       Search: {
@@ -292,6 +287,7 @@ new Vue({
       if(res.Type == 0){
         self.userID = res.Result[0].User_ID
         self.user = res.Result[0].User_Name
+        self.userPicture = res.Result[0].User_Picture
       }else{
         alert("出错了" + res.Result.Errmsg)
       }
@@ -299,6 +295,5 @@ new Vue({
     .fail(function(response){
       alert("发生了未知的错误")
     })
-    self.init()
   }
 })

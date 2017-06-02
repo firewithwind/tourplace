@@ -38,7 +38,7 @@
             <div class="province" v-for="place in places">
               <div class="provinceName"　@click="changeProvince(place.Province_ID,place.Province_Name)">{{place.Province_Name}}</div>
               <div class="city">
-                <span v-for="city in place.Citys" @click="changeCity(city.City_ID,city.City_Name,place.Province_ID)">{{city.cityName}}</span>
+                <span v-for="city in place.Citys" @click="changeCity(city.City_ID,city.City_Name,place.Province_ID)">{{city.City_Name}}</span>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
         </div>
         <!-- 用户 -->
         <div class="user nav" :value="userID" @click="loginORuser()">
-          <img class="avator" src="/tourplace/img/user/00.jpg" alt="">
+          <img class="avator" :src="userPicture" alt="">
           <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
         </div>
       </div>
@@ -113,7 +113,7 @@
                 <ul>
                   <li class="early first">
                     <i>1</i>
-                    <img src="" alt="" style="width: 128px; height: 80px;">
+                    <img :src="todayScenics[0].Scenic_Picture" alt="" style="width: 128px; height: 80px;">
                     <div class="pull-right" style="width: 232px;text-indent: 15px;">
                       <span>{{todayScenics[0].Scenic_Name}}</span>
                       <span style="color: #fa3140; display: block;margin-top: 20px;">2425454<span>人</span></span>
@@ -186,49 +186,49 @@
                 <ul>
                   <li class="first early">
                     <i>1</i>
-                    <img src="" alt="" style="width: 140px; height: 194px;">
+                    <img :src="interScenics[0].Scenic_Picture" alt="" style="width: 140px; height: 194px;">
                     <div class="pull-right" style="width: 200px;padding-top: 15px;">
-                      <span style="display: block">巴塞罗纳</span>
-                      <span style="display: block;margin-top: 15px;color: rgb(170, 169, 166);">巴塞罗纳是士大夫大黄蜂开得很法看到汇款方式的开发商的时间内没出息查</span>
+                      <span style="display: block">{{interScenics[0].Scenic_Name}}</span>
+                      <span style="display: block;margin-top: 15px;color: rgb(170, 169, 166);max-height:130px;overflow:hidden;font-size: 10px;">{{interScenics[0].Scenic_Intro}}</span>
                     </div>
                   </li>
                   <li class="second early pull-left">
                     <i>2</i>
-                    <img src="" alt="" style="width: 170px; height: 118px;">
-                    <span style="display: block;">罗纳尔多</span>
+                    <img :src="interScenics[1].Scenic_Picture" alt="" style="width: 170px; height: 118px;">
+                    <span style="display: block;">{{interScenics[1].Scenic_Name}}</span>
                   </li>
                   <li class="third early pull-left">
                     <i>3</i>
-                    <img src="" alt="" style="width: 170px; height: 118px;">
-                    <span style="display: block">密西西比河</span>
+                    <img :src="interScenics[2].Scenic_Picture" alt="" style="width: 170px; height: 118px;">
+                    <span style="display: block">{{interScenics[2].Scenic_Name}}</span>
                   </li>
                   <li class="others" style="margin-top: 170px;">
                     <i>4</i>
-                    <span>胡夫金字塔</span>
+                    <span>{{interScenics[3].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>5</i>
-                    <span>日本富士山</span>
+                    <span>{{interScenics[4].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>6</i>
-                    <span>科技界截</span>
+                    <span>{{interScenics[5].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>7</i>
-                    <span>日本富士山</span>
+                    <span>{{interScenics[6].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>8</i>
-                    <span>日本富士山</span>
+                    <span>{{interScenics[7].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>9</i>
-                    <span>日本富士山</span>
+                    <span>{{interScenics[8].Scenic_Name}}</span>
                   </li>
                   <li class="others">
                     <i>10</i>
-                    <span>日本富士山</span>
+                    <span>{{interScenics[9].Scenic_Name}}</span>
                   </li>
                 </ul>
               </div>
@@ -242,7 +242,7 @@
                 <!-- 头部 -->
                 <div class="panel-header">
                   <span class="title">本地推荐</span>
-                  <span class="pull-right clickToView">查看全部>></span>
+                  <span class="pull-right clickToView" @click="nowPage=2;getScenicList(1)">查看全部>></span>
                 </div>
                 <!-- 主体 -->
                 <div class="panel-content">

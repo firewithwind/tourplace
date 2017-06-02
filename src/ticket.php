@@ -32,7 +32,15 @@ function IFPOST($request_data){
 				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.The ticket ID is fulled!")));
 			}else{
 				$Time=$request_data['Data']['Ticket_Time'];
-				$Pic="/tourplace/img/user/11.png";
+				if(empty($request_data['Data']['Ticket_File'])){
+					$Pic="/tourplace/img/ticket/11.jpg";
+				}else{
+					$Pic="/tourplace/src/img/ticket/".$ID.".jpg";
+					$file=$request_data['Data']['Ticket_File'];
+					$base64_body=substr(strstr($file,','),1);
+					$data=base64_decode($base64_body);
+					file_put_contents("img/ticket/".$ID.".jpg",$data);
+				}
 				$sql="INSERT INTO `tourplace`.`ticket`(`Ticket_ID`,`Scenic_ID`,`Ticket_Picture`,`Ticket_Time`)
 				VALUES('$ID','$ScenicID','$Pic','$Time')";
 				mysql_query($sql);

@@ -81,7 +81,8 @@ order**[增](order_add)[删](order_delete)[改](order_change)[查](order_search)
         Order_Count: #订单数量，
         Ticket_ID: #门票ID,
         Scenic_ID: #对应景区Id,
-        Scenic_Name: #对应景区名称
+        Scenic_Name: #对应景区名称,
+        UserTicket_Price: #订单价格
       }* #若为空，则返回該字段的所有信息
       Search  <{
         {

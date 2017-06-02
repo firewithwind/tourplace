@@ -237,12 +237,14 @@
 }
 .scenic-ticket .ticket-container{
   margin-top: 20px;
+  position: relative;
 }
 .scenic-ticket .ticket-container .ticket-content{
   position: relative;
   width: 300px;
-  margin-left: 20px;
   float: left;
+  margin-left: 50px;
+  margin-top: 20px;
 }
 .ticket-content .ticket-saler{
   position: absolute;
@@ -286,44 +288,45 @@
   color: #ffffff;
   cursor: pointer;
 }
-.ticket-content .buyDialog{
+ .buyDialog{
   width: 400px;
   height: 400px;
   background-color: #ffffff;
   box-shadow: 0 0 2px rgb(62, 62, 62);
   position: absolute;
-  bottom: 200px;
+  bottom: -200px;
   left: 200px;
+  z-index: 999
 }
-.ticket-content .buyDialog .buytitle{
+ .buyDialog .buytitle{
   width: 100%;
   text-align: center;
   margin-top: 10px;
   font-size: 20px;
 }
-.ticket-content .buyDialog .order{
+ .buyDialog .order{
   width: 90%;
   margin: 10 auto 0;
   padding: 10px 20px;
 }
-.ticket-content .buyDialog .order .buy-info{
+ .buyDialog .order .buy-info{
   height: 30px;
   line-height: 30px;
   margin-top: 10px;
 }
-.ticket-content .buyDialog .order .ensure{
+ .buyDialog .order .ensure{
   margin-top: 40px;
   width: 100%;
   text-align: center;
 }
-.ticket-content .buyDialog .order .ensure button{
+ .buyDialog .order .ensure button{
   width: 50px;
   height: 30px;
   border: none;
   border-radius: 10px;
   outline: none;
 }
-.ticket-content .buyDialog .order .ensure button:active{
+ .buyDialog .order .ensure button:active{
   opacity: .5;
 }
 .content .aside{

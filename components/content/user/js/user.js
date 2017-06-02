@@ -5,6 +5,7 @@ new Vue({
     user: {
       User_Type: 1
     },
+    showorhidden: 'password',
     touxiang: '',
     orderType: 1,
     orders:[],
@@ -12,10 +13,14 @@ new Vue({
     ticketType: 0,
     tickets:[
     ],
+    changeType: 0,
+    changeIndex: 0,
+    changeTicket_Count: 0,
+    changeTicket_Price: 0,
     Scenic: {},
     newTicketTime: '',
     newTicket_Pic: '',
-    ticketPicture: {}
+    ticketPicture: '',
   },
   methods: {
     init: function(){
@@ -49,55 +54,73 @@ new Vue({
       return ''
     },
     changeUserPicture: function(docu){
+      var self = this
       var file = $("#touxiang")[0].files[0]
+      var fileReader = new FileReader()
       this.user.User_Picture = window.URL.createObjectURL(file)
-      this.touxiang = file
+      fileReader.onload = function(){
+        self.touxiang = fileReader.result
+      }
+      fileReader.readAsDataURL(file)
     },
     addTicketPicture: function(){
+      var self = this
       var file = $("#newTicket")[0].files[0]
+      var fileReader = new FileReader()
       this.newTicket_Pic = window.URL.createObjectURL(file)
-      this.ticketPicture = file
+      fileReader.onload = function(){
+        self.ticketPicture = fileReader.result
+
+      }
+      fileReader.readAsDataURL(file)
     },
     editUser: function(){
       var user = this.user
       var self = this
-      $.ajax({
-        url: '/tourplace/src/user.php',
-        type: 'PUT',
-        data: {
-          Type: 0,
-          User_ID: '',
-          Update: {
-            User_Name: self.user.User_Name,
-            User_Password: self.user.User_Password,
-            User_Truename: self.user.User_Truename,
-            User_Intro: self.user.User_Intro,
-            User_Sex: self.user.User_Sex,
-            User_Phone: self.user.User_Phone,
-            User_Birthday: self.user.User_Birthday,
-            User_IDcard: self.user.User_IDcard,
-            User_Level: self.user.User_Level,
-            User_File: self.touxiang
+      var reg = new RegExp("[0-9]{17}([0-9]|x|y)")
+      if(reg.test(self.user.User_IDcard)){
+        $.ajax({
+          url: '/tourplace/src/user.php',
+          type: 'PUT',
+          data: {
+            Type: 0,
+            User_ID: '',
+            Update: {
+              User_Name: self.user.User_Name,
+              User_Password: self.user.User_Password,
+              User_Truename: self.user.User_Truename,
+              User_Intro: self.user.User_Intro,
+              User_Sex: self.user.User_Sex,
+              User_Phone: self.user.User_Phone,
+              User_Birthday: self.user.User_Birthday,
+              User_IDcard: self.user.User_IDcard,
+              User_Level: self.user.User_Level,
+              User_File: self.touxiang
+            }
           }
-        }
-      })
-      .done(function(response){
-        var res = JSON.parse(response)
-        if(res.Type == 0){
-          alert("修改成功")
-          self.init()
-        }else{
-          alert("出错了: " + res.Result.Errmsg)
-        }
-      })
-      .fail(function(){
-        alert("发生了未知的错误")
-      })
+        })
+        .done(function(response){
+          var res = JSON.parse(response)
+          if(res.Type == 0){
+            alert("修改成功")
+            self.init()
+          }else{
+            alert("出错了: " + res.Result.Errmsg)
+          }
+        })
+        .fail(function(){
+          alert("发生了未知的错误")
+        })
+      }else{
+        alert("请输入正确的身份证号")
+      }
+
     },
     getOrder: function(type){
+      var self = this
       $.get('/tourplace/src/order.php',{
         Type: 2,
-        Keys: "Order_ID+Scenic_Name+Ticket_Time+Order_Time+Order_State",
+        Keys: "Order_ID+Scenic_Name+Ticket_Time+Order_Time+Order_State+Order_Price+User_Name2",
         Page: 1,
         PageSize: 0,
         Search: {
@@ -154,10 +177,8 @@ new Vue({
       .done(function(response){
         var res = JSON.parse(response)
         if(res.Type == 0){
+          self.changeType = []
           self.tickets = res.Result
-          for(var key in self.tickets){
-            key.change = 0
-          }
         }else{
           alert("出错了： " + res.Result.Errmsg)
         }
@@ -166,8 +187,10 @@ new Vue({
         alert("发生了未知的错误")
       })
     },
-    changeTicket: function(ticketype,id,price){
+    changeTicket: function(ticketype){
       var self = this
+      var id = self.tickets[self.changeIndex].Ticket_ID
+      var price = self.tickets[self.changeIndex].Ticket_Price
       $.ajax({
         url: '/tourplace/src/saleTicket.php',
         type: 'PUT',
@@ -177,14 +200,36 @@ new Vue({
             Ticket_ID: id,
             UserTicket_Type: 1-ticketype,
             Target_Type: ticketype,
-            UserTicket_Count: self.changeCount,
-            UserTicket_Price: price
+            UserTicket_Count: self.changeTicket_Count,
+            UserTicket_Price: self.changeTicket_Price
           }
         }
+      })
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          if(ticketype == 1){
+            alert("上架成功")
+          }else{
+            alert("下架成功")
+          }
+          self.changeType = 1 - self.changeType
+          self.getTicket(ticketype)
+          self.ticketType = ticketype
+        }else{
+          alert(res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("发生了未知的错误")
       })
     },
     deleteTicket: function(id){
 
+    },
+    showDialog: function(index){
+      var self = this
+      self.changeType = 1
     },
     getScenic: function(){
       var self = this
@@ -219,7 +264,7 @@ new Vue({
           Data: {
             Scenic_ID: self.Scenic.Scenic_ID,
             Ticket_Time: self.newTicketTime,
-            Ticket_Picture: self.ticketPicture
+            Ticket_File: self.ticketPicture
           }
         }
       })
@@ -238,19 +283,24 @@ new Vue({
     addUserTicket:function(id){
       var self = this
       $.ajax({
-        Type: 0,
-        Data: {
-          Ticket_ID: id,
-          User_ID: user.User_ID,
-          Ticket_Type: 0,
-          UserTicket_Count: 999999,
-          UserTicket_Price: 0,
+        url: '/tourplace/src/saleTicket.php',
+        type: 'POST',
+        data: {
+          Type: 0,
+          Data: {
+            Ticket_ID: id,
+            User_ID: self.user.User_ID,
+            Ticket_Type: 0,
+            UserTicket_Count: 99999,
+            UserTicket_Price: 0,
+          }
         }
       })
       .done(function(response){
         var res = JSON.parse(response)
         if(res.Type == 0){
           alert("添加成功")
+          self.get
         }else{
           alert("出错了：" + res.Resulst.Errmsg)
         }

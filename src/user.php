@@ -116,69 +116,60 @@ function IFPUT($request_data){
 	if($request_data['Type']==1 && empty($request_data['User_ID'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.Can not find the ID!")));
 	}else{
-		if(!isset($request_data['Update']['User_Name'])||
-			 !isset($request_data['Update']['User_Password'])||
-			 !isset($request_data['Update']['User_Truename'])||
-			 !isset($request_data['Update']['User_Intro'])||
-			 !isset($request_data['Update']['User_Sex'])||
-			 !isset($request_data['Update']['User_Phone'])||
-			 !isset($request_data['Update']['User_Birthday'])||
-			 !isset($request_data['Update']['User_IDcard'])||
-			 !isset($request_data['Update']['User_Level'])||
-			 !isset($request_data['Update']['User_Picture'])){
-			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The data is not complete!")));
+		if($request_data['Type']==0){
+			$gID=$_SESSION['User_ID'];
+		}else if($request_data['Type']==1){
+			$gID=$request_data['User_ID'];
 		}else{
-			if($request_data['Type']==0){
-				$gID=$_SESSION['User_ID'];
-			}else if($request_data['Type']==1){
-				$gID=$request_data['User_ID'];
-			}else{
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.The operation number is error!")));
-			}
-			$sql="SELECT * FROM `tourplace`.`user` WHERE `User_ID`='$gID'";
-			$rs=mysql_fetch_array(mysql_query($sql));
-			$count=count($rs);
-			if($count==0){
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.Can not find the ID!")));
-			}else{
-				$aa1=$request_data['Update']['User_Name'];
-				$aa2=$request_data['Update']['User_Password'];
-				$aa3=$request_data['Update']['User_Truename'];
-				$aa4=$request_data['Update']['User_Intro'];
-				$aa5=$request_data['Update']['User_Sex'];
-				$aa6=$request_data['Update']['User_Phone'];
-				$aa7=$request_data['Update']['User_Birthday'];
-				$aa8=$request_data['Update']['User_IDcard'];
-				$aa9=$request_data['Update']['User_Level'];
-				$aa10=$request_data['Update']['User_Picture'];
-				$sql="UPDATE `tourplace`.`user` SET 
-					`User_Name`='$aa1',
-					`User_Password`='$aa2',
-					`User_Truename`='$aa3',
-					`User_Intro`='$aa4',
-					`User_Sex`='$aa5',
-					`User_Phone`='$aa6',
-					`User_Birthday`='$aa7',
-					`User_IDcard`='$aa8',
-					`User_Level`='$aa9' 
-					`User_Picture`='$aa10' 
-					WHERE `User_ID`='$gID'";
-				mysql_query($sql);
-				$sql="UPDATE `tourplace`.`user2` SET 
-					`User_Name`='$aa1',
-					`User_Password`='$aa2',
-					`User_Truename`='$aa3',
-					`User_Intro`='$aa4',
-					`User_Sex`='$aa5',
-					`User_Phone`='$aa6',
-					`User_Birthday`='$aa7',
-					`User_IDcard`='$aa8',
-					`User_Level`='$aa9' 
-					`User_Picture`='$aa10' 
-					WHERE `User_ID`='$gID'";
-				mysql_query($sql);
-				echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$gID)));
-			}
+			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.The operation number is error!")));
+		}
+		$sql="SELECT * FROM `tourplace`.`user` WHERE `User_ID`='$gID'";
+		$rs=mysql_fetch_array(mysql_query($sql));
+		$count=count($rs);
+		if($count==0){
+			echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.Can not find the ID!")));
+		}else{
+			$aa1=$request_data['Update']['User_Name'];
+			$aa2=$request_data['Update']['User_Password'];
+			$aa3=$request_data['Update']['User_Truename'];
+			$aa4=$request_data['Update']['User_Intro'];
+			$aa5=$request_data['Update']['User_Sex'];
+			$aa6=$request_data['Update']['User_Phone'];
+			$aa7=$request_data['Update']['User_Birthday'];
+			$aa8=$request_data['Update']['User_IDcard'];
+			$aa9=$request_data['Update']['User_Level'];
+			$aa10=$request_data['Update']['User_File'];
+			$aa11="/tourplace/src/img/user/".$gID.".jpg";
+			$base64_body=substr(strstr($aa10,','),1);
+			$data=base64_decode($base64_body);
+			file_put_contents("img/user/".$gID.".jpg",$data);
+			$sql="UPDATE `tourplace`.`user` SET 
+				`User_Name`='$aa1',
+				`User_Password`='$aa2',
+				`User_Truename`='$aa3',
+				`User_Intro`='$aa4',
+				`User_Sex`='$aa5',
+				`User_Phone`='$aa6',
+				`User_Birthday`='$aa7',
+				`User_IDcard`='$aa8',
+				`User_Level`='$aa9',
+				`User_Picture`='$aa11' 
+				WHERE `User_ID`='$gID'";
+			mysql_query($sql);
+			$sql="UPDATE `tourplace`.`user2` SET 
+				`User_Name`='$aa1',
+				`User_Password`='$aa2',
+				`User_Truename`='$aa3',
+				`User_Intro`='$aa4',
+				`User_Sex`='$aa5',
+				`User_Phone`='$aa6',
+				`User_Birthday`='$aa7',
+				`User_IDcard`='$aa8',
+				`User_Level`='$aa9',
+				`User_Picture`='$aa11' 
+				WHERE `User_ID`='$gID'";
+			mysql_query($sql);
+			echo json_encode(array('Type'=>0,'Result'=>array('User_ID'=>$gID)));
 		}
 	}
 }
@@ -259,7 +250,7 @@ function nextstep($request_data,$sql){
 		echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 	}
 }
-	
+
 function getID($usertype){
 	if($usertype=='0'){
 		if(!@$f=fopen("ID_Record\User_ID_0.txt","r")){

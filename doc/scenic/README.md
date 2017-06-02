@@ -19,8 +19,8 @@
           Scenic_Level(string): #景区水平,
           Scenic_License(string): #景区许可证
           Scenic_Picture(string url): #景区展示图片
-		  Scenic_Vedio(string): #景区展示视频
-		  Scenic_Type(int): #景区类型
+          Scenic_Vedio(string): #景区展示视频
+          Scenic_Type(int): #景区类型
         }
       }
       return: {
@@ -80,8 +80,8 @@
           Scenic_Level(string): #景区水平,
           Scenic_License(string): #景区许可证
           Scenic_Picture(string url): #景区展示图片
-		  Scenic_Vedio(string): #景区展示视频
-		  Scenic_Type(int): #景区类型
+          Scenic_Vedio(string): #景区展示视频
+          Scenic_Type(int): #景区类型
         }#修改必须发送所有字段
       }
       return: {
@@ -119,8 +119,8 @@
         Scenic_Level(string): #景区水平,
         Scenic_License(string): #景区许可证
         Scenic_Picture(string url): #景区展示图片
-		Scenic_Vedio(string): #景区展示视频
-		Scenic_Type(int): #景区类型
+        Scenic_Vedio(string): #景区展示视频
+        Scenic_Type(int): #景区类型
       }*   #若为空，则返回全部字段
       Search <{
         {
@@ -136,7 +136,7 @@
           Province_ID: #省份ID
           City_ID: #城市ID
           Scenic_Level: #水平
-		  Scenic_Type: #类型
+          Scenic_Type: #类型
         }Type为3时    根据条件查询 为空的字段表示查询該字段全部
       }
       return:{
@@ -163,11 +163,6 @@
             ...
           }
         ]#Type为0时,表示成功，返回信息
-        {
-          Errmsg: #错误信息
-        }#Type为1时，表示失败，返回错误信息
-      }
-�功，返回信息
         {
           Errmsg: #错误信息
         }#Type为1时，表示失败，返回错误信息

@@ -45,9 +45,11 @@ function IFPOST($request_data){
 				$userid1=$_SESSION['User_ID'];
 				$ordertime=$request_data['Order_Time'];
 				$ordercount=$request_data['Order_Count'];
-				$sql="INSERT INTO `tourplace`.`order`(`Order_ID`,`Ticket_ID`,`User_ID1`,`User_ID12`,
-				`Order_Time`,`Order_Count`,`Order_State`)
-				VALUES('$ID','$ticketid','$userid1','$userid2','$ordertime','$ordercount','1')";
+				$orderprice=$request_data['Order_Price'];
+				$zprice=$ordercount*$orderprice;
+				$sql="INSERT INTO `tourplace`.`order`(`Order_ID`,`Ticket_ID`,`User_ID1`,`User_ID2`,
+				`Order_Time`,`Order_Count`,`Order_State`,`Order_Price`)
+				VALUES('$ID','$ticketid','$userid1','$userid2','$ordertime','$ordercount','0','$zprice')";
 				mysql_query($sql);
 				echo json_encode(array('Type'=>0,'Result'=>array('Order_ID'=>$ID)));
 			}
@@ -81,7 +83,7 @@ function IFDELETE($request_data){
 function IFPUT($request_data){
 	if(empty($request_data['Order_ID'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The Order ID is empty!")));
-	}else if(empty($request_data['Order_State'])){
+	}else if(!isset($request_data['Order_State'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The Order State is empty!")));
 	}else{
 		$orderid=$request_data['Order_ID'];
@@ -122,30 +124,28 @@ function IFGET($request_data){
 	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1` 
 		join `tourplace`.`ticket` ON `order`.`Ticket_ID`=`ticket`.`Ticket_ID` 
 		join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID` 
-		join `tourplace`.`user2` ON `order`.`User_ID2`=`user2`.`User_ID`";
+		join `tourplace`.`user2` ON `order`.`User_ID2`=`user2`.`User_ID` WHERE 1";
 	if($request_data['Type']==0){
 		if(!empty($request_data['Search']['Order_ID'])){
 			$orderid=$request_data['Search']['Order_ID'];
-			$sql.=" WHERE `tourplace`.`order`.`Order_ID`='$orderid'";
+			$sql.=" AND `tourplace`.`order`.`Order_ID`='$orderid'";
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==1){
 		if(empty($request_data['Search']['User_ID'])){
 			$userid=$request_data['Search']['User_ID'];
-			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" AND `tourplace`.`order`.`User_ID1`='$userid'";
 		}else{
 			$userid=$_SESSION['User_ID'];
-			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
+			$sql.=" AND `tourplace`.`order`.`User_ID1`='$userid'";
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==2){
-		if(empty($request_data['Search']['Order_State'])){
-			$userid=$_SESSION['User_ID'];
-			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
-		}else{
+		$userid=$_SESSION['User_ID'];
+		$sql.=" AND `tourplace`.`order`.`User_ID1`='$userid'";
+		if(isset($request_data['Search']['Order_State'])){
 			$orderstate=$request_data['Search']['Order_State'];
-			$sql.=" WHERE `tourplace`.`order`.`User_ID1`='$userid'";
-			$sql.=" AND `tourplace`.`order`.`Order_State`=$orderstate'";
+			$sql.=" AND `tourplace`.`order`.`Order_State`='$orderstate'";
 		}
 		nextstep($request_data,$sql);
 	}else{

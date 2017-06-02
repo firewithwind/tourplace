@@ -58,7 +58,7 @@
         <!-- 用户 -->
         <div class="user nav">
           <img class="avator" :src="mine.User_Picture" alt="">
-          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{mine.User_Name}}</a>
+          <a href="/tourplace/components/content/user/user.html?card=1" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{mine.User_Name}}</a>
         </div>
       </div>
 
@@ -71,7 +71,7 @@
             <li @click="nowCard = 1">个人信息</li>
             <!-- <li @click="nowCard = 2;getOrder(0)">我的订单</li>
             <li @click="nowCard = 3;getTicket(0)">我的仓库</li> -->
-            <li v-if="user.User_Type == 1" @click="nowCard=4;getScenic()">我的景区</li>
+            <li v-if="user.User_Type == 1" @click="nowCard=4;getScenic()">{{user.User_Name}}的景区</li>
           </ul>
         </div>
         <div class="right-content">
@@ -80,25 +80,17 @@
               <div class="title">
                 <input id="touxiang" type="file" accept="image/*" @change="changeUserPicture()">
                 <img :src="user.User_Picture" alt="" style="width: 80px;height: 80px;float: left;margin-right: 20px;">
-                <div class="Name">昵称：<input type="text" v-model="user.User_Name"></div>
-                <div class="Sex">性别：<input type="radio" name="sex" @click="user.User_Sex=0">男　<input type="radio" name="sex" @click="user.User_Sex=1">女</div>
+                <div class="Name">昵称：{{user.User_Name}} </div>
+                <div class="Sex">性别：{{user.User_Sex==0?'男':'女'}}</div>
                 <div class="ID">用户ID: <span>{{user.User_ID}}</span></div>
               </div>
               <div class="cont-body">
-                <div class="Password">用户密码：<input type="password" v-model="user.User_Password"></div>
-                <div class="Phone">联系方式：<input type="text" v-model="user.User_Phone"></div>
-                <div class="TrueName">真实姓名：<input type="text" v-model="user.User_Truename"></div>
-                <div class="IDCard">身份证：<input type="text" style="margin-left: 15px;" v-model="user.User_IDcard"></div>
-                <div class="Birthday">用户生日：<input type="text" v-model="user.User_Birthday"></div>
+                <div class="Phone">联系方式：{{user.User_Phone}}</div>
+                <div class="Birthday">用户生日：{{user.User_Birthday}}</div>
                 <div class="Type">用户类型：<span>{{user.User_Type==0?"普通用户":"景区管理员"}}</span></div>
                 <div class="Level">用户等级：<span>{{user.User_Level}}</span></div>
-                <div class="Intro">用户介绍：<input type="text" v-model="user.User_Intro"></div>
+                <div class="Intro">用户介绍：{{user.User_Intro}}</div>
               </div>
-              <button class="edit-user" style="width: 60px;
-              height: 30px;border-radius: 10px;
-              background-color: rgb(235, 203, 151);
-              margin-top:20px;margin-bottom: 20px;
-              outline: none;color: rgb(71, 71, 71)" @click="editUser()">修改</button>
             </div>
           </div>
           <!-- <div class="order-information infor" v-if="nowCard == 2">
@@ -171,23 +163,11 @@
                   <h2>{{Scenic.Scenic_Name}}</h2>
                   <div>景区ID: <span>{{Scenic.Scenic_ID}}</span></div>
                   <div>景区水平: <span>{{Scenic.Scenic_Level}}</span>级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;景区类型：<span>{{Scenic.Scenic_Type}}</span></div>
-                  <div>景区许可证: <input type="text" v-model="Scenic.Scenic_License"></div>
-                  <div>景区详细地址: <input type="text" v-model="Scenic.Scenic_Adress"></div>
-                  <div>景区联系方式: <input type="text" v-model="Scenic.Scenic_Phone"></div>
-                  <div>景区视频链接: <input type="text" v-model="Scenic.Scenic_Vedio"></div>
+                  <div>景区详细地址: {{Scenic.Scenic_Adress}}</div>
+                  <div>景区联系方式: {{Scenic.Scenic_Phone}}</div>
+                  <div>景区视频链接: {{Scenic.Scenic_Vedio}}</div>
                   <div>景区介绍: <span>{{Scenic.Scenic_Intro}}</span></div>
-                  <button @click="addTicket = 1" class="add">添加门票</button>
-                </div>
-                <div class="addDialog" v-if="addTicket == 1">
-                  <div>景区名称<span style="margin-left: 5px;">{{Scenic.Scenic_Name}}</span></div>
-                  <div>门票时间<input style="font-size: 15px;
-                  background-color: #ffffff;" class="addin" type="text" :value="newTicketTime" placeholder="输入门票有效时间"></div>
-                  <div>门票图片<input style="font-size: 10px;
-                  background-color: #ffffff;" class="addin" accept="image/*" type="file"></div>
-                  <div>
-                    <button style="background-color:#fa3140;color: #ffffff" @click="addNewTicket();addTicket=0">添加</button>
-                    <button @click="addTicket = 0">取消</button>
-                  </div>
+                  <!-- <button @click="addTicket = 1" class="add">添加门票</button> -->
                 </div>
               </div>
             </div>

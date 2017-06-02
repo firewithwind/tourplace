@@ -9,6 +9,7 @@ new Vue({
     addTicket: 0,
     ticketType: 0,
     Scenic: {},
+    mine: {}
   },
   methods: {
     init: function(){
@@ -19,11 +20,8 @@ new Vue({
         Key: "",
         Page: 1,
         PageSize: 1,
-        mine: {
-
-        },
         Search:{
-          User_ID: id
+          User_ID: self.user.User_ID
         }
       })
       .done(function(response){
@@ -99,7 +97,7 @@ new Vue({
         Page: 1,
         PageSize: 1,
         Search: {
-          User_ID: slef.user.User_ID
+          User_ID: self.user.User_ID
         }
       })
       .done(function(response){

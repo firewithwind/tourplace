@@ -29,29 +29,48 @@ function IFPOST($request_data){
 			$tickettype=$request_data['Data']['Ticket_Type'];
 			$ticketcount=$request_data['Data']['UserTicket_Count'];
 			$ticketprice=$request_data['Data']['UserTicket_Price'];
-			$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
-				WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
-			$rs=mysql_fetch_array(mysql_query($sql));
-			$count=count($rs);
-			if($count==0){
-				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.Can not find the goods!")));
-			}else{
-				if($rs['UserTicket_Count']<$ticketcount){
-					echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.Don't have enough goods!")));
-				}else if($rs['UserTicket_Count']>$ticketcount){
-					$cha=$rs['UserTicket_Count']-$ticketcount;
-					$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha' 
-						WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
+			if($_SESSION['User_Type']==0){
+				$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+					WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
+				$rs=mysql_fetch_array(mysql_query($sql));
+				$count=count($rs['UserTicket_Count']);
+				if($count==0){
+					echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.Can not find the goods!")));
+				}else{
+					if($rs['UserTicket_Count']<$ticketcount){
+						echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"4.Don't have enough goods!")));
+					}else if($rs['UserTicket_Count']>$ticketcount){
+						$cha=$rs['UserTicket_Count']-$ticketcount;
+						$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha' 
+							WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
+						mysql_query($sql);
+					}else{/*刚好售完*/
+						$sql="DELETE FROM `tourplace`.`user-ticket` 
+							WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
+						mysql_query($sql);
+					}
+					$sql="INSERT INTO `tourplace`.`user-ticket`(`User_ID`,`UserTicket_Price`,
+					`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`)
+					VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$tickettype')";
 					mysql_query($sql);
-				}else{/*刚好售完*/
-					$sql="DELETE FROM `tourplace`.`user-ticket` 
-						WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
+					echo json_encode(array('Type'=>0,'Result'=>""));
+				}
+			}else{
+				$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+					WHERE `User_ID`='$saleid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=0";
+				$rs=mysql_fetch_array(mysql_query($sql));
+				$count=count($rs['UserTicket_Count']);
+				if($count==0){
+					$sql="INSERT INTO `tourplace`.`user-ticket`(`User_ID`,`UserTicket_Price`,
+					`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`)
+					VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$tickettype')";
+					mysql_query($sql);
+				}else{
+					$cha=$rs['UserTicket_Count']+$ticketcount;
+					$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha' 
+					WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=0";
 					mysql_query($sql);
 				}
-				$sql="INSERT INTO `tourplace`.`user-ticket`(`User_ID`,`UserTicket_Price`,
-				`UserTicket_Count`,`Ticket_ID`,`UserTicket_Type`)
-				VALUES('$userid','$ticketprice','$ticketcount','$ticketid','$tickettype')";
-				mysql_query($sql);
 				echo json_encode(array('Type'=>0,'Result'=>""));
 			}
 		}else if($request_data['Type']==1){
@@ -87,11 +106,11 @@ function IFPOST($request_data){
 function IFPUT($request_data){
 	if($request_data['Type']==0){
 		$userid=$_SESSION['User_ID'];
-		$ticketid=$request_data['Data']['Ticket_ID'];
-		$tickettype=$request_data['Data']['UserTicket_Type'];
-		$targettype=$request_data['Data']['Target_Type'];
-		$ticketcount=$request_data['Data']['UserTicket_Count'];
-		$ticketprice=$request_data['Data']['UserTicket_Price'];
+		$ticketid=$request_data['Update']['Ticket_ID'];
+		$tickettype=$request_data['Update']['UserTicket_Type'];
+		$targettype=$request_data['Update']['Target_Type'];
+		$ticketcount=$request_data['Update']['UserTicket_Count'];
+		$ticketprice=$request_data['Update']['UserTicket_Price'];
 		$sql="SELECT * FROM `tourplace`.`user-ticket` 
 			WHERE `User_ID`='$userid' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`='$tickettype'";
 		$rs=mysql_fetch_array(mysql_query($sql));
@@ -159,37 +178,27 @@ function IFGET($request_data){
 			$ticketid=$request_data['Search']['Ticket_ID'];
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 		}
-		if(!empty($request_data['Search']['Ticket_Type'])){
+		if(isset($request_data['Search']['Ticket_Type'])){
 			$tickettype=$request_data['Search']['Ticket_Type'];
 			$sql.=" AND `tourplace`.`user-ticket`.`UserTicket_Type`='$tickettype'";
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==1){
-		if(empty($request_data['Search']['User_ID'])){
-		}else if(empty($request_data['Search']['Ticket_ID'])){
+		if(!empty($request_data['Search']['User_ID'])){
 			$Suserid=$request_data['Search']['User_ID'];
-			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
-		}else if(empty($request_data['Search']['Scenic_ID'])){
+			$sql.=" AND `tourplace`.`user`.`User_ID`='$Suserid'";
+		}
+		if(!empty($request_data['Search']['Ticket_ID'])){
 			$ticketid=$request_data['Search']['Ticket_ID'];
-			$Suserid=$request_data['Search']['User_ID'];
-			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
 			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
-		}else if(empty($request_data['Search']['Ticket_Type'])){
-			$ticketid=$request_data['Search']['Ticket_ID'];
-			$Suserid=$request_data['Search']['User_ID'];
+		}
+		if(!empty($request_data['Search']['Scenic_ID'])){
 			$scenicid=$request_data['Search']['Scenic_ID'];
-			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
-			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
 			$sql.=" AND `tourplace`.`ticket`.`Scenic_ID`='$scenicid'";
-		}else{
-			$ticketid=$request_data['Search']['Ticket_ID'];
-			$Suserid=$request_data['Search']['User_ID'];
-			$scenicid=$request_data['Search']['Scenic_ID'];
+		}
+		if(isset($request_data['Search']['Ticket_Type'])){
 			$tickettype=$request_data['Search']['Ticket_Type'];
-			$sql.="WHERE `tourplace`.`user`.`User_ID`='$Suserid'";
-			$sql.=" AND `tourplace`.`ticket`.`Ticket_ID`='$ticketid'";
-			$sql.=" AND `tourplace`.`ticket`.`Scenic_ID`='$scenicid'";
-			$sql.=" AND `tourplace`.`user-ticket`.`Ticket_Type`='$tickettype'";
+			$sql.=" AND `tourplace`.`user-ticket`.`UserTicket_Type`='$tickettype'";
 		}
 		nextstep($request_data,$sql);
 	}else{

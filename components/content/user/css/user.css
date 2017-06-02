@@ -209,7 +209,6 @@
 }
 .content .information .infor .cont .order-body{
   width: 180px;
-  height: 220px;
   box-shadow: 0 0 5px rgb(182, 182, 182);
   padding: 0 10px;
   color: #ffffff;
@@ -276,17 +275,17 @@
   margin-left: 30px;
   position: relative;
 }
-.content .information .infor .cont .ticket-body .changeDiolag{
+.content .information .infor .cont .changeDiolag{
   width: 300px;
   height: 200px;
   border-radius: 20px;
   border: 2px solid rgba(0, 0, 0, .5);
   background-color: #ffffff;
-  margin-left: 50%;
-  margin-top: 20px;
   text-align: center;
+  background-color: #ffffff;
+  position: absolute;
 }
-.content .information .infor .cont .ticket-body .changeDiolag button{
+.content .information .infor .cont  .changeDiolag button{
   width: 50px;
   height: 30px;
   border-radius: 10px;
@@ -295,7 +294,7 @@
   color: rgb(78, 78, 78);
   cursor: pointer;
 }
-.content .information .infor .cont .ticket-body .changeDiolag button:active{
+.content .information .infor .cont  .changeDiolag button:active{
   opacity: .5
 }
 .content .information .infor .cont .ticket-body img{
@@ -331,6 +330,7 @@
 }
 .right-content .scenic-information .scenic-title{
   width: 100%;
+  position: relative;
 }
 .right-content .scenic-information .scenic-title .title-body{
   margin-left: 250px;
@@ -359,10 +359,11 @@
   box-shadow: 0 0 5px rgb(65, 10, 83);
   margin-left: 50%;
   background-color: #ffffff;
-  margin-bottom: 20px;
   font-size: 15px;
   padding: 10px;
-  position: relative;
+  bottom: 60px;
+  left: -400px;
+  position: absolute;
 }
 .scenic-title .addDialog div{
   margin-top: 20px;

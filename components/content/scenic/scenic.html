@@ -59,14 +59,14 @@
         </div>
         <!-- 搜索 -->
         <div class="search nav">
-          <input type="text" placeholder="输入景区/用户/门票">
-            <svg class="icon search-icon" aria-hidden="true">
-              <use xlink:href="#icon-sou"></use>
-            </svg>
+          <input type="text" placeholder="输入景区/用户ID" v-model="searchInfor">
+          <svg class="icon search-icon" aria-hidden="true" @click="find()">
+            <use xlink:href="#icon-sou"></use>
+          </svg>
         </div>
         <!-- 用户 -->
         <div class="user nav" :value="userID" @click="loginORuser()">
-          <img class="avator" src="/tourplace/img/user/00.jpg" alt="">
+          <img class="avator" :src="userPicture" alt="">
           <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
         </div>
       </div>
@@ -125,7 +125,7 @@
             <div class="scenic-ticket scenic-content">
               <h3>门票出售</h3>
               <div class="ticket-container">
-                <div class="ticket-content" v-for="ticket in tickets">
+                <div class="ticket-content" v-for="ticket,index in tickets">
                   <img :src="ticket.Ticket_Picture" alt="" style="width: 300px;height: 100px;">
                   <div class="ticket-saler">
                     <img :src="ticket.User_Picture" alt="" @mouseover="ticket.saler_Show = 1" @mouseout="ticket.saler_Show = 0">
@@ -138,26 +138,26 @@
                     <span class="ticket-price">￥{{ticket.UserTicket_Price}}元</span>
                     <span calss="ticket-number">剩{{ticket.UserTicket_Count}}张</span>
                   </div>
-                  <div class="ticket-buy" @click="ticket.buy = 1">
+                  <div class="ticket-buy" @click="showbuy = 1;buyIndex=index;maxCount=ticket.SaleTicket_Count">
                     购买
                   </div>
-                  <div class="buyDialog" v-if="ticket.buy == 1">
-                    <div class="buytitle">确认购买信息</div>
-                    <div class="order">
-                      <div class="buy-info">购买物品: <span>{{Scenic.Scenic_Name}}门票</span></div>
-                      <div class="buy-info">物品ID： <span>{{ticket.Ticket_ID}}</span></div>
-                      <div class="buy-info">售票人： <span>{{ticket.User_Name}}</span></div>
-                      <div class="buy-info">有效期至： <span>{{ticket.Ticket_Time}}</span></div>
-                      <div class="buy-info">单价： <span>{{ticket.UserTicket_Price}}</span></div>
-                      <div style="margin-top:15px;">数量：
-                      <template >
-                        <el-input-number v-model="Order_Count" size="small" :min="1" :max="ticket.UserTicket_Count"></el-input-number>
-                      </template>
-                      </div>
-                      <div class="ensure">
-                        <button style="background-color:#fa3140;color:#ffffff" @click="addOrder(ticket.Ticket_ID,ticket.User_ID);ticket.buy=0">下单</button>
-                        <button style="margin-left: 10px;" @click="ticket.buy=0">取消</button>
-                      </div>
+                </div>
+                <div class="buyDialog" v-if="showbuy == 1">
+                  <div class="buytitle">确认购买信息</div>
+                  <div class="order">
+                    <div class="buy-info">购买物品: <span>{{Scenic.Scenic_Name}}门票</span></div>
+                    <div class="buy-info">物品ID： <span>{{tickets[buyIndex].Ticket_ID}}</span></div>
+                    <div class="buy-info">售票人： <span>{{tickets[buyIndex].User_Name}}</span></div>
+                    <div class="buy-info">有效期至： <span>{{tickets[buyIndex].Ticket_Time}}</span></div>
+                    <div class="buy-info">单价： <span>{{tickets[buyIndex].UserTicket_Price}}</span></div>
+                    <div style="margin-top:15px;">数量：
+                    <template >
+                      <el-input-number v-model="Order_Count" size="small" :min="1" :max="maxCount"></el-input-number>
+                    </template>
+                    </div>
+                    <div class="ensure">
+                      <button style="background-color:#fa3140;color:#ffffff" @click="addOrder();showbuy=0">下单</button>
+                      <button style="margin-left: 10px;" @click="showbuy=0">取消</button>
                     </div>
                   </div>
                 </div>
