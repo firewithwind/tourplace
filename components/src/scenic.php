@@ -240,25 +240,17 @@ function nextstep($request_data,$sql){
 	while($row=mysql_fetch_assoc($query))
 		$result[]=$row;
 	$resultcount=count($result);
-	if($resultcount==0){
-		echo json_encode(array('Type'=>1,'Size'=>0,'sumSize'=>0,'Result'=>array('Errmsg'=>"2.Can not find something about this information!")));
+	$pre=$pagesize*($page-1);
+	if($pre>$resultcount){
+		echo json_encode(array('Type'=>1,'Size'=>0,'sumSize'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
 	}else{
-		$pre=$pagesize*($page-1);
-		if($pre>$resultcount){
-			echo json_encode(array('Type'=>1,'Size'=>0,'sumSize'=>0,'Result'=>array('Errmsg'=>"1.The page number is error!")));
-		}else{
-			$finalresult=array();
-			$finalcount=0;
-			while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
-				$finalresult[]=$result[$pre+$finalcount];
-				$finalcount++;
-			}
-			if($pagesize==0){
-				echo json_encode(array('Type'=>0,'Size'=>$resultcount,'sumSize'=>$resultcount,'Result'=>$result));
-			}else{
-				echo json_encode(array('Type'=>0,'Size'=>$finalcount,'sumSize'=>$resultcount,'Result'=>$finalresult));
-			}
+		$finalresult=array();
+		$finalcount=0;
+		while($finalcount<$pagesize && $pre+$finalcount<$resultcount){
+			$finalresult[]=$result[$pre+$finalcount];
+			$finalcount++;
 		}
+		echo json_encode(array('Type'=>0,'Size'=>$finalcount,'sumSize'=>$resultcount,'Result'=>$finalresult));
 	}
 }
 

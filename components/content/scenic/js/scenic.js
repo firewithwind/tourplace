@@ -5,6 +5,7 @@ new Vue({
     placeSelect: false,
     places: [
     ],
+    userID: '',
     user: '请登入',
     Scenic: {},
     ScenicID: '',
@@ -22,7 +23,7 @@ new Vue({
       }else{
         $.get('/tourplace/src/scenic.php',{
           Type: 0,
-          Keys: "Scenic_Name+Scenic_Adress+Scenic_Phone+Scenic_Level+Scenic_Picture+Scenic_Intro",
+          Keys: "Scenic_Name+Scenic_Adress+Scenic_Phone+Scenic_Level+Scenic_Picture+Scenic_Intro+Scenic_Vedio",
           Page: 1,
           PageSize: 1,
           Search:{
@@ -69,6 +70,14 @@ new Vue({
         })
       }
     },
+    loginORuser(){
+      var self = this
+      if(self.userID == ""){
+        window.location = '/tourplace/components/content/login/login.html'
+      }else{
+        window.location = '/tourplace/components/content/user/user.html?id='+self.userID+'&card=1'
+      }
+    },
     getQueryString(name){
       var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
       var r = window.location.search.substr(1).match(reg);
@@ -76,9 +85,10 @@ new Vue({
       return ''
     },
     getUser: function(){
+      var self = this
       $.get('/tourplace/src/user.php',{
         Type: 0,
-        Key: 'User_Name',
+        Key: 'User_ID+User_Name',
         Page: 1,
         PageSize: 1,
         Search: {
@@ -89,6 +99,7 @@ new Vue({
         res = JSON.parse(response)
         if(res.Type == 0){
           self.user = res.Result[0].User_Name
+          self.userID = res.Result[0].User_ID
         }else{
           alert("出错了" + res.Result.Errmsg)
         }

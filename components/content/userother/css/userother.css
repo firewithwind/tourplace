@@ -2,15 +2,6 @@
   margin: 0;
   padding: 0;
 }
-#newTicket{
-  display: block;
-  width: 200px;
-  height: 66px;
-  position: absolute;
-  bottom: 60px;
-  margin: 0;
-  opacity: 0;
-}
 .header{
   position: fixed;
   top: 0;
@@ -356,13 +347,13 @@
 }
 .right-content .scenic-information .scenic-title .addDialog{
   width: 200px;
+  height: 200px;
   box-shadow: 0 0 5px rgb(65, 10, 83);
   margin-left: 50%;
   background-color: #ffffff;
   margin-bottom: 20px;
   font-size: 15px;
   padding: 10px;
-  position: relative;
 }
 .scenic-title .addDialog div{
   margin-top: 20px;

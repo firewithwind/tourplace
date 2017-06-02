@@ -431,6 +431,10 @@
   color: #999;
   font-size: 14px;
 }
+.Scenic-index .scenic-channel .tags-panel .tags-line li.active{
+  background-color: #fa3140;
+  color: #ffffff
+}
 .tags-panel .tags-line ul li{
   border-radius: 14px;
   padding: 3px 9px;

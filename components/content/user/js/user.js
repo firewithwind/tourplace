@@ -5,6 +5,7 @@ new Vue({
     user: {
       User_Type: 1
     },
+    touxiang: '',
     orderType: 1,
     orders:[],
     addTicket: 0,
@@ -12,7 +13,9 @@ new Vue({
     tickets:[
     ],
     Scenic: {},
-    newTicketTime: ''
+    newTicketTime: '',
+    newTicket_Pic: '',
+    ticketPicture: {}
   },
   methods: {
     init: function(){
@@ -45,8 +48,19 @@ new Vue({
       if (r != null) return unescape(r[2])
       return ''
     },
+    changeUserPicture: function(docu){
+      var file = $("#touxiang")[0].files[0]
+      this.user.User_Picture = window.URL.createObjectURL(file)
+      this.touxiang = file
+    },
+    addTicketPicture: function(){
+      var file = $("#newTicket")[0].files[0]
+      this.newTicket_Pic = window.URL.createObjectURL(file)
+      this.ticketPicture = file
+    },
     editUser: function(){
       var user = this.user
+      var self = this
       $.ajax({
         url: '/tourplace/src/user.php',
         type: 'PUT',
@@ -54,15 +68,16 @@ new Vue({
           Type: 0,
           User_ID: '',
           Update: {
-            User_Name: user.User_Name,
-            User_Password: user.User_Password,
-            User_Truename: user.User_Truename,
-            User_Intro: user.User_Intro,
-            User_Sex: user.User_Sex,
-            User_Phone: user.User_Phone,
-            User_Birthday: user.User_Birthday,
-            User_IDCard: user.User_IDCard,
-            User_Level: user.User_Level
+            User_Name: self.user.User_Name,
+            User_Password: self.user.User_Password,
+            User_Truename: self.user.User_Truename,
+            User_Intro: self.user.User_Intro,
+            User_Sex: self.user.User_Sex,
+            User_Phone: self.user.User_Phone,
+            User_Birthday: self.user.User_Birthday,
+            User_IDcard: self.user.User_IDcard,
+            User_Level: self.user.User_Level,
+            User_File: self.touxiang
           }
         }
       })
@@ -203,16 +218,41 @@ new Vue({
           Type: 0,
           Data: {
             Scenic_ID: self.Scenic.Scenic_ID,
-            Ticket_Time: self.newTicketTime
+            Ticket_Time: self.newTicketTime,
+            Ticket_Picture: self.ticketPicture
           }
         }
       })
-      .done(function(respone){
+      .done(function(response){
+        var res = JSON.parse(response)
+        if(res.Type == 0){
+          self.addUserTicket(res.Result.Ticket_ID)
+        }else{
+          alert("出错了： " + res.Result.Errmsg)
+        }
+      })
+      .fail(function(){
+        alert("发生了未知的错误")
+      })
+    },
+    addUserTicket:function(id){
+      var self = this
+      $.ajax({
+        Type: 0,
+        Data: {
+          Ticket_ID: id,
+          User_ID: user.User_ID,
+          Ticket_Type: 0,
+          UserTicket_Count: 999999,
+          UserTicket_Price: 0,
+        }
+      })
+      .done(function(response){
         var res = JSON.parse(response)
         if(res.Type == 0){
           alert("添加成功")
         }else{
-          alert("出错了： " + res.Result.Errmsg)
+          alert("出错了：" + res.Resulst.Errmsg)
         }
       })
       .fail(function(){

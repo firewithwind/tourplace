@@ -65,9 +65,9 @@
             </svg>
         </div>
         <!-- 用户 -->
-        <div class="user nav">
+        <div class="user nav" :value="userID" @click="loginORuser()">
           <img class="avator" src="/tourplace/img/user/00.jpg" alt="">
-          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</a>
+          <span style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user}}</span>
         </div>
       </div>
     </div>
@@ -93,6 +93,7 @@
                     <use xlink:href="#icon-location"></use>
                   </svg>
                   {{Scenic.Scenic_Adress}}</li>
+                <li class="video cllipsis"><a style="text-decoration:none;color: #ffffff" :href="Scenic.Scenic_Vedio">--视频连接--</a></li>
               </ul>
             </div>
           </div>

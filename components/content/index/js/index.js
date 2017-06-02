@@ -96,7 +96,7 @@ new Vue({
       if(this.nowPage == 1){
         this.getLocationScenic()
       }else if(this.nowPage == 2){
-        this.getScenicList()
+        this.getScenicList(1)
       }
     },
     changeCity(id,name,proID){
@@ -106,7 +106,7 @@ new Vue({
       if(this.nowPage == 1){
         this.getLocationScenic()
       }else if(this.nowPage == 2){
-        this.getScenicList()
+        this.getScenicList(1)
       }
     },
     getLocationScenic(){
@@ -142,8 +142,8 @@ new Vue({
       var self = this
       $.get('/tourplace/src/scenic.php',{
         Type: 0,
-        Keys: "Scenic_ID+Scenic_Name+ScenicPicture+Scenic_Vedio",
-        Page: 1,
+        Keys: "Scenic_ID+Scenic_Name+Scenic_Picture+Scenic_Vedio",
+        Page: 2,
         PageSize: 8,
         Search: {
           Scenic_ID: ''
@@ -183,12 +183,13 @@ new Vue({
         alert("发生了未知的错误")
       })
     },
-    getScenicList(){
+    getScenicList(page){
+      var self = this
       $.get('/tourplace/src/scenic.php',{
         Type: 3,
-        Keys: "Scenic_ID+Scenic_Name+ScenicPicture",
-        Page: 1,
-        PageSize: 8,
+        Keys: "Scenic_ID+Scenic_Name+Scenic_Picture",
+        Page: page,
+        PageSize: 10,
         Search: {
           Province_ID: self.locatProID,
           City_ID: self.locatCitID,
@@ -198,11 +199,12 @@ new Vue({
       })
       .done(function(response){
         var res = JSON.parse(response)
+        self.ScenicListUrls = []
         if(res.Type == 0){
           self.scenicNum = res.sumSize
-          self.locationScenics = res.Result
+          self.ScenicList = res.Result
           for(var i in res.Result){
-            self.ScenicListUrls.push('/tourplace/components/content/scenic/scenic.html?id=' + i.Scenic_ID)
+            self.ScenicListUrls.push('/tourplace/components/content/scenic/scenic.html?id=' + self.ScenicList[i].Scenic_ID)
           }
         }else{
           alert("出错了"+res.Result.Errmsg)
@@ -236,7 +238,31 @@ new Vue({
       })
     },
     find: function(){
-      window.open("/tourplace/components/content/scenic/scenic.html?id="+this.searchInfor)
+      var reg = new RegExp("/^d{8}$/")
+      if(reg.test(this.searchInfor)){
+        window.location = "/tourplace/components/content/userother/userother.html?id="+self.searchInfor+"&card=1"
+      }else{
+        $.get('/tourplace/src/scenic.php',{
+          Type: 1,
+          Keys: "Scenic_ID",
+          Page: 1,
+          PageSize: 1,
+          Search: {
+            Scenic_Name: this.searchInfor
+          }
+        })
+        .done(function(response){
+          var res = JSON.parse(response)
+          if(res.Type == 0){
+            window.location= "/tourplace/components/content/scenic/scenic.html?id="+res.Result[0].Scenic_ID
+          }else{
+            alert(res.Result.Errmsg)
+          }
+        })
+        .fail(function(){
+          alert("发生了未知的错误")
+        })
+      }
     },
     loginORuser(){
       var self = this

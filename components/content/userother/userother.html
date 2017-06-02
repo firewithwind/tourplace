@@ -13,7 +13,7 @@
      overflow: hidden;
   }
   </style>
-  <link rel="stylesheet" href="/tourplace/components/content/user/css/user.css">
+  <link rel="stylesheet" href="/tourplace/components/content/userother/css/userother.css">
 </head>
 <body>
   <div id="container">
@@ -57,8 +57,8 @@
         </div>
         <!-- 用户 -->
         <div class="user nav">
-          <img class="avator" :src="user.User_Picture" alt="">
-          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{user.User_Name}}</a>
+          <img class="avator" :src="mine.User_Picture" alt="">
+          <a href="" style="margin-left: 45px; color: rgb(184, 184, 184);text-decoration:none">{{mine.User_Name}}</a>
         </div>
       </div>
 
@@ -69,8 +69,8 @@
         <div class="left-nav">
           <ul>
             <li @click="nowCard = 1">个人信息</li>
-            <li @click="nowCard = 2;getOrder(0)">我的订单</li>
-            <li @click="nowCard = 3;getTicket(0)">我的仓库</li>
+            <!-- <li @click="nowCard = 2;getOrder(0)">我的订单</li>
+            <li @click="nowCard = 3;getTicket(0)">我的仓库</li> -->
             <li v-if="user.User_Type == 1" @click="nowCard=4;getScenic()">我的景区</li>
           </ul>
         </div>
@@ -101,7 +101,7 @@
               outline: none;color: rgb(71, 71, 71)" @click="editUser()">修改</button>
             </div>
           </div>
-          <div class="order-information infor" v-if="nowCard == 2">
+          <!-- <div class="order-information infor" v-if="nowCard == 2">
             <div class="cont">
               <div class="order-select">
                 <ul>
@@ -162,7 +162,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="scenic-information infor" v-if="nowCard == 4">
             <div class="cont">
               <div class="scenic-title">
@@ -181,11 +181,9 @@
                 <div class="addDialog" v-if="addTicket == 1">
                   <div>景区名称<span style="margin-left: 5px;">{{Scenic.Scenic_Name}}</span></div>
                   <div>门票时间<input style="font-size: 15px;
-                  background-color: #ffffff;" class="addin" type="text" v-model="newTicketTime" placeholder="输入门票有效时间"></div>
-                  <div>门票图片
-                    <img :src="newTicket_Pic" alt="" style="width: 200px;height: 66px;">
-                    <input id="newTicket" style="font-size: 10px;
-                  background-color: #ffffff;" class="addin" accept="image/*" type="file" @change="addTicketPicture()"></div>
+                  background-color: #ffffff;" class="addin" type="text" :value="newTicketTime" placeholder="输入门票有效时间"></div>
+                  <div>门票图片<input style="font-size: 10px;
+                  background-color: #ffffff;" class="addin" accept="image/*" type="file"></div>
                   <div>
                     <button style="background-color:#fa3140;color: #ffffff" @click="addNewTicket();addTicket=0">添加</button>
                     <button @click="addTicket = 0">取消</button>
@@ -201,6 +199,6 @@
   <script src="http://at.alicdn.com/t/font_rwavjqfqgs0pb9.js"></script>
   <script src="/tourplace/components/node_modules/vue/dist/vue.js"></script>
   <script src="/tourplace/components/node_modules/jquery/dist/jquery.js"></script>
-  <script src="/tourplace/components/content/user/js/user.js"></script>
+  <script src="/tourplace/components/content/userother/js/userother.js"></script>
 </body>
 </html>

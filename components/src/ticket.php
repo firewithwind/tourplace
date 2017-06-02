@@ -179,10 +179,7 @@ function IFGET($request_data){
 				$finalresult[]=$result[$pre+$finalcount];
 				$finalcount++;
 			}
-			if($pagesize==0)
-				echo json_encode(array('Type'=>0,'Num'=>$resultcount,'Result'=>$result));
-			else
-				echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
+			echo json_encode(array('Type'=>0,'Num'=>$finalcount,'Result'=>$finalresult));
 		}
 	}
 }

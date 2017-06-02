@@ -45,10 +45,10 @@
         </div>
         <!-- 主要导航 -->
         <div class="index-nav nav">
-          <span href="" :class="nowPage==1?active:unactive" @click="nowPage=1">首页</span>
-          <span href="" :class="nowPage==2?active:unactive" @click="nowPage=2">景区</span>
-          <span href="" :class="nowPage==3?active:unactive" @click="nowPage=3">榜单</span>
-          <span href="" :class="nowPage==4?active:unactive" @click="nowPage=4">热点</span>
+          <span :class="nowPage==1?active:unactive" @click="nowPage=1">首页</span>
+          <span :class="nowPage==2?active:unactive" @click="nowPage=2;getScenicList(1)">景区</span>
+          <span :class="nowPage==3?active:unactive" @click="nowPage=3">榜单</span>
+          <span :class="nowPage==4?active:unactive" @click="nowPage=4">热点</span>
         </div>
         <!-- 关于我们 -->
         <div class="about nav">
@@ -59,7 +59,7 @@
         </div>
         <!-- 搜索 -->
         <div class="search nav">
-          <input type="text" placeholder="输入景区/用户ID" :value="searchInfor">
+          <input type="text" placeholder="输入景区/用户ID" v-model="searchInfor">
           <svg class="icon search-icon" aria-hidden="true" @click="find()">
             <use xlink:href="#icon-sou"></use>
           </svg>
@@ -313,22 +313,22 @@
                     星级：
                   </div>
                   <ul>
-                    <li>
+                    <li :class="scenicLevel==''?active:''" @click="scenicLevel = '';getScenicList(1)">
                       <span>全部</span>
                     </li>
-                    <li @click="scenicLevel = '5A';getScenicList()">
+                    <li :class="scenicLevel=='5A'?active:''" @click="scenicLevel = '5A';getScenicList(1)">
                       <span>５A</span>
                     </li>
-                    <li @click="scenicLevel = '4A';getScenicList()">
+                    <li :class="scenicLevel=='4A'?active:''" @click="scenicLevel = '4A';getScenicList(1)">
                       <span>４A</span>
                     </li>
-                    <li @click="scenicLevel = '3A';getScenicList()">
+                    <li :class="scenicLevel=='3A'?active:''" @click="scenicLevel = '3A';getScenicList(1)">
                       <span>３A</span>
                     </li>
-                    <li @click="scenicLevel = '2A';getScenicList()">
+                    <li :class="scenicLevel=='2A'?active:''" @click="scenicLevel = '2A';getScenicList(1)">
                       <span>２A</span>
                     </li>
-                    <li @click="scenicLevel = '';getScenicList()">
+                    <li :class="scenicLevel=='1A'?active:''" @click="scenicLevel = '1A';getScenicList(1)">
                       <span>其他</span>
                     </li>
                   </ul>
@@ -338,28 +338,28 @@
                     类型：
                   </div>
                   <ul>
-                    <li @click="scenicType = 0;getScenicList();">
+                    <li :class="scenicType == 0?active:''" @click="scenicType = 0;getScenicList(1);">
                       <span>全部</span>
                     </li>
-                    <li @click="scenicType = 1;getScenicList();">
+                    <li :class="scenicType == 1?active:''" @click="scenicType = 1;getScenicList(1);">
                       <span>登山</span>
                     </li>
-                    <li @click="scenicType = 2;getScenicList();">
+                    <li :class="scenicType == 2?active:''" @click="scenicType = 2;getScenicList(1);">
                       <span>观海</span>
                     </li>
-                    <li @click="scenicType = 3;getScenicList();">
+                    <li :class="scenicType == 3?active:''" @click="scenicType = 3;getScenicList(1);">
                       <span>游乐园</span>
                     </li>
-                    <li @click="scenicType = 4;getScenicList();">
+                    <li :class="scenicType == 4?active:''" @click="scenicType = 4;getScenicList(1);">
                       <span>名胜古迹</span>
                     </li>
-                    <li @click="scenicType = 5;getScenicList();">
+                    <li :class="scenicType == 5?active:''" @click="scenicType = 5;getScenicList(1);">
                       <span>秀丽风景</span>
                     </li>
-                    <li @click="scenicType = 6;getScenicList();">
+                    <li :class="scenicType == 6?active:''" @click="scenicType = 6;getScenicList(1);">
                       <span>异族风情</span>
                     </li>
-                    <li @click="scenicType = 7;getScenicList();">
+                    <li :class="scenicType == 7?active:''" @click="scenicType = 7;getScenicList(1);">
                       <span>其他</span>
                     </li>
                   </ul>
@@ -375,7 +375,7 @@
               <div class="scenic-item" value="scenic.Scenic_ID">
                 <a :href="ScenicListUrls[i]">
                   <div class="scenic-poster">
-                    <img src="" alt="">
+                    <img :src="scenic.Scenic_Picture" alt="">
                     <div class="scenic-shadow"></div>
                     <div class="scenic-name">
                       {{scenic.Scenic_Name}}
@@ -391,7 +391,7 @@
           <div class="block">
             <el-pagination
               layout="prev, pager, next"
-              :total="scenicNum">
+              :total="scenicNum" @current-change="getScenicList">
             </el-pagination>
           </div>
         </div>

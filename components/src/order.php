@@ -95,6 +95,7 @@ function IFPUT($request_data){
 
 /*²é*/
 function IFGET($request_data){
+	$Key=explode('+',$request_data['Keys']);
 	$sql="";
 	if(empty($request_data['Keys'])){
 		$sql="SELECT *";
@@ -116,7 +117,7 @@ function IFGET($request_data){
 				$sql.="`".$Key[$i]."`";
 			}
 			if($i!=$arrcount-1) $sql.=",";
-			$i++;
+				$i++;
 		}
 	}
 	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1` 
@@ -149,7 +150,7 @@ function IFGET($request_data){
 		}
 		nextstep($request_data,$sql);
 	}else{
-		echo json_encode(array('Type'=>1,'Size'=>0,'Result'=>array('Errmsg'=>"1.The request is error!")));
+		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The request is error!")));
 	}
 }
 
@@ -171,10 +172,7 @@ function nextstep($request_data,$sql){
 			$finalresult[]=$result[$pre+$finalcount];
 			$finalcount++;
 		}
-		if($pagesize==0)
-			echo json_encode(array('Type'=>0,'Size'=>$resultcount,'Result'=>$result));
-		else
-			echo json_encode(array('Type'=>0,'Size'=>$finalcount,'Result'=>$finalresult));
+		echo json_encode(array('Type'=>0,'Size'=>$finalcount,'Result'=>$finalresult));
 	}
 }
 
