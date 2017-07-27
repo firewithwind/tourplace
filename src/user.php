@@ -2,7 +2,7 @@
 	include("conn.php");
 	include("request.php");
 	session_start();
-	
+
 	switch ($request_method) {
 		case 'GET':
 			IFGET($request_data);
@@ -19,7 +19,7 @@
 		default:
 			break;
 	}
-	
+
 /*注册*/
 function IFPOST($request_data){
 	if(empty($request_data['Data']['User_name'])){
@@ -143,7 +143,7 @@ function IFPUT($request_data){
 			$base64_body=substr(strstr($aa10,','),1);
 			$data=base64_decode($base64_body);
 			file_put_contents("img/user/".$gID.".jpg",$data);
-			$sql="UPDATE `tourplace`.`user` SET 
+			$sql="UPDATE `tourplace`.`user` SET
 				`User_Name`='$aa1',
 				`User_Password`='$aa2',
 				`User_Truename`='$aa3',
@@ -157,7 +157,7 @@ function IFPUT($request_data){
 				$sql.=",`User_Picture`='$aa11'";
 			$sql.="WHERE `User_ID`='$gID'";
 			mysql_query($sql);
-			$sql="UPDATE `tourplace`.`user2` SET 
+			$sql="UPDATE `tourplace`.`user2` SET
 				`User_Name`='$aa1',
 				`User_Password`='$aa2',
 				`User_Truename`='$aa3',

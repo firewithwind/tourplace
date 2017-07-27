@@ -20,6 +20,7 @@
             Errmsg: #错误信息
           }#Type=1, failed
         }
+
 - <a name="login_out">登出</a>
 
         DELETE /tourplace/src/login.php

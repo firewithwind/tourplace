@@ -2,7 +2,7 @@
 	include("conn.php");
 	include("request.php");
 	session_start();
-	
+
 	switch ($request_method) {
 		case 'GET':
 			IFGET($request_data);
@@ -19,8 +19,8 @@
 		default:
 			break;
 	}
-	
-/*Ôö*/
+
+/*ï¿½ï¿½*/
 function IFPOST($request_data){
 	if($request_data['Type']==0){
 		if(empty($request_data['Data']['Scenic_Name'])||
@@ -51,7 +51,7 @@ function IFPOST($request_data){
 				$aa9=$request_data['Data']['Scenic_Picture'];
 				$aa0=$request_data['Data']['Scenic_Vedio'];
 				$aaa=$request_data['Data']['Scenic_Type'];
-				$sql="SELECT * FROM `tourplace`.`scenic` 
+				$sql="SELECT * FROM `tourplace`.`scenic`
 				WHERE `Scenic_License`='$aa8'";
 				$rs=mysql_fetch_array(mysql_query($sql));
 				$count=count($rs);
@@ -102,7 +102,7 @@ function IFDELETE($request_data){
 	}
 }
 
-/*¸Ä*/
+/*ï¿½ï¿½*/
 function IFPUT($request_data){
 	if($request_data['Type']==0){
 		$ID=$request_data['Scenic_ID'];
@@ -135,7 +135,7 @@ function IFPUT($request_data){
 			$aa9=$request_data['Update']['Scenic_Picture'];
 			$aa0=$request_data['Update']['Scenic_Vedio'];
 			$aaa=$request_data['Update']['Scenic_Type'];
-			$sql="UPDATE `tourplace`.`scenic` SET 
+			$sql="UPDATE `tourplace`.`scenic` SET
 					`Scenic_Picture`='$aa9',
 					`Scenic_Name`='$aa1',
 					`Scenic_Intro`='$aa2',
@@ -143,10 +143,10 @@ function IFPUT($request_data){
 					`City_ID`='$aa4',
 					`Scenic_Adress`='$aa5',
 					`Scenic_Phone`='$aa6',
-					`Scenic_Level`='$aa7' 
+					`Scenic_Level`='$aa7'
 					`Scenic_License`='$aa8'
 					`Scenic_Vedio`='$aa0'
-					`Scenic_Type`='$aaa' 
+					`Scenic_Type`='$aaa'
 					WHERE `Scenic_ID`='$ID'";
 			mysql_query($sql);
 			echo json_encode(array('Type'=>0,'Result'=>""));
@@ -156,7 +156,7 @@ function IFPUT($request_data){
 	}
 }
 
-/*²é*/
+/*ï¿½ï¿½*/
 function IFGET($request_data){
 	$sql="";
 	if(empty($request_data['Keys'])){
@@ -276,7 +276,7 @@ function getID(){
 		fwrite($ff,$ID_0);
 		fclose($ff);
 	}
-	if(strlen($ID_0)>8)/*idÒÑÂú*/
+	if(strlen($ID_0)>8)/*idï¿½ï¿½ï¿½ï¿½*/
 		return '99999999';
 	else{
 		$num=8-strlen($ID_0);

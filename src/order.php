@@ -2,7 +2,6 @@
 	include("conn.php");
 	include("request.php");
 	session_start();
-	
 	switch ($request_method) {
 		case 'GET':
 			IFGET($request_data);
@@ -19,8 +18,8 @@
 		default:
 			break;
 	}
-	
-/*Ôö*/
+
+/*ï¿½ï¿½*/
 function IFPOST($request_data){
 	$userid2=$request_data['User_ID2'];
 	$ticketid=$request_data['Ticket_ID'];
@@ -29,7 +28,7 @@ function IFPOST($request_data){
 	$count=count($rs);
 	if($count==0){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"2.The user is not exist!")));
-	}else if($rs['User_Type']==0){
+	}else if($rs['User_Type'] == 0){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"3.The user is not saler!")));
 	}else{
 		$sql="SELECT * FROM `tourplace`.`ticket` WHERE `Ticket_ID`='$ticketid'";
@@ -42,7 +41,11 @@ function IFPOST($request_data){
 			if($ID=='99999999'){
 				echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"5.The order ID is fulled!")));
 			}else{
-				$userid1=$_SESSION['User_ID'];
+				if(empty($request_data['User_ID'])){
+						$userid1=$_SESSION['User_ID'];
+				}else{
+					$userid1=$request_data['User_ID'];
+				}
 				$ordertime=$request_data['Order_Time'];
 				$ordercount=$request_data['Order_Count'];
 				$orderprice=$request_data['Order_Price'];
@@ -79,7 +82,7 @@ function IFDELETE($request_data){
 	}
 }
 
-/*¸Ä*/
+/*ï¿½ï¿½*/
 function IFPUT($request_data){
 	if(empty($request_data['Order_ID'])){
 		echo json_encode(array('Type'=>1,'Result'=>array('Errmsg'=>"1.The Order ID is empty!")));
@@ -88,7 +91,7 @@ function IFPUT($request_data){
 	}else{
 		$orderid=$request_data['Order_ID'];
 		$orderstate=$request_data['Order_State'];
-		$sql="UPDATE `tourplace`.`order` SET `Order_State`='$orderstate' 
+		$sql="UPDATE `tourplace`.`order` SET `Order_State`='$orderstate'
 		WHERE `Order_ID`='$orderid'";
 		mysql_query($sql);
 		Sale($orderid);
@@ -96,7 +99,7 @@ function IFPUT($request_data){
 }
 
 function Sale($orderid){
-	$sql="SELECT * FROM `tourplace`.`order` 
+	$sql="SELECT * FROM `tourplace`.`order`
 		WHERE `Order_ID`='$orderid'";
 	$rs=mysql_fetch_array(mysql_query($sql));
 	$count=count($rs['Order_ID']);
@@ -107,7 +110,7 @@ function Sale($orderid){
 		$saler=$rs['User_ID2'];
 		$ticketid=$rs['Ticket_ID'];
 		$ticketcount=$rs['Order_Count'];
-		$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+		$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket`
 			WHERE `User_ID`='$saler' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
 		$rs=mysql_fetch_array(mysql_query($sql));
 		$count=count($rs['UserTicket_Count']);
@@ -119,15 +122,15 @@ function Sale($orderid){
 				return;
 			}else if($rs['UserTicket_Count']>$ticketcount){
 				$cha=$rs['UserTicket_Count']-$ticketcount;
-				$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha' 
+				$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$cha'
 					WHERE `User_ID`='$saler' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
 				mysql_query($sql);
-			}else{/*¸ÕºÃÊÛÍê*/
-				$sql="DELETE FROM `tourplace`.`user-ticket` 
+			}else{/*ï¿½Õºï¿½ï¿½ï¿½ï¿½ï¿½*/
+				$sql="DELETE FROM `tourplace`.`user-ticket`
 					WHERE `User_ID`='$saler' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=1";
 				mysql_query($sql);
 			}
-			$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket` 
+			$sql="SELECT `UserTicket_Count` FROM `tourplace`.`user-ticket`
 				WHERE `User_ID`='$buyer' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=0";
 			$rs=mysql_fetch_array(mysql_query($sql));
 			$count=count($rs['UserTicket_Count']);
@@ -138,7 +141,7 @@ function Sale($orderid){
 				mysql_query($sql);
 			}else{
 				$he=$rs['UserTicket_Count']+$ticketcount;
-				$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$he' 
+				$sql="UPDATE `tourplace`.`user-ticket` SET `UserTicket_Count`='$he'
 					WHERE `User_ID`='$buyer' AND `Ticket_ID`='$ticketid' AND `UserTicket_Type`=0";
 				mysql_query($sql);
 			}
@@ -147,7 +150,7 @@ function Sale($orderid){
 	}
 }
 
-/*²é*/
+/*ï¿½ï¿½*/
 function IFGET($request_data){
 	$sql="";
 	if(empty($request_data['Keys'])){
@@ -173,9 +176,9 @@ function IFGET($request_data){
 			$i++;
 		}
 	}
-	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1` 
-		join `tourplace`.`ticket` ON `order`.`Ticket_ID`=`ticket`.`Ticket_ID` 
-		join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID` 
+	$sql.=" FROM `tourplace`.`user` join `tourplace`.`order` ON `user`.`User_ID`=`order`.`User_ID1`
+		join `tourplace`.`ticket` ON `order`.`Ticket_ID`=`ticket`.`Ticket_ID`
+		join `tourplace`.`scenic` ON `ticket`.`Scenic_ID`=`scenic`.`Scenic_ID`
 		join `tourplace`.`user2` ON `order`.`User_ID2`=`user2`.`User_ID` WHERE 1";
 	if($request_data['Type']==0){
 		if(!empty($request_data['Search']['Order_ID'])){
@@ -193,7 +196,11 @@ function IFGET($request_data){
 		}
 		nextstep($request_data,$sql);
 	}else if($request_data['Type']==2){
-		$userid=$_SESSION['User_ID'];
+		if(empty($request_data['User_ID'])){
+			$userid = $_SESSION['User_ID'];
+		}else{
+			$userid = $request_data['User_ID'];
+		}
 		$sql.=" AND `tourplace`.`order`.`User_ID1`='$userid'";
 		if(isset($request_data['Search']['Order_State'])){
 			$orderstate=$request_data['Search']['Order_State'];
@@ -244,7 +251,7 @@ function getID(){
 		fwrite($ff,$ID_0);
 		fclose($ff);
 	}
-	if(strlen($ID_0)>8)/*idÒÑÂú*/
+	if(strlen($ID_0)>8)/*idï¿½ï¿½ï¿½ï¿½*/
 		return '99999999';
 	else{
 		$num=8-strlen($ID_0);

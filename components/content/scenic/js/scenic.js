@@ -154,6 +154,7 @@ new Vue({
         url: '/tourplace/src/order.php',
         type: 'POST',
         data:{
+          User_ID: "",
           User_ID2: UserID,
           Ticket_ID: id,
           Order_Time: y+'/'+m+'/'+d,

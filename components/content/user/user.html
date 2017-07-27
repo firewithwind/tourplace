@@ -123,7 +123,7 @@
                     <div class="UserTicket">售票人：<span>{{order.User_Name}}</span></div>
                     <div class="TicketTime">门票时间：<span>{{order.Ticket_Time}}</span></div>
                     <div class="TicketPrice">订单总价：<span>{{order.Order_Price}}</span></div>
-                    <div class="TicketPrice">门票数量：<span>{{order.Order_Count}}</span></div>
+                    <div class="TickeCount">门票数量：<span>{{order.Order_Count}}</span></div>
                     <div class="TicketTime">交易时间：{{order.Order_Time}}</div>
                     <button class="pay" v-if="order.Order_State==0" @click="payOrder(order.Order_ID)">付款</button>
                   </div>

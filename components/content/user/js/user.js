@@ -120,7 +120,8 @@ new Vue({
       var self = this
       $.get('/tourplace/src/order.php',{
         Type: 2,
-        Keys: "Order_ID+Scenic_Name+Ticket_Time+Order_Time+Order_State+Order_Price+User_Name2",
+        User_ID: "",
+        Keys: "Order_ID+Scenic_Name+Ticket_Time+Order_Time+Order_State+Order_Price+User_Name2+Order_Count",
         Page: 1,
         PageSize: 0,
         Search: {
@@ -166,6 +167,7 @@ new Vue({
       var self = this
       $.get('/tourplace/src/saleTicket.php',{
         Type: 0,
+        User_ID: "",
         Keys: "Ticket_ID+Ticket_Picture+UserTicket_Price+UserTicket_Count+Ticket_Time+Scenic_Name",
         Page: 1,
         PageSize: 0,
